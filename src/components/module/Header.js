@@ -18,13 +18,13 @@ const Header = () => {
         else if(command==='notice')
             navigate('/notice');
         else if(command==='mypage')
-            navigate('/users/mypage');
+            navigate('/user/mypage');
         else if(command==='study-group')
             navigate('/study');
         else if(command==='login')
-            navigate('/users/login');
+            navigate('/user/login');
         else if(command==='join')
-            navigate('/users/join');
+            navigate('/user/join');
     }
 
     return (
