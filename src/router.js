@@ -2,9 +2,11 @@ import {
     createBrowserRouter,
 } from "react-router-dom";
 import Root from "./components/Root";
+
 import Join from "./components/users/Join";
 import Main from "./components/Main";
 import Login from "./components/users/Login";
+import Board from "./components/Board";
 
 const router = createBrowserRouter([
     
@@ -32,6 +34,20 @@ const router = createBrowserRouter([
             {
                 path: "/users/join",
                 element: <Join />,
+            },
+        ]
+    },
+    {
+        path: "/board",
+        element: <Root />,
+        children:[
+            {
+                path: "/board/view",
+                element: (
+                    <>
+                        <Board />
+                    </>
+                ),
             },
         ]
     },
