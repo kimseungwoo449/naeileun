@@ -2,6 +2,7 @@ import {
     createBrowserRouter,
 } from "react-router-dom";
 import Root from "./components/Root";
+import WriteResume from "./components/resume/WriteResume";
 
 const router = createBrowserRouter([
     
@@ -15,8 +16,14 @@ const router = createBrowserRouter([
         element: <Root />,
         children:[
             {
-                path: "",
-                element: <h4>Hello</h4>,
+                path: "/user/resume",
+                element: <></>,
+                children:[
+                    {
+                        path:"/user/resume/write",
+                        element:<WriteResume />
+                    }
+                ]
             },
         ]
     },
