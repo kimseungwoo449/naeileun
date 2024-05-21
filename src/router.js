@@ -7,6 +7,7 @@ import StudyPage from "./components/StudyPage";
 import Join from "./components/users/Join";
 import Login from "./components/users/Login";
 import Board from "./components/Board";
+import WriteResume from "./components/resume/WriteResume";
 
 const router = createBrowserRouter([
 
@@ -34,6 +35,16 @@ const router = createBrowserRouter([
             {
                 path: "/users/join",
                 element: <Join />,
+            },
+            {
+                path: "/user/resume",
+                element: <></>,
+                children:[
+                    {
+                        path:"/user/resume/write",
+                        element:<WriteResume />
+                    }
+                ]
             },
         ]
     },
