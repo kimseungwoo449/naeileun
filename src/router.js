@@ -1,12 +1,13 @@
 import {
+    Outlet,
     createBrowserRouter,
 } from "react-router-dom";
 import Root from "./components/Root";
-import StudyPage from "./components/StudyPage";
+import StudyPage from "./components/study/StudyPage";
 
 import Join from "./components/users/Join";
 import Login from "./components/users/Login";
-import Board from "./components/Board";
+import Board from "./components/board/Board";
 import WriteResume from "./components/resume/WriteResume";
 
 const router = createBrowserRouter([
@@ -17,28 +18,28 @@ const router = createBrowserRouter([
 
     },
     {
-        path: "/users",
+        path: "/user",
         element: <Root />,
         children: [
             {
-                path: "/users/join",
+                path: "/user/join",
                 element: <Join />,
             },
             {
-                path: "/users/login",
+                path: "/user/login",
                 element: <Login />,
             },
             {
-                path: "/users/Update",
+                path: "/user/Update",
                 element: <Join />,
             },
             {
-                path: "/users/join",
+                path: "/user/join",
                 element: <Join />,
             },
             {
                 path: "/user/resume",
-                element: <></>,
+                element: <Outlet />,
                 children:[
                     {
                         path:"/user/resume/write",
