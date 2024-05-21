@@ -5,7 +5,6 @@ import Root from "./components/Root";
 import StudyPage from "./components/StudyPage";
 
 import Join from "./components/users/Join";
-import Main from "./components/Main";
 import Login from "./components/users/Login";
 import Board from "./components/Board";
 
