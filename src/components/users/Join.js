@@ -3,11 +3,9 @@ import React from 'react';
 import { PiSquareHalfBottomLight } from 'react-icons/pi';
 
 const Join = () => {
-  
+
     const submit = e => {
         e.preventDefault();
-
-        
     }
 
     return (
