@@ -6,7 +6,20 @@
     <meta property="og:title" content="검색 서비스">
     <meta property="og:description" content="영상과 도서 검색을 지원하는 웹 서비스">
     <meta property="og:image" content="미리보기 이미지 경로">
-  
+    
+    <script type="text/javascript">
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+
     <link rel="icon" href="아이콘 이미지 경로">
     <title>React App</title>
   </head>
