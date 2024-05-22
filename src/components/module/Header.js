@@ -14,7 +14,7 @@ const Header = () => {
         else if(command==='job-posting')
             navigate('/jobPosting');
         else if(command==='board')
-            navigate('/board/view');
+            navigate('/board');
         else if(command==='notice')
             navigate('/notice');
         else if(command==='mypage')
