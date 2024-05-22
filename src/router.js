@@ -3,35 +3,36 @@ import {
 } from "react-router-dom";
 import Root from "./components/Root";
 import Join from "./components/users/Join";
-import Main from "./components/Main";
 import Login from "./components/users/Login";
+import Update from "./components/users/Update";
+import Delete from "./components/users/Delete";
 
 const router = createBrowserRouter([
     
     {
         path: "/",
-        element: <Main />,
+        element: <Root />,
         
     },
     {
-        path: "/users",
+        path: "/user",
         element: <Root />,
         children:[
             {
-                path: "/users/join",
+                path: "/user/join",
                 element: <Join />,
             },
             {
-                path: "/users/login",
+                path: "/user/login",
                 element: <Login />,
             },
             {
-                path: "/users/Update",
-                element: <Join />,
+                path: "/user/Update",
+                element: <Update />,
             },
             {
-                path: "/users/join",
-                element: <Join />,
+                path: "/user/delete",
+                element: <Delete />,
             },
         ]
     },
