@@ -37,16 +37,6 @@ const router = createBrowserRouter([
                 path: "/user/join",
                 element: <Join />,
             },
-            {
-                path: "/user/resume",
-                element: <Outlet />,
-                children:[
-                    {
-                        path:"/user/resume/write",
-                        element:<WriteResume />
-                    }
-                ]
-            },
         ]
     },
     {
@@ -62,7 +52,8 @@ const router = createBrowserRouter([
                 ),
             },
         ]
-    }, {
+    }, 
+    {
         path: "/study",
         element: <Root />,
         children: [
@@ -74,7 +65,17 @@ const router = createBrowserRouter([
 
             }
         ]
-    }
+    },
+    {
+        path: "/resume",
+        element: <Root />,
+        children:[
+            {
+                path:"/resume/write",
+                element:<WriteResume />
+            }
+        ]
+    },
 ], {
     basename: "/naeileun",
 });
