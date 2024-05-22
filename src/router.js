@@ -9,6 +9,7 @@ import Join from "./components/users/Join";
 import Login from "./components/users/Login";
 import Board from "./components/board/Board";
 import WriteResume from "./components/resume/WriteResume";
+import BoardAll from "./components/board/BoardAll";
 
 const router = createBrowserRouter([
 
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
         path: "/board",
         element: <Root />,
         children: [
+            {
+                path: "/board",
+                element: (
+                    <>
+                        <BoardAll />
+                    </>
+                ),
+            },
             {
                 path: "/board/view",
                 element: (

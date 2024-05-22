@@ -1,27 +1,73 @@
 import { Box, Button, Heading, Input, Menu, MenuButton, MenuItem, MenuList, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { TiArrowUnsorted } from 'react-icons/ti';
+import { useNavigate } from 'react-router-dom';
 
 const Board = () => {
+    const navigate = useNavigate();
 
+    const [postList, setPostList] = useState([]);
+    const [page, getPage] = useState(1);
+    const [search, setSearch] = useState(' ');
+
+    const pageCount = useRef(1);
+    
+    const fetchPosts = async() => {
+        console.log('fetchPosts');
+        console.log('${process.env.REACT_APP_SERVER_URL}:', process.env.REACT_APP_SERVER_URL);
+        console.log('Authorization:', process.env.REACT_APP_ADMIN_KEY);
+        const url = `${process.env.REACT_APP_SERVER_URL}/board/view`;
+        console.log('Fetching posts from:', url);
+        const response = await fetch(
+            url,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                },
+            }
+        );
+
+        const data = await response.json();
+        console.log(data);
+
+        if(data.status){
+            navigate('/board');
+        } else {
+            pageCount.current = data.meta.pageable_count % 10 > 0 ? data.meta.pageable_count / 10 + 1 : data.meta.pageable_count / 10;
+            pageCount.current = Math.floor(pageCount.current);
+            pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
+    
+            setPostList(data.result);
+        }
+
+    }
+    
+    const changeSearch = e => {
+        if(e.target.value.length >= 2)
+            setSearch(e.target.value);
+    }
+
+    useEffect(() => {
+        console.log('useEffect');
+        fetchPosts();
+    }, [page, search]);
 
     return (
         <>
-            <Box display={'flex'} alignItems={'center'}>
+            <Box>
                 <Heading size='xl' margin={'30px'}>게시판 명</Heading>
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<RiArrowDownSLine />}>
-                        게시판 명
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem>자유게시판</MenuItem>
-                        <MenuItem>신입</MenuItem>
-                        <MenuItem>IT 목표</MenuItem>
-                        <MenuItem>디자이너</MenuItem>
-                        <MenuItem>중견 취업</MenuItem>
-                    </MenuList>
-                </Menu>
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<RiArrowDownSLine />}>
+                            게시판 명
+                        </MenuButton>
+                        <MenuList>
+                            {postList.map((post, index) => (
+                                <MenuItem>{post.boardName}</MenuItem>
+                            ))}
+                        </MenuList>
+                    </Menu>
             </Box>
             <Box margin={'auto'}>
                 <TableContainer w={"1000px"}>
@@ -30,17 +76,23 @@ const Board = () => {
                             <Tr>
                                 <Th>번호</Th>
                                 <Th>제목</Th>
-                                <Th>글쓴이</Th>
+                                <Th>작성자</Th>
                                 <Th>작성일</Th>
+                                <Th>추천수</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
-                                <Td></Td>
-                                <Td></Td>
-                                <Td></Td>
-                                <Td></Td>
-                            </Tr>
+                            {postList.map((post, index) => (
+                                <>
+                                    <Tr>
+                                        <Td>{(page - 1) * 10 + index + 1}</Td>
+                                        <Td>{post.title}</Td>
+                                        <Td>{post.userId}</Td>
+                                        <Td>{post.writeDate}</Td>
+                                        <Td>{post.recommandation}</Td>
+                                    </Tr>
+                                </>
+                            ))}
                         </Tbody>
                         <Tfoot>
 
