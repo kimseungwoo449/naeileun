@@ -14,13 +14,13 @@ const Header = () => {
         else if(command==='job-posting')
             navigate('/jobPosting');
         else if(command==='board')
-            navigate('/board/view');
+            navigate('/board');
         else if(command==='notice')
             navigate('/notice');
         else if(command==='mypage')
             navigate('/user/mypage');
         else if(command==='study-group')
-            navigate('/study');
+            navigate('/study/detail');
         else if(command==='login')
             navigate('/user/login');
         else if(command==='join')
@@ -30,7 +30,7 @@ const Header = () => {
     return (
         <>
             <Grid id='header' w={'70%'} m={'auto'} gridTemplateColumns={'20% 60% 20%'}>
-                <Box id='logo' alignItems={'center'} mr={'30px'}>
+                <Box id='logo' display={'flex'} alignItems={'center'} mr={'30px'}>
                     <Img id='logo-img' src='https://i.ibb.co/Zf814Wd/logo.png' _hover={{
                         cursor : 'pointer'
                     }} onClick={movePage} />

@@ -3,7 +3,7 @@ import React from 'react';
 import { PiSquareHalfBottomLight } from 'react-icons/pi';
 
 const Join = () => {
-  
+
     const submit = async e => {
         e.preventDefault();
         const formData = new FormData(e.target);
