@@ -10,6 +10,7 @@ import Login from "./components/users/Login";
 import Board from "./components/board/Board";
 import WriteResume from "./components/resume/WriteResume";
 import BoardAll from "./components/board/BoardAll";
+import BoardDetail from "./components/board/BoardDetail";
 
 const router = createBrowserRouter([
 
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
                 element: (
                     <>
                         <Board />
+                    </>
+                ),
+            },
+            {
+                path: "/board/detail",
+                element: (
+                    <>
+                        <BoardDetail />
                     </>
                 ),
             },
