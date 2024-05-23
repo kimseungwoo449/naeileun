@@ -69,7 +69,7 @@ const StudyPage = () =>{
         console.log(groupCode);
 
         if(groupCode !== null){
-            navigate('/study/board');
+            navigate('/study/board',{state :{groupCode : groupCode}});
             return;
         }
         
