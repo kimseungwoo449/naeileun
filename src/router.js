@@ -4,12 +4,13 @@ import {
 } from "react-router-dom";
 import Root from "./components/Root";
 import StudyPage from "./components/study/StudyPage";
-
+import StudyBoard from "./components/study/StudyBoard";
 import Join from "./components/users/Join";
 import Login from "./components/users/Login";
 import Board from "./components/board/Board";
 import WriteResume from "./components/resume/WriteResume";
 import BoardAll from "./components/board/BoardAll";
+import StudyCreate from "./components/study/StudyCreate";
 
 const router = createBrowserRouter([
 
@@ -73,9 +74,15 @@ const router = createBrowserRouter([
                 </>
 
             },{
-                path: "/study/detail",
+                path: "/study/board",
                 element: <>
-                    <StudyPage />
+                    <StudyBoard />
+                </>
+
+            },{
+                path: "/study/create",
+                element: <>
+                    <StudyCreate />
                 </>
 
             }
