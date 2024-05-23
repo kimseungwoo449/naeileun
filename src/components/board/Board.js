@@ -1,23 +1,28 @@
-import { Box, Button, Heading, Input, Menu, MenuButton, MenuItem, MenuList, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Button, HStack, Heading, Input, Menu, MenuButton, MenuItem, MenuList, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { TiArrowUnsorted } from 'react-icons/ti';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Board = () => {
     const navigate = useNavigate();
 
     const [postList, setPostList] = useState([]);
-    const [page, getPage] = useState(1);
+    const [page, setPage] = useState(1);
     const [search, setSearch] = useState(' ');
 
     const pageCount = useRef(1);
+
+    const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
+
+    const {state} = useLocation();
+    const {code} = state;
     
     const fetchPosts = async() => {
         console.log('fetchPosts');
         console.log('${process.env.REACT_APP_SERVER_URL}:', process.env.REACT_APP_SERVER_URL);
         console.log('Authorization:', process.env.REACT_APP_ADMIN_KEY);
-        const url = `${process.env.REACT_APP_SERVER_URL}/board/view`;
+        const url = `${process.env.REACT_APP_SERVER_URL}/board/view/${code}`;
         console.log('Fetching posts from:', url);
         const response = await fetch(
             url,
@@ -109,6 +114,20 @@ const Board = () => {
                         <MenuItem>작성자 아이디</MenuItem>
                     </MenuList>
                 </Menu>
+                <HStack mb={"40px"} justifyContent={"center"} wrap={"wrap"} margin={'50px'}>
+                    {Array.from({ length: pageCount.current }, (_, index) => (
+                        <>
+                        <Button
+                            colorScheme={page === index + 1 ? "gray" : buttonScheme}
+                            onClick={(e) => {
+                            setPage(index + 1);
+                            }}
+                        >
+                            {index + 1}
+                        </Button>
+                        </>
+                    ))}
+                </HStack>
             </Box>
         </>
     );
