@@ -1,9 +1,10 @@
 import { Box, Button, Flex, Grid, Img, Text } from '@chakra-ui/react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useLogin } from '../LoginContext';
 const Header = () => {
     const navigate = useNavigate();
+    const {isLoggedIn} = useLogin();
     const movePage = (e)=>{
         const command = e.target.id;
 
@@ -25,6 +26,8 @@ const Header = () => {
             navigate('/user/login');
         else if(command==='join')
             navigate('/user/join');
+        else if(command==='myinfo')
+            navigate('/user/info');
     }
 
     return (
@@ -56,8 +59,19 @@ const Header = () => {
                     }} onClick={movePage}>스터디그룹</Text>
                 </Box>
                 <Box id='buttons' display={'flex'} alignItems={'center'} justifyContent='space-around' >
-                    <Button id='login' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>로그인</Button>
-                    <Button id='join' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>회원가입</Button>
+                    {isLoggedIn ? (
+                        // 로그인 상태일 때 보여줄 버튼들
+                        <>
+                            <Button id='myinfo' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>내정보</Button>
+                            <Button id='logout' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>로그아웃</Button>
+                        </>
+                    ) : (
+                        // 로그아웃 상태일 때 보여줄 버튼들
+                        <>
+                            <Button id='login' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>로그인</Button>
+                            <Button id='join' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>회원가입</Button>
+                        </>
+                    )}
                 </Box>
             </Grid>
         </>

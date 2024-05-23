@@ -14,6 +14,8 @@ import Delete from "./components/users/Delete";
 import Board from "./components/board/Board";
 import WriteResume from "./components/resume/WriteResume";
 import BoardAll from "./components/board/BoardAll";
+import MyInfo from "./components/users/mypage/MyInfo";
+import MyHome from "./components/users/mypage/MyHome";
 const router = createBrowserRouter([
 
     {
@@ -41,6 +43,16 @@ const router = createBrowserRouter([
             {
                 path: "/user/delete",
                 element: <Delete />,
+
+            },
+            {
+                path: "/user/home",
+                element: <MyHome />,
+
+            },
+            {
+                path: "/user/info",
+                element: <MyInfo />,
 
             },
         ]

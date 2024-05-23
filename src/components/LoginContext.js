@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // 로그인 정보를 저장할 Context 생성
 const LoginContext = createContext();
@@ -7,7 +7,13 @@ const LoginContext = createContext();
 export const LoginProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);  // 사용자 정보를 저장할 상태 변수
-
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem('user');
+        if (storedUser) {
+            setIsLoggedIn(true);
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
     return (
         <LoginContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser }}>
             {children}
@@ -16,6 +22,5 @@ export const LoginProvider = ({ children }) => {
 };
 
 // 로그인 정보를 사용하는 커스텀 훅
-export const useLogin = () => {
-    return useContext(LoginContext);
-};
+export const useLogin = () => useContext(LoginContext);
+

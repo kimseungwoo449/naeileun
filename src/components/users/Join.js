@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import { PiSquareHalfBottomLight } from 'react-icons/pi';
 
 const Join = () => {
 
@@ -19,10 +18,10 @@ const Join = () => {
         const agree = formData.get('agree');
 
         
-        if (!id || !password || !name || !residentFirst || !residentLast || !phone || !agree) {
-            alert('모든 필수 항목을 입력하고 약관에 동의해야 합니다.');
-            return;
-        }
+        // if (!id || !password || !name || !residentFirst || !residentLast || !phone || !agree) {
+        //     alert('모든 필수 항목을 입력하고 약관에 동의해야 합니다.');
+        //     return;
+        // }
 
         const data = {
             id,

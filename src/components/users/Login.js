@@ -30,7 +30,12 @@ const Login = () => {
                 // 로그인 성공 시 메인 페이지로 이동
                 setIsLoggedIn(true);
                 setUser(result.user);
-                navigate('/main')
+                sessionStorage.setItem('user', JSON.stringify(result.user));
+
+                navigate('/');
+                console.log(result);
+                console.log(result.user);
+                
             } else {
                 // 로그인 실패 시 오류 메시지 출력
                

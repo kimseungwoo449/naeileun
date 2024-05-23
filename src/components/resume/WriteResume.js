@@ -2,8 +2,6 @@ import { Box, Button, Flex, Grid, Input, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Form, useNavigate } from 'react-router-dom';
 
-
-
 const WriteResume = () => {
     const navigate = useNavigate();
     
