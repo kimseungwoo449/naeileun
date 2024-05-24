@@ -1,17 +1,19 @@
 import { Box, Button, Flex, Grid, Input, Text } from '@chakra-ui/react';
-import React from 'react';
-import { Form, useNavigate } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
+import { Form, useNavigate, useParams} from 'react-router-dom';
+import { useLogin } from '../LoginContext';
 
 const WriteResume = () => {
     const navigate = useNavigate();
-    
+    const { user } = useLogin();
+
     const submit = e => {
         e.preventDefault();
     
         const splitValue = "wLYPvSwquc";
     
         const req = {
-            "user_id": e.target.id.value,
+            "user_id": user.id,
             "name": e.target.name.value,
             "title": e.target.title.value,
             "user_age": e.target.age.value,
@@ -54,8 +56,8 @@ const WriteResume = () => {
                     <Text as='b' fontSize={'2xl'} textAlign={'center'} mb={'20px'}>이력서 작성</Text>
                     <Box id='user_info-container' mb={'10px'} >
                         <Input type='text' name='title' id='resume-title' placeholder='이력서 제목' mb={'10px'} />
-                        <Input type='text' name='name' id='user-name' placeholder='이름' mb={'10px'} />
-                        <Input type='number' name='age' id='user-age' placeholder='나이' />
+                        <Input type='text' name='name' id='user-name' placeholder='이름' mb={'10px'} value={user.name} disabled/>
+                        <Input type='number' name='age' id='user-age' placeholder='나이' value={user.age} disabled />
                     </Box>
                     <Box id='career-container' mb={'10px'}>
                         <Text as='b' fontSize={'xl'} >경력</Text>
