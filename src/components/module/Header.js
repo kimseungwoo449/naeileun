@@ -19,7 +19,7 @@ const Header = () => {
         else if(command==='notice')
             navigate('/notice');
         else if(command==='mypage')
-            navigate('/user/mypage');
+            navigate('/user/info');
         else if(command==='study-group')
             navigate('/study');
         else if(command==='login')
