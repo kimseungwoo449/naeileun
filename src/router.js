@@ -20,6 +20,7 @@ import MyHome from "./components/users/mypage/MyHome";
 import BoardDetail from "./components/board/BoardDetail";
 
 import StudyCreate from "./components/study/StudyCreate";
+import ResumeDetail from "./components/resume/ResumeDetail";
 
 
 const router = createBrowserRouter([
@@ -125,6 +126,10 @@ const router = createBrowserRouter([
             {
                 path:"/resume/write",
                 element:<WriteResume />
+            },
+            {
+                path:"/resume/viewDetail/:resumeCode",
+                element:<ResumeDetail />
             }
         ]
     },
