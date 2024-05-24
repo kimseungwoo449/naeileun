@@ -14,6 +14,8 @@ const Login = () => {
             password: formData.get('pw'),
         };
 
+        console.log(data);
+
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/login`, {
                 method: 'POST',
@@ -25,6 +27,7 @@ const Login = () => {
 
             const result = await response.json();
             
+            console.log(result);
 
             if (response.ok) {
                 // 로그인 성공 시 메인 페이지로 이동
@@ -38,7 +41,7 @@ const Login = () => {
                 
             } else {
                 // 로그인 실패 시 오류 메시지 출력
-               
+            
                 console.error('로그인 실패:', result.message);
             }
             console.log('성공:', result);
