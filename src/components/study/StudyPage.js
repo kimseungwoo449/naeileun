@@ -85,7 +85,7 @@ const StudyPage = () =>{
                         <Heading fontSize={'1.3em'}>나의 스터디 그룹</Heading>
                         <Heading as={'h3'} fontSize={'1em'} ml={'80px'}>스터디 그룹 생성</Heading>
                         
-                        <Icon id="create-study" onClick={createStudy} as={FaPlus} h={'22px'} w={'22px'} mt={'5px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} _hover={{cursor:"pointer"}}/>
+                        <Icon id="create-study" onClick={createStudy} as={FaPlus} h={'24px'} w={'24px'} mt={'1px'} ml={'10px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} _hover={{cursor:"pointer"}}/>
                     </HStack>
 
                     <HStack wrap={"wrap"} minH={'200px'} maxw={'980px'} gap={"10px"} m={"40px 10px"} >
