@@ -26,6 +26,8 @@ const Header = () => {
             navigate('/user/login');
         else if(command==='join')
             navigate('/user/join');
+        else if(command==='logout')
+            navigate('/user/logout')
         else if(command==='myinfo')
             navigate('/user/info');
     }

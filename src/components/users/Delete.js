@@ -6,10 +6,11 @@ const Delete = () => {
     const [password, setPassword] = useState('');
     const{user} = useLogin();
     const submit = async e =>{
+        console.log('bb')
         e.preventDefault();
         if(user.password === password){
             try {
-                const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/login`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/delete`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -21,7 +22,7 @@ const Delete = () => {
                 if (response.ok) {
                     // 탈퇴 성공 시 메인 페이지로 이동
                 
-                    Navigate('/main')
+                    Navigate('/')
                 } else {
                     // 탈퇴 실패 시 오류 메시지 출력
                    

@@ -1,13 +1,22 @@
+import { Box, Button, Flex, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
+import { useLogin } from '../../LoginContext';
 
 const MyResume = () => {
     const [resumes, setResumes] = useState([]);
-
+    const user = useLogin();
     
         useEffect(() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/user/resume`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/user/resume`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
             .then(response => response.json())
-            .then(data => setResumes(data));
+            .then(data => setResumes(data))
+            .catch(error => console.error('Error fetching resume data:', error));
     }, []);
 
     return (

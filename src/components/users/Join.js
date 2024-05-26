@@ -1,9 +1,11 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Join = () => {
-
+    const navigate = useNavigate();
     const submit = async e => {
+
         e.preventDefault();
         const formData = new FormData(e.target);
       
@@ -45,6 +47,7 @@ const Join = () => {
 
             const result = await response.json();
             console.log('성공:', result);
+            navigate("/");
         } catch (error) {
             console.error('오류:', error);
         }

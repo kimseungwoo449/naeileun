@@ -1,5 +1,4 @@
 import { Box } from '@chakra-ui/react';
-import React, { createContext, useContext } from 'react';
 import { useLogin } from '../LoginContext';
 import { useNavigate } from 'react-router-dom';
 const Login = () => {
@@ -35,13 +34,17 @@ const Login = () => {
                 navigate('/');
                 console.log(result);
                 console.log(result.user);
+                console.log('성공:', result);
                 
             } else {
                 // 로그인 실패 시 오류 메시지 출력
-               
-                console.error('로그인 실패:', result.message);
+                if (response.headers.get('Content-Type').includes('application/json')) {
+                    const result = await response.json();
+                    console.error('로그인 실패:', result.message);
+                } else {
+                    console.error('로그인 실패:', await response.text());
+                }
             }
-            console.log('성공:', result);
         } catch (error) {
             console.error('오류:', error);
         }
