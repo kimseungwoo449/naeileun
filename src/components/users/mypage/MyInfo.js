@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLogin } from '../../LoginContext';
 import { Box, Flex, Text, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Input } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../module/SideBar';
 const MyInfo = () => {
     const navigate = useNavigate();
     const { user, setUser } = useLogin();
@@ -11,7 +12,7 @@ const MyInfo = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
-
+    const {userInfo} = sessionStorage.getItem('user');
     const openModal = (fieldName) => {
         setField(fieldName);
         setValue(user[fieldName] || '');
@@ -77,6 +78,7 @@ const MyInfo = () => {
 
     return (
         <Box bg="teal.100" p={4} borderRadius="md">
+            <Sidebar/>
             <Text fontSize="lg" fontWeight="bold" mb={2}>{user.name}</Text>
             <Flex alignItems="center" mb={2}>
                 <Text flex="1" fontSize="md">+82 {user.phone}</Text>
