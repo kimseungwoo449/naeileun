@@ -19,6 +19,7 @@ import MyInfo from "./components/users/mypage/MyInfo";
 import MyHome from "./components/users/mypage/MyHome";
 import BoardDetail from "./components/board/BoardDetail";
 import StudyCreate from "./components/study/StudyCreate";
+
 import ResumeDetail from "./components/resume/ResumeDetail";
 
 import Logout from "./components/users/Logout";
@@ -28,6 +29,9 @@ import MyResume from "./components/users/mypage/MyResume";
 import MyPage from "./components/MyPage";
 
 import UpdateResume from "./components/resume/UpdateResume";
+
+import StudySetting from "./components/study/StudySetting";
+
 
 
 const router = createBrowserRouter([
@@ -138,6 +142,18 @@ const router = createBrowserRouter([
                 element: <>
                     <StudyCreate />
                 </>
+
+            },{
+                path: "/study/setting",
+                element: <>
+                    <StudySetting />
+                </>,
+                children : [
+                    {
+                        path : "/study/setting/approve",
+                        element : <></>
+                    }
+                ]
 
             }
         ]
