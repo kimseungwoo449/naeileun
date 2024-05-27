@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const ResumeDetail = () => {
     const{resumeCode} = useParams();
     const[resume,setResume] = useState({});
+    const{splitValue} = useRef('wLYPvSwquc');
     const fetchResume = ()=>{
         fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
             method: 'GET',
@@ -14,8 +15,11 @@ const ResumeDetail = () => {
         })
             .then(response => response.json())
             .then(data => {
+                console.log('fetch-data',data);
                 setResume(data);
-                console.log(resume);
+            })
+            .then(()=>{
+                console.log('resume',resume);
                 console.log(resume.career);
             });
     }
