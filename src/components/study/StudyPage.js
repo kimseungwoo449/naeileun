@@ -1,8 +1,8 @@
 import {React, useState, useEffect} from 'react';
-import { Heading, Box, HStack,Card,Image,Stack,CardBody,Text,Icon} from '@chakra-ui/react';
+import { Heading, Box, HStack,Card,Image,Stack,CardBody,Text,IconButton} from '@chakra-ui/react';
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
-// import { useLogin } from '../LoginContext';
+//import { useLogin } from '../LoginContext';
 
 const StudyPage = () =>{
     const navigate = useNavigate();
@@ -11,7 +11,9 @@ const StudyPage = () =>{
     const [load, setLoad] = useState();
     const [popularList, setPopularList] = useState([]);
     
-    //const {user} = useLogin;
+    //const {user} = useLogin();
+
+    //console.log(user);
 
     const fetchMyStudy = async() =>{
 
@@ -29,8 +31,6 @@ const StudyPage = () =>{
             console.log(data);
             setStudyList(data.result);
         });
-
-
 
         const pgResponse = await fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/popularGroup`,
@@ -50,12 +50,7 @@ const StudyPage = () =>{
     
     
     const createStudy = (e) =>{
-        const command = e.target.id;
-        console.log(command);
-        if(command === "create-study"){
-            navigate('/study/create');
-            return;
-        }
+        navigate('/study/create');
     }
 
     useEffect(() =>{
@@ -66,8 +61,8 @@ const StudyPage = () =>{
     const submit= (e) =>{
         e.preventDefault();
         const groupCode = e.target.id;
-        console.log(groupCode);
-
+        console.log(e.target);
+        console.log(e.target.id);
         if(groupCode !== null){
             navigate('/study/board',{state :{groupCode : groupCode}});
             return;
@@ -85,7 +80,7 @@ const StudyPage = () =>{
                         <Heading fontSize={'1.3em'}>나의 스터디 그룹</Heading>
                         <Heading as={'h3'} fontSize={'1em'} ml={'80px'}>스터디 그룹 생성</Heading>
                         
-                        <Icon id="create-study" onClick={createStudy} as={FaPlus} h={'24px'} w={'24px'} mt={'1px'} ml={'10px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} _hover={{cursor:"pointer"}}/>
+                        <IconButton id={"create-study"} onClick={createStudy} icon={<FaPlus />} h={'24px'} w={'24px'} mt={'1px'} ml={'10px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} _hover={{cursor:"pointer"}}/>
                     </HStack>
 
                     <HStack wrap={"wrap"} minH={'200px'} maxw={'980px'} gap={"10px"} m={"40px 10px"} >
