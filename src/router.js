@@ -18,10 +18,12 @@ import BoardAll from "./components/board/BoardAll";
 import MyInfo from "./components/users/mypage/MyInfo";
 import MyHome from "./components/users/mypage/MyHome";
 import BoardDetail from "./components/board/BoardDetail";
-
 import StudyCreate from "./components/study/StudyCreate";
 import ResumeDetail from "./components/resume/ResumeDetail";
 
+import Logout from "./components/users/Logout";
+import MyStudy from "./components/users/mypage/MyStudy";
+import MyResume from "./components/users/mypage/MyResume";
 
 const router = createBrowserRouter([
 
@@ -53,6 +55,11 @@ const router = createBrowserRouter([
 
             },
             {
+                path: "/user/logout",
+                element: <Logout />,
+
+            },
+            {
                 path: "/user/home",
                 element: <MyHome />,
 
@@ -60,6 +67,16 @@ const router = createBrowserRouter([
             {
                 path: "/user/info",
                 element: <MyInfo />,
+
+            }, 
+            {
+                path: "/user/study",
+                element: <MyStudy />,
+
+            },
+            {
+                path: "/user/resume",
+                element: <MyResume />,
 
             },
         ]
