@@ -24,6 +24,7 @@ import ResumeDetail from "./components/resume/ResumeDetail";
 import Logout from "./components/users/Logout";
 import MyStudy from "./components/users/mypage/MyStudy";
 import MyResume from "./components/users/mypage/MyResume";
+import UpdateResume from "./components/resume/UpdateResume";
 
 const router = createBrowserRouter([
 
@@ -147,6 +148,9 @@ const router = createBrowserRouter([
             {
                 path:"/resume/viewDetail/:resumeCode",
                 element:<ResumeDetail />
+            },{
+                path:"/resume/update/:resumeCode",
+                element:<UpdateResume />
             }
         ]
     },
