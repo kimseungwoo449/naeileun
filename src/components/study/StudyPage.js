@@ -26,11 +26,10 @@ const StudyPage = () =>{
                     "Content-Type": "application/json;charset=UTF8"
                 }
             }
-        ).then(response => response.json())
-        .then(data => {
-            console.log(data);
-            setStudyList(data.result);
-        });
+        )
+
+        const studyData = await response.json();
+        setStudyList(studyData.result);
 
         const pgResponse = await fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/popularGroup`,
@@ -41,11 +40,10 @@ const StudyPage = () =>{
                     "Content-Type": "application/json;charset=UTF8"
                 }
             }
-        ).then(response => response.json())
-        .then(data => {
-            console.log(data);
-            setPopularList(data.result);
-        });
+        )
+        
+        const popularData = await pgResponse.json();
+        setPopularList(popularData.result);
     }
     
     
