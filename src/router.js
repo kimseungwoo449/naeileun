@@ -20,6 +20,7 @@ import MyHome from "./components/users/mypage/MyHome";
 import BoardDetail from "./components/board/BoardDetail";
 
 import StudyCreate from "./components/study/StudyCreate";
+import StudySetting from "./components/study/StudySetting";
 
 
 const router = createBrowserRouter([
@@ -114,6 +115,18 @@ const router = createBrowserRouter([
                 element: <>
                     <StudyCreate />
                 </>
+
+            },{
+                path: "/study/setting",
+                element: <>
+                    <StudySetting />
+                </>,
+                children : [
+                    {
+                        path : "/study/setting/approve",
+                        element : <></>
+                    }
+                ]
 
             }
         ]
