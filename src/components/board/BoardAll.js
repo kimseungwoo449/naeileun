@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardBody, HStack, Heading, Icon, Image, Stack, Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Card, CardBody, Flex, Heading, Icon, Image, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
@@ -18,16 +18,14 @@ const BoardAll = () => {
     const movePage = (e) => {
         const command = e.target.id;
         const code = e.target.getAttribute("name");
+        const board = boardList;
+
+        console.log("board : " + board);
         console.log("code : " + code);
         console.log("command : " + command);
 
         if (command === 'board-view')
-            navigate('/board/view', { state: { code: code } });
-    }
-
-    const submit = (e) => {
-        const form = document.querySelector('form');
-        form.submit();
+            navigate('/board/view', { state: { code: code, board: board } } );
     }
 
     const fetchBoardAndPosts = async () => {
@@ -76,26 +74,26 @@ const BoardAll = () => {
         <>
             <Box minW={'700px'} ml={'150px'} margin={"auto"}>
                 <form method='GET' action='{`${process.env.REACT_SERVER_URL}/boardDetail`}'>
-                    <HStack m={'10px 10px'}>
+                    <Flex m={'10px 10px'} alignItems="center">
                         <Heading fontSize={'1.3em'}>게시판</Heading>
                         <Heading as={'h3'} fontSize={'1em'} ml={'80px'}>게시판 생성</Heading>
                         
                         <Icon id="create-board" as={FaPlus} h={'22px'} w={'22px'} mt={'5px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} onClick={movePage} />
-                    </HStack>
-                    <HStack justifyContent={"start"} wrap={"wrap"} minH={'200px'} gap={"50px"} m={"40px 10px"} p={"0px 0px 0px 22px"} width={'1000px'}>
+                    </Flex>
+                    <Flex justifyContent={"flex-start"} wrap={"wrap"} h={'600px'} gap={"50px"} m={"40px 10px"} p={"0px 0px 0px 22px"} width={'1000px'}>
                         {currentBoards.map((board, index) => (
-                            <Card key={index} onClick={movePage} justifyContent={"center"} id="board-view" boxSize={'200px'} height={'300px'} _hover={{ cursor: "pointer" }}>
-                                <CardBody id="board-view" name={board.boardCode}>
+                            <Card key={index} onClick={movePage} justifyContent={"center"} id="board-view" boxSize={'200px'} height={'250px'} _hover={{ cursor: "pointer" }}>
+                                <CardBody id="board-view" name={board.boardCode} display="flex" flexDirection="column" alignItems="center">
                                     <Image id="board-view" name={board.boardCode} w={'150px'} h={'120px'} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFXOOcZnaslyfjPTGV4q_PlLC9Ypmg8kzTgBP5Nrg_FA&s" alt="" />
-                                    <Stack mt={'5px'}>
+                                    <Stack mt={'5px'} textAlign="center">
                                         <Text id="board-view" name={board.boardCode} as={'h4'} fontSize={'0.8em'}>{board.boardName}</Text>
                                         <Text id="board-view" name={board.boardCode} as={'h5'} fontSize={'0.7em'}>{board.description}</Text>
                                     </Stack>
                                 </CardBody>
                             </Card>
                         ))}
-                    </HStack>
-                    <HStack mb={"40px"} justifyContent={"center"} wrap={"wrap"} margin={'50px'}>
+                    </Flex>
+                    <Flex mb={"40px"} justifyContent={"center"} wrap={"wrap"} margin={'50px'}>
                         {Array.from({ length: pageCount.current }, (_, index) => (
                             <Button
                                 key={index}
@@ -107,34 +105,38 @@ const BoardAll = () => {
                                 {index + 1}
                             </Button>
                         ))}
-                    </HStack>
-                    <HStack m={'10px 10px'}>
+                    </Flex>
+                    <Flex m={'10px 10px'} alignItems="center">
                         <Heading fontSize={'1.3em'}>인기 게시글</Heading>
-                    </HStack>
-                    <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor: "pointer" }}>
-                        <TableContainer w={"1000px"}>
-                            <Table m={"40px 0"}>
-                                <Thead>
-                                    <Tr>
-                                        <Th>작성자</Th>
-                                        <Th>제목</Th>
-                                        <Th>추천수</Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {postList.map((post, index) => (
-                                        <Tr key={index}>
-                                            <Td>{post.userId}</Td>
-                                            <Td>{post.title}</Td>
-                                            <Td>{post.recommandation}</Td>
-                                        </Tr>
-                                    ))}
-                                </Tbody>
-                                <Tfoot>
-                                </Tfoot>
-                            </Table>
-                        </TableContainer>
-                    </HStack>
+                    </Flex>
+                    <Stack wrap={"wrap"} gap={"10px"}>
+                        {postList.map((post, index) => (
+                            <Box
+                                key={index}
+                                borderWidth={"1px"}
+                                borderRadius={"lg"}
+                                p={"10px"}
+                                _hover={{ cursor: "pointer", backgroundColor: "gray.100" }}
+                                onClick={() => navigate(`/post/view/${post.postId}`)}
+                            >
+                                <Flex justifyContent={"space-between"}>
+                                    <Text fontSize='sm'>{post.userId}</Text>
+                                    <Text fontSize='sm'>{post.writeDate}</Text>
+                                </Flex>
+                                <Box mt={"5px"}>
+                                    <Text fontSize='xl' fontWeight={"bold"}>{post.title}</Text>
+                                    <Text>{post.content}</Text>
+                                </Box>
+                                <Flex justifyContent={"space-between"} mt={"5px"}>
+                                    <Text>{post.boardName}</Text>
+                                    <Flex>
+                                        <Text>👍 {post.recommendation}</Text>
+                                        <Text>💬 {post.comments}</Text>
+                                    </Flex>
+                                </Flex>
+                            </Box>
+                        ))}
+                    </Stack>
                 </form>
             </Box>
         </>
