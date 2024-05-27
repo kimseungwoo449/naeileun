@@ -24,9 +24,10 @@ import ResumeDetail from "./components/resume/ResumeDetail";
 import Logout from "./components/users/Logout";
 import MyStudy from "./components/users/mypage/MyStudy";
 import MyResume from "./components/users/mypage/MyResume";
+import MyPage from "./components/MyPage";
 
 const router = createBrowserRouter([
-
+    
     {
         path: "/",
         element: <Root />,
@@ -45,11 +46,6 @@ const router = createBrowserRouter([
                 element: <Login />,
             },
             {
-                path: "/user/Update",
-
-                element: <Update />,
-            },
-            {
                 path: "/user/delete",
                 element: <Delete />,
 
@@ -58,7 +54,13 @@ const router = createBrowserRouter([
                 path: "/user/logout",
                 element: <Logout />,
 
-            },
+            }
+        ]
+    },
+    {
+        path: "/user",
+        element: <MyPage />,
+        children: [
             {
                 path: "/user/home",
                 element: <MyHome />,

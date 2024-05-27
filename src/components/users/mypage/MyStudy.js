@@ -4,7 +4,7 @@ import { useLogin } from '../../LoginContext';
 
 const MyStudy = () => {
     const [study, setStudy] = useState([]);
-    const user = useLogin();
+    const user = sessionStorage.getItem('user');
     
         useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/study`,{
