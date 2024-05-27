@@ -1,5 +1,5 @@
 // src/BoardDetail.js
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Box,
     Text,
@@ -7,25 +7,73 @@ import {
     HStack,
     Divider,
     IconButton,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BoardDetail = () => {
+    const navigate = useNavigate();
+
+    const [post, setPost] = useState([]);
+    const [page, setPage] = useState(1);
+
+    const pageCount = useRef(1);
+
+    const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
+
+    const location = useLocation();
+    const postCode = location.state.postCode;
+    const bordCode = location.state.bordCode;
+    const boardList = location.state.board;
+    console.log("postCode: " + postCode)
+    console.log("boardList: " + boardList)
+
+    const fetchPost = async () => {
+        const url = `${process.env.REACT_APP_SERVER_URL}/board/view/${bordCode}/${postCode}`;
+        const response = await fetch(
+            url,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                },
+            }
+        );
+
+        const data = await response.json();
+        console.log(data)
+
+        if (data.status) {
+            navigate('/board');
+        } else {
+            // pageCount.current = Math.ceil(data.meta.pageable_count / 10);
+            // pageCount.current = Math.min(pageCount.current, 15);
+
+            setPost(data.result);
+        }
+    }
+
+    useEffect(() => {
+        fetchPost();
+    }, [page]);
+
     return (
-        <Box p={4} w="1200px" mx="auto" bg="white" boxShadow="md" borderRadius="md">
+        <Box p={4} w="1200px" mx="auto" bg="white" boxShadow="md" borderRadius="md" minHeight="90vh">
             <VStack align="start" spacing={3} w="full">
                 <HStack justify="space-between" w="full">
                     <Text fontSize="xl" fontWeight="bold">
-                        제목
+                        {post.title}
                     </Text>
                 </HStack>
                 <HStack spacing={2} fontSize="sm" color="gray.500" w="full">
-                    <Text>아이디</Text>
+                    <Text>{post.userId}</Text>
                     <Divider orientation="vertical" height="16px" />
-                    <Text>작성일</Text>
+                    <Text>{post.writeDate}</Text>
                 </HStack>
                 <Text w="full">
-                    본문
+                    <br />
+                    {post.content}
                     <br />
                     <br />
                 </Text>
@@ -37,7 +85,7 @@ const BoardDetail = () => {
                             isRound
                             aria-label="Like"
                         />
-                        <Text fontSize="sm">6</Text>
+                        <Text fontSize="sm">{post.recommandation}</Text>
                     </HStack>
                     <HStack spacing={1}>
                         <IconButton
