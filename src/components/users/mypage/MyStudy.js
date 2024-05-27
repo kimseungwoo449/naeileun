@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLogin } from '../../LoginContext';
 
 const MyStudy = () => {
