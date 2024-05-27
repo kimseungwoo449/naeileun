@@ -8,7 +8,6 @@ const Join = () => {
 
         e.preventDefault();
         const formData = new FormData(e.target);
-      
         
         const id = formData.get('id');
         const password = formData.get('pw');
