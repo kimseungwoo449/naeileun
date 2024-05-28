@@ -19,14 +19,23 @@ import MyInfo from "./components/users/mypage/MyInfo";
 import MyHome from "./components/users/mypage/MyHome";
 import BoardDetail from "./components/board/BoardDetail";
 import StudyCreate from "./components/study/StudyCreate";
+
 import ResumeDetail from "./components/resume/ResumeDetail";
 
 import Logout from "./components/users/Logout";
 import MyStudy from "./components/users/mypage/MyStudy";
 import MyResume from "./components/users/mypage/MyResume";
 
-const router = createBrowserRouter([
+import MyPage from "./components/MyPage";
 
+import UpdateResume from "./components/resume/UpdateResume";
+
+import StudySetting from "./components/study/StudySetting";
+
+
+
+const router = createBrowserRouter([
+    
     {
         path: "/",
         element: <Root />,
@@ -45,11 +54,6 @@ const router = createBrowserRouter([
                 element: <Login />,
             },
             {
-                path: "/user/Update",
-
-                element: <Update />,
-            },
-            {
                 path: "/user/delete",
                 element: <Delete />,
 
@@ -58,7 +62,13 @@ const router = createBrowserRouter([
                 path: "/user/logout",
                 element: <Logout />,
 
-            },
+            }
+        ]
+    },
+    {
+        path: "/user",
+        element: <MyPage />,
+        children: [
             {
                 path: "/user/home",
                 element: <MyHome />,
@@ -133,6 +143,18 @@ const router = createBrowserRouter([
                     <StudyCreate />
                 </>
 
+            },{
+                path: "/study/setting",
+                element: <>
+                    <StudySetting />
+                </>,
+                children : [
+                    {
+                        path : "/study/setting/approve",
+                        element : <></>
+                    }
+                ]
+
             }
         ]
     },
@@ -147,6 +169,9 @@ const router = createBrowserRouter([
             {
                 path:"/resume/viewDetail/:resumeCode",
                 element:<ResumeDetail />
+            },{
+                path:"/resume/update/:resumeCode",
+                element:<UpdateResume />
             }
         ]
     },

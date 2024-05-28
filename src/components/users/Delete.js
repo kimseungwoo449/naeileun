@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useLogin } from '../LoginContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 const Delete = () => {
     const [password, setPassword] = useState('');
     const{user} = useLogin();
+    const navigate = useNavigate();
     const submit = async e =>{
         console.log('bb')
         e.preventDefault();
@@ -22,7 +23,7 @@ const Delete = () => {
                 if (response.ok) {
                     // 탈퇴 성공 시 메인 페이지로 이동
                 
-                    Navigate('/')
+                    navigate('/logout')
                 } else {
                     // 탈퇴 실패 시 오류 메시지 출력
                    
