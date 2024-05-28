@@ -1,16 +1,34 @@
-import {React} from 'react';
-import {Box, Text, Button, HStack, Image, Icon, Stack} from '@chakra-ui/react';
-import {useNavigate, useLocation } from 'react-router-dom';
+import {React, useState } from 'react';
+import {Box, Text, Button, HStack, Image, Icon, Stack, Input} from '@chakra-ui/react';
+import {useNavigate, useLocation} from 'react-router-dom';
 import { IoChatbubble } from "react-icons/io5";
-import { MdSettings } from "react-icons/md";
+import { MdSettings, MdMoreHoriz } from "react-icons/md";
+import { useEffect } from 'react';
+import {
+    Table,
+    Thead,
+    Tbody,
+    Tfoot,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+} from '@chakra-ui/react'
 
 const StudyBoard = () =>{
 
-    const {state} = useLocation();	// 2번 라인
-    const {groupCode} = state;
+    const location = useLocation();	// 2번 라인
+    const groupCode = location.state.groupCode;
+    
+    console.log(groupCode);
 
+    const [post, setPost] = useState([]);
+    const [study, setStudy] = useState([]);
 
-    const fetch = async =>{
+    const number = 1;
+
+    const fetchBoard = async() => {
         const req = {
             "group_code" : groupCode
         }
@@ -25,36 +43,78 @@ const StudyBoard = () =>{
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-
+                console.log(data.result[0].post);
+                setPost(data.result[0].post);
+                setStudy(data.result[0].study);
             });
+
     }
+    
+
+    const quit =(e) =>{
+
+    }
+    const join =(e) =>{
+        
+    }
+
+    useEffect(()=>{
+        fetchBoard();
+    },[groupCode])
 
     return(
         <>
-        <Box h={'80vh'} w={"650px"} ml={'25%'}>
+        <Box h={'80vh'} w={"600px"} margin={'auto'}>
             <form method="POST" action="">
                 <HStack>
-                    <Text>스터디 그룹명</Text>
+                    <Text as={'b'} fontSize={'1.3em'} w={'100px'}>{study.name}</Text>
                     <Text>그룹 채팅방 입장</Text>
                     <Icon as={IoChatbubble}></Icon>
-                    <Button onClick={""} w={'60px'} id="cancle">탈퇴</Button>
-                    <Button onClick={""} w={'60px'} colorScheme='blue'>가입신청</Button>
+                    <HStack ml={'auto'}>
+                        <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>
+                        <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button>
+                    </HStack>
                 </HStack>
-                <HStack alignItems={'flex-start'}>
+                <HStack mt={"30px"} mb={"20px"}>
                     <Image src='' border={"solid 1px gray"} w={'100px'} h={'100px'}></Image>
-                    <Stack alignItems={'flex-end'}>
-                        <Text >스터디 그룹 소개</Text>
-                        <Icon as={MdSettings}></Icon>
+                    <Text w={"300px"} pl={"10px"}>{study.decription}</Text>
+                    <Stack  ml={'auto'}>
+                        {
+                            //user code 가져오기 //수정요함
+                            "2" === study.adminCode ?
+                            <Icon as={MdSettings} boxSize={'1.4em'}></Icon> : 
+                            <Input type='hidden'></Input>
+                        }
+                        
                     </Stack>
                 </HStack>
-                <Stack>
-                    <Text>그룹 게시판</Text>
-                    <HStack>
-                        <Text>게시글 제목</Text>
-                        <Text>작성시간</Text>
-                    </HStack>
-                </Stack>
+                <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}}>
+                    <Text as={'b'} fontSize="1.2em">그룹 게시판</Text>
+                    <TableContainer w={"1000px"}>
+                            <Table  m={"40px 0"}>
+                                <Thead>
+                                    <Tr>
+                                        <Th>순서</Th>
+                                        <Th>제목</Th>
+                                        <Th>게시일</Th>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    {post.map((post, index) => (
+                                        <>
+                                            <Tr>
+                                                <Td>{number + index}</Td>
+                                                <Td w={'200px'}>{post.title}</Td>
+                                                <Td>{post.updateDate}</Td>
+                                            </Tr>
+                                        </>
+                                    ))}
+                                </Tbody>
+                                <Tfoot>
+                                </Tfoot>
+                            </Table>
+                        </TableContainer>
+                </HStack>
                 
             </form>
         </Box>
