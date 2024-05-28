@@ -55,9 +55,7 @@ const StudyBoard = () =>{
         console.log(data.meta);
         setPost(data.result[0].post);
         setStudy(data.result[0].study);
-        setIsMember(data.result[0].total_count);
-
-
+        setIsMember(data.result[0].isMember);
 
         const postSize = data.meta.total_count;
         console.log(postSize);
@@ -100,7 +98,6 @@ const StudyBoard = () =>{
         fetchBoard();
     },[page])
 
-    console.log(isMember);
     return(
         <>
         <Box h={'80vh'} w={"750px"} margin={'auto'}>
