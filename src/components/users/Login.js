@@ -1,10 +1,13 @@
 import { Box, Input, Button, Checkbox, FormControl, FormLabel, VStack, Text, HStack, Stack } from '@chakra-ui/react';
 
-import { useLogin } from '../LoginContext';
+import LoginContext, { useLogin } from '../LoginContext';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+
 const Login = () => {
-    const { setIsLoggedIn, setUser } = useLogin();
+    // const { setIsLoggedIn, setUser } = useLogin();
+    const { login } = useContext(LoginContext);
+
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -30,10 +33,10 @@ const Login = () => {
     const submit = async e => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        
-        
-        
-        
+
+
+
+
         const data = {
             id: formData.get('id'),
             password: formData.get('password'),
@@ -42,13 +45,13 @@ const Login = () => {
         if (!data.id) {
             setErrorMessage('아이디를 입력해주세요.');
             return;
-          }else if (!data.password) {
+        } else if (!data.password) {
             setErrorMessage('비밀번호를 입력해주세요.');
             return;
-          }else if (!data.id && !data.password) {
+        } else if (!data.id && !data.password) {
             setErrorMessage('아이디를 입력해주세요.');
             return;
-          }
+        }
         console.log(data);
 
         try {
@@ -66,15 +69,18 @@ const Login = () => {
 
             if (result.status === 200) {
                 // 로그인 성공 시 메인 페이지로 이동
-                setIsLoggedIn(true);
-                setUser(result.user);
-                sessionStorage.setItem('user', JSON.stringify(result.user));
+                // setIsLoggedIn(true);
+                // setUser(result.user);
 
+                login(result);
                 navigate('/');
                 setErrorMessage('')
                 console.log(result);
                 console.log(result.user);
                 console.log('성공:', result);
+                // console.log(result);
+                // console.log(result.user);
+                // console.log('성공:', result);
 
             } else {
                 // 로그인 실패 시 오류 메시지 출력  
@@ -104,9 +110,9 @@ const Login = () => {
                                 value={formData.id}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                borderColor= "gray.200"
+                                borderColor="gray.200"
                                 focusBorderColor="rgb(202, 244, 255)"
-                                
+
                                 mb={2}
                             />
                         </FormControl>
@@ -122,7 +128,7 @@ const Login = () => {
                                 onBlur={handleBlur}
                                 borderColor="gray.200"
                                 focusBorderColor="rgb(202, 244, 255)"
-                                
+
                                 mb={0}
                             />
                         </FormControl>
