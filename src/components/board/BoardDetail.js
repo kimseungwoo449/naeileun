@@ -24,13 +24,13 @@ const BoardDetail = () => {
 
     const location = useLocation();
     const postCode = location.state.postCode;
-    const bordCode = location.state.bordCode;
+    const boardCode = location.state.boardCode;
     const boardList = location.state.board;
     console.log("postCode: " + postCode)
     console.log("boardList: " + boardList)
 
     const fetchPost = async () => {
-        const url = `${process.env.REACT_APP_SERVER_URL}/board/view/${bordCode}/${postCode}`;
+        const url = `${process.env.REACT_APP_SERVER_URL}/board/view/${boardCode}/${postCode}`;
         const response = await fetch(
             url,
             {
