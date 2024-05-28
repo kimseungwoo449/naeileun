@@ -7,7 +7,7 @@ const ResumeDetail = () => {
     const { resumeCode } = useParams();
     const [resume, setResume] = useState({});
     const splitValue = 'wLYPvSwquc';
-    
+    // test
     const fetchResume = async () => {
         await fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
             method: 'GET',
