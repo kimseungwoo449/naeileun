@@ -8,11 +8,11 @@ const StudySetting = () =>{
     return(
         <>
             <Box minH={'75vh'} ml={'50px'}>
-                <HStack>
+                <HStack mt={'50px'}>
                     <Stack>
-                        <Text as={'b'} fontSize={'1.2em'} fontStyle={''} mt={'50px'}>스터디그룹 관리</Text>
-                        <Button>멤버승인</Button>
-                        <Button>멤버관리</Button>
+                        <Text as={'b'} fontSize={'1.2em'} fontStyle={''}>스터디그룹 관리</Text>
+                        <Text>멤버승인</Text>
+                        <Text>멤버관리</Text>
                     </Stack>
                     <Outlet />
                 </HStack>
