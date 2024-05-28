@@ -1,10 +1,13 @@
 import { Box, Input, Button, Checkbox, FormControl, FormLabel, VStack, Text, HStack, Stack } from '@chakra-ui/react';
 
-import { useLogin } from '../LoginContext';
+import LoginContext, { useLogin } from '../LoginContext';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+
 const Login = () => {
-    const { setIsLoggedIn, setUser } = useLogin();
+    // const { setIsLoggedIn, setUser } = useLogin();
+    const {login} = useContext(LoginContext);
+
     const navigate = useNavigate();
     
     const [formData, setFormData] = useState({
@@ -30,15 +33,10 @@ const Login = () => {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        
-        
-        
-        
         const data = {
             id: formData.get('id'),
             password: formData.get('password'),
         };
-        console.log(data);
 
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/login`, {
@@ -55,14 +53,14 @@ const Login = () => {
 
             if (response.ok) {
                 // 로그인 성공 시 메인 페이지로 이동
-                setIsLoggedIn(true);
-                setUser(result.user);
-                sessionStorage.setItem('user', JSON.stringify(result.user));
+                // setIsLoggedIn(true);
+                // setUser(result.user);
 
+                login(result);
                 navigate('/');
-                console.log(result);
-                console.log(result.user);
-                console.log('성공:', result);
+                // console.log(result);
+                // console.log(result.user);
+                // console.log('성공:', result);
 
             } else {
                 // 로그인 실패 시 오류 메시지 출력  
