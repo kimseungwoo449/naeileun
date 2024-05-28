@@ -16,16 +16,30 @@ const BoardAll = () => {
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const movePage = (e) => {
-        const command = e.target.id;
-        const code = e.target.getAttribute("name");
-        const board = boardList;
+        const classLength = e.target.classList.length;
+        console.log("classLength : " + classLength);
+        for(let i=0; i<classLength; i++) {
+            const command = e.target.classList.item(i);
+            console.log("command : " + command);
+            
+            const bordCode = e.target.id;
+            console.log("bordCode : " + bordCode);
+            
+            const board = boardList;
+            console.log("board : " + board);
 
-        console.log("board : " + board);
-        console.log("code : " + code);
-        console.log("command : " + command);
 
-        if (command === 'board-view')
-            navigate('/board/view', { state: { code: code, board: board } } );
+            if (command === 'board-view'){
+                navigate('/board/view', { state: { bordCode: bordCode, board: board } } );
+            }
+            else if(command === 'board-detail'){
+                const postCode = e.target.getAttribute("name");
+                console.log("postCode : " + postCode);
+                
+                navigate('/board/detail', { state: { bordCode: bordCode, postCode: postCode, board: board } } );
+            }
+        }
+        
     }
 
     const fetchBoardAndPosts = async () => {
@@ -75,19 +89,19 @@ const BoardAll = () => {
             <Box minW={'700px'} ml={'150px'} margin={"auto"}>
                 <form method='GET' action='{`${process.env.REACT_SERVER_URL}/boardDetail`}'>
                     <Flex m={'10px 10px'} alignItems="center">
-                        <Heading fontSize={'1.3em'}>게시판</Heading>
-                        <Heading as={'h3'} fontSize={'1em'} ml={'80px'}>게시판 생성</Heading>
+                        <Heading fontSize='4xl' margin={"30px 0"}>&emsp;게시판</Heading>
+                        {/* <Heading as={'h3'} fontSize={'1em'} ml={'80px'}>게시판 생성</Heading>
                         
-                        <Icon id="create-board" as={FaPlus} h={'22px'} w={'22px'} mt={'5px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} onClick={movePage} />
+                        <Icon id="create-board" as={FaPlus} h={'22px'} w={'22px'} mt={'5px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} onClick={movePage} /> */}
                     </Flex>
                     <Flex justifyContent={"flex-start"} wrap={"wrap"} h={'600px'} gap={"50px"} m={"40px 10px"} p={"0px 0px 0px 22px"} width={'1000px'}>
                         {currentBoards.map((board, index) => (
-                            <Card key={index} onClick={movePage} justifyContent={"center"} id="board-view" boxSize={'200px'} height={'250px'} _hover={{ cursor: "pointer" }}>
-                                <CardBody id="board-view" name={board.boardCode} display="flex" flexDirection="column" alignItems="center">
-                                    <Image id="board-view" name={board.boardCode} w={'150px'} h={'120px'} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFXOOcZnaslyfjPTGV4q_PlLC9Ypmg8kzTgBP5Nrg_FA&s" alt="" />
+                            <Card key={index} onClick={movePage} justifyContent={"center"} className="board-view" boxSize={'200px'} height={'250px'} _hover={{ cursor: "pointer" }}>
+                                <CardBody className="board-view" id={board.boardCode} display="flex" flexDirection="column" alignItems="center">
+                                    <Image className="board-view" id={board.boardCode} w={'150px'} h={'120px'} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFXOOcZnaslyfjPTGV4q_PlLC9Ypmg8kzTgBP5Nrg_FA&s" alt="" />
                                     <Stack mt={'5px'} textAlign="center">
-                                        <Text id="board-view" name={board.boardCode} as={'h4'} fontSize={'0.8em'}>{board.boardName}</Text>
-                                        <Text id="board-view" name={board.boardCode} as={'h5'} fontSize={'0.7em'}>{board.description}</Text>
+                                        <Text className="board-view" id={board.boardCode} as={'h4'} fontSize={'0.8em'}>{board.boardName}</Text>
+                                        <Text className="board-view" id={board.boardCode} as={'h5'} fontSize={'0.7em'}>{board.description}</Text>
                                     </Stack>
                                 </CardBody>
                             </Card>
@@ -117,21 +131,24 @@ const BoardAll = () => {
                                 borderRadius={"lg"}
                                 p={"10px"}
                                 _hover={{ cursor: "pointer", backgroundColor: "gray.100" }}
-                                onClick={() => navigate(`/post/view/${post.postId}`)}
+                                onClick={movePage}
+                                className="board-detail"
+                                id={post.boardCode}
+                                name={post.postCode}
                             >
                                 <Flex justifyContent={"space-between"}>
-                                    <Text fontSize='sm'>{post.userId}</Text>
-                                    <Text fontSize='sm'>{post.writeDate}</Text>
+                                    <Text fontSize='sm' className="board-detail" id={post.boardCode} name={post.postCode}>{post.userId}</Text>
+                                    <Text fontSize='sm' className="board-detail" id={post.boardCode} name={post.postCode}>{post.writeDate}</Text>
                                 </Flex>
                                 <Box mt={"5px"}>
-                                    <Text fontSize='xl' fontWeight={"bold"}>{post.title}</Text>
-                                    <Text>{post.content}</Text>
+                                    <Text fontSize='xl' fontWeight={"bold"} className="board-detail" id={post.boardCode} name={post.postCode}>{post.title}</Text>
+                                    <Text className="board-detail" id={post.boardCode} name={post.postCode}>{post.content}</Text>
                                 </Box>
                                 <Flex justifyContent={"space-between"} mt={"5px"}>
-                                    <Text>{post.boardName}</Text>
+                                    <Text className="board-detail" id={post.boardCode} name={post.postCode}>{post.boardName}</Text>
                                     <Flex>
-                                        <Text>👍 {post.recommendation}</Text>
-                                        <Text>💬 {post.comments}</Text>
+                                        <Text className="board-detail" id={post.boardCode} name={post.postCode}>👍 {post.recommendation}</Text>
+                                        <Text className="board-detail" id={post.boardCode} name={post.postCode}>&emsp;💬 {post.comments}&emsp;</Text>
                                     </Flex>
                                 </Flex>
                             </Box>
