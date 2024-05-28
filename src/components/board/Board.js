@@ -1,5 +1,6 @@
 import { Box, Button, Flex, HStack, Heading, Input, Menu, MenuButton, MenuItem, MenuList, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
+import { FaPencil } from 'react-icons/fa6';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { TiArrowUnsorted } from 'react-icons/ti';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -17,14 +18,14 @@ const Board = () => {
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const location = useLocation();
-    const code = location.state.code;
+    const code = location.state.bordCode;
     const boardList = location.state.board;
     console.log("code: " + code)
     console.log("boardList: " + boardList)
     
     const movePage = (e) => {
         const command = e.target.id;
-        const bordCode = code;
+        const boardCode = code;
         const postCode = e.target.getAttribute("name");
         const board = boardList;
 
@@ -33,7 +34,10 @@ const Board = () => {
         console.log("command : " + command);
 
         if (command === 'board-detail')
-            navigate('/board/detail', { state: { bordCode: bordCode, postCode: postCode, board: board } } );
+            navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, board: board } } );
+        else if(command === 'write-post') {
+            navigate('/board/write', { state: { boardCode: boardCode, board: board } } );
+        }
     }
 
     const fetchPosts = async () => {
@@ -78,11 +82,11 @@ const Board = () => {
         // Flex 컨테이너를 사용하여 전체 레이아웃을 세로로 정렬합니다.
         <Flex minW={'900px'} ml={'150px'} margin={"auto"} direction="column">
             {/* 상단 헤더 및 검색창 */}
-            <Box p="6">
-                {boardList.map((board, index) => (
-                    <Heading size='lg' mb="4">{board.boardCode == code ? board.boardName : ""}</Heading>
-                ))}
-                <Box justifyContent='flex-end'>
+            <Box p="6" display={"flex"} justifyContent={"space-between"} m={"20px"}>
+                <Box display={"flex"}>
+                    {boardList.map((board, index) => (
+                        <Heading size='lg' mb="4" mr="0.5">{board.boardCode == code ? board.boardName : ""}</Heading>
+                    ))}
                     <Menu>
                         <MenuButton as={Button} rightIcon={<RiArrowDownSLine />}>
                             게시판 선택
@@ -93,11 +97,12 @@ const Board = () => {
                             ))}
                         </MenuList>
                     </Menu>
+                </Box>
+                <Box>
                     <Input 
                         placeholder="검색어 입력" 
                         size="md" 
-                        w={"300px"} 
-                        mt="4" 
+                        w={"300px"}
                         value={search}
                         onChange={changeSearch}
                     />
@@ -110,8 +115,14 @@ const Board = () => {
                             <MenuItem>작성자 아이디</MenuItem>
                         </MenuList>
                     </Menu>
+                    
                 </Box>
             </Box>
+            <Stack direction='row' spacing={4} justify={"end"} mr="10">
+                <Button id='write-post' size='lg' rightIcon={<FaPencil />} colorScheme='gray' variant='solid' onClick={movePage}>
+                    글쓰기
+                </Button>
+            </Stack>
 
             {/* 게시글 목록 */}
             <Box p="6" minHeight="70vh">
@@ -121,7 +132,7 @@ const Board = () => {
                         <Text id = "board-detail"  name={post.postCode}>{post.content}</Text>
                         <HStack id = "board-detail"  name={post.postCode} spacing="4" mt="2">
                             <Text id = "board-detail"  name={post.postCode}>작성자 {post.userId}</Text>
-                            <Text id = "board-detail"  name={post.postCode}>추천 {post.recommandation}</Text>
+                            <Text id = "board-detail"  name={post.postCode}>추천 {post.recommendation}</Text>
                             <Text id = "board-detail"  name={post.postCode}>댓글 {post.comments}</Text>
                             <Text id = "board-detail"  name={post.postCode}>작성일자 {post.writeDate}</Text>
                         </HStack>

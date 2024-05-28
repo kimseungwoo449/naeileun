@@ -34,6 +34,8 @@ import StudySetting from "./components/study/StudySetting";
 import DeleteUser from "./components/study/setting/DeleteUser";
 import UserAcess from "./components/study/setting/UserAcess";
 import Study from "./components/study/setting/Study";
+import CreatePost from "./components/board/post/CreatePost";
+
 
 
 const router = createBrowserRouter([
@@ -118,6 +120,14 @@ const router = createBrowserRouter([
                 element: (
                     <>
                         <BoardDetail />
+                    </>
+                ),
+            },
+            {
+                path: "/board/write",
+                element: (
+                    <>
+                        <CreatePost />
                     </>
                 ),
             },
