@@ -51,10 +51,13 @@ const StudyBoard = () =>{
 
         const data  = await response.json();
         console.log(data.result[0]);
+        console.log(data.result[0].isMember);
         console.log(data.meta);
         setPost(data.result[0].post);
         setStudy(data.result[0].study);
         setIsMember(data.result[0].total_count);
+
+
 
         const postSize = data.meta.total_count;
         console.log(postSize);
@@ -97,23 +100,28 @@ const StudyBoard = () =>{
         fetchBoard();
     },[page])
 
+    console.log(isMember);
     return(
         <>
         <Box h={'80vh'} w={"750px"} margin={'auto'}>
             <form method="POST" action="">
-                <HStack>
-                    <Text as={'b'} fontSize={'1.5em'} w={'100px'}>{study.name}</Text>
+                <HStack ml={'20px'}>
+                    <Text as={'b'} fontSize={'1.5em'} w={'100px'} textAlign={'center'}>{study.name}</Text>
                     <Text>그룹 채팅방 입장</Text>
                     <Icon as={IoChatbubble}></Icon>
                     <HStack ml={'auto'}>
                         {
-                            post.isPublic === false && isMember ===false ?
-                            <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button> :
-                            <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>
+                            isMember === true ?
+                            (
+                                study.adminCode === "2" ? //user //need user update 
+                                <Input type='hidden'></Input> : 
+                                <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>
+                            )
+                            : <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button>
                         }
                     </HStack>
                 </HStack>
-                <HStack mt={"20px"} mb={"20px"}  h={'100px'}>
+                <HStack mt={"20px"} mb={"20px"}  h={'100px'} ml={'20px'}>
                     <Image src='' border={"solid 1px gray"} w={'100px'} h={'100px'}></Image>
                     <Text h={'100px'} w={"300px"} pl={"10px"}>{study.decription}</Text>
                     <Stack  ml={'auto'} h={'100px'}>
@@ -127,7 +135,7 @@ const StudyBoard = () =>{
                         
                     </Stack>
                 </HStack>
-                <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}}>
+                <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}} ml={'20px'}>
                     <Text as={'b'} fontSize="1.2em" mt={'10px'}>그룹 게시판</Text>
                     <TableContainer w={"1000px"} key={'board'}>
                             <Table >
