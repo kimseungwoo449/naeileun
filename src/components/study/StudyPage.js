@@ -70,7 +70,7 @@ const StudyPage = () =>{
 
     return(
         <>
-            <Box minW={'750px'} ml={'150px'}>
+            <Box minW={'980px'} ml={'80px'}>
                 <form method='POST' action={`${process.env.REACT_SERVER_URL}/study/board`}>
                 <input type='hidden' id="group_code" name="group_code" value="boardDetail"></input>
 
@@ -101,7 +101,7 @@ const StudyPage = () =>{
                     
                     <HStack wrap={"wrap"} minH={'200px'} maxw={'980px'} gap={"10px"} m={"40px 10px"} >
                         {popularList.map((popular,index) =>(
-                            <Card id={popular.groupCode} key={popular.groupCode} boxSize={'200px'} mr={'30px'} _hover={{ cursor:"pointer"}} onClick={submit} >
+                            <Card id={popular.groupCode} key={popular.groupCode}  boxSize={'200px'} mr={'30px'} _hover={{ cursor:"pointer"}} onClick={submit} >
                                 <CardBody id={popular.groupCode}>
                                     <Image id={popular.groupCode} w={'150px'} h={'120px'} src="" alt="" />
                                     <Stack id={popular.groupCode} mt={'5px'}>
