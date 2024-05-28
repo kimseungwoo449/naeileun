@@ -27,11 +27,11 @@ const Study= () =>{
         )
 
         const data = await response.json();
-        console.log(data.state);
 
         if(data.state === true){
-            console.log('here');
             navigate('/study');
+        }else{
+            alert("스터디 삭제 실패");
         }
         
     }
@@ -39,11 +39,10 @@ const Study= () =>{
     const studyDelete=()=>{
         fetchDelete();
     }
-
     return(
         <>
             <Stack mt={'15px'} ml={'45px'}>
-                <Text as={'b'} fontSize={'1.2em'} >멤버 승인</Text>
+                <Text as={'b'} fontSize={'1.2em'} >스터디 관리</Text>ㄴ
                 <HStack>
                     <Text w={'140px'}>유저 아이디</Text>
                     <Text w={'220px'}>가입신청 내용</Text>
