@@ -41,14 +41,9 @@ const Study= () =>{
     }
     return(
         <>
-            <Stack mt={'15px'} ml={'45px'}>
-                <Text as={'b'} fontSize={'1.2em'} >스터디 관리</Text>ㄴ
-                <HStack>
-                    <Text w={'140px'}>유저 아이디</Text>
-                    <Text w={'220px'}>가입신청 내용</Text>
-                    <Button h={'35px'} fontSize={'0.9em'} colorScheme='red' onClick={studyDelete}>스터디 삭제</Button>
-                    <Button h={'35px'} fontSize={'0.9em'} colorScheme='blue'>승인</Button>
-                </HStack>
+            <Stack ml={'45px'}>
+                <Text as={'b'} fontSize={'1.2em'} >스터디 관리</Text>
+                <Button h={'35px'} fontSize={'0.9em'} colorScheme='red' onClick={studyDelete} mt={'20px'}>스터디 삭제</Button>
             </Stack>
         </>
     )
