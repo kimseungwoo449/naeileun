@@ -1,8 +1,8 @@
-import {React, useState } from 'react';
+import {React, useRef, useState } from 'react';
 import {Box, Text, Button, HStack, Image, Icon, Stack, Input} from '@chakra-ui/react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import { IoChatbubble } from "react-icons/io5";
-import { MdSettings, MdMoreHoriz } from "react-icons/md";
+import { MdSettings, MdMoreHoriz, MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import { useEffect } from 'react';
 import {
     Table,
@@ -17,81 +17,125 @@ import {
 } from '@chakra-ui/react'
 
 const StudyBoard = () =>{
-
-    const location = useLocation();	// 2번 라인
+    const navigate = useNavigate();
+    const location = useLocation(); // 2번 라인
     const groupCode = location.state.groupCode;
     
     console.log(groupCode);
 
     const [post, setPost] = useState([]);
     const [study, setStudy] = useState([]);
+    const [isMember,setIsMember] = useState(false);
+    const [page, setPage] = useState(1);
 
-    const number = 1;
+    const pageCount = useRef(1);
 
     const fetchBoard = async() => {
         const req = {
-            "group_code" : groupCode
+            "group_code" : groupCode,
+            //user 수정 연결 후 수정 **********
+            "user_code" : "2"
         }
 
-        fetch(`${process.env.REACT_APP_SERVER_URL}/study/board`, {
-            method: 'POST',
-            headers: {
-                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
-                "Content-Type": "application/json;charset=UTF8"
-            },
-            body:JSON.stringify(req)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.result[0].post);
-                setPost(data.result[0].post);
-                setStudy(data.result[0].study);
-            });
+        console.log(req);
 
+        const response = await fetch(
+            `${process.env.REACT_APP_SERVER_URL}/study/board`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                    "Content-Type": "application/json;charset=UTF8"
+                },
+                body:JSON.stringify(req)
+        });
+
+        const data  = await response.json();
+        console.log(data.result[0]);
+        console.log(data.result[0].isMember);
+        console.log(data.meta);
+        setPost(data.result[0].post);
+        setStudy(data.result[0].study);
+        setIsMember(data.result[0].isMember);
+
+        const postSize = data.meta.total_count;
+        console.log(postSize);
     }
     
 
-    const quit =(e) =>{
+    const quit = async() =>{
+        
+    }
+
+    const join = async () =>{
+        if(study.adminCode === "2"){
+            return;
+        }
+
+        const request = { 
+            "gorup_code" : groupCode,
+            "user_code" : "2"
+        }
+
+        const response = await fetch(
+            `${process.env.REACT_APP_SERVER_URL}/study/deleteUser`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                    "Content-Type": "application/json;charset=UTF8"
+                },
+                body:JSON.stringify(request)
+        });
+
+        const data = await response.json();
 
     }
-    const join =(e) =>{
-        
+
+    const setting =(e)=>{
+        navigate('/study/setting/access',{state :{groupCode : groupCode, adminCode :study.adminCode}})
     }
 
     useEffect(()=>{
         fetchBoard();
-    },[groupCode])
+    },[page])
 
     return(
         <>
-        <Box h={'80vh'} w={"600px"} margin={'auto'}>
+        <Box h={'80vh'} w={"750px"} margin={'auto'}>
             <form method="POST" action="">
-                <HStack>
-                    <Text as={'b'} fontSize={'1.3em'} w={'100px'}>{study.name}</Text>
+                <HStack ml={'20px'}>
+                    <Text as={'b'} fontSize={'1.5em'} w={'100px'} textAlign={'center'}>{study.name}</Text>
                     <Text>그룹 채팅방 입장</Text>
                     <Icon as={IoChatbubble}></Icon>
                     <HStack ml={'auto'}>
-                        <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>
-                        <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button>
+                        {
+                            isMember === true ?
+                            (
+                                study.adminCode === "2" ? //user //need user update 
+                                <Input type='hidden'></Input> : 
+                                <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>
+                            )
+                            : <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button>
+                        }
                     </HStack>
                 </HStack>
-                <HStack mt={"30px"} mb={"20px"}>
+                <HStack mt={"20px"} mb={"20px"}  h={'100px'} ml={'20px'}>
                     <Image src='' border={"solid 1px gray"} w={'100px'} h={'100px'}></Image>
-                    <Text w={"300px"} pl={"10px"}>{study.decription}</Text>
-                    <Stack  ml={'auto'}>
+                    <Text h={'100px'} w={"300px"} pl={"10px"}>{study.decription}</Text>
+                    <Stack  ml={'auto'} h={'100px'}>
                         {
+                            //수정 수정 수정 수정 수정 수정
                             //user code 가져오기 //수정요함
                             "2" === study.adminCode ?
-                            <Icon as={MdSettings} boxSize={'1.4em'}></Icon> : 
+                            <Icon as={MdSettings} onClick={setting} boxSize={'1.4em'}></Icon> : 
                             <Input type='hidden'></Input>
                         }
                         
                     </Stack>
                 </HStack>
-                <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}}>
-                    <Text as={'b'} fontSize="1.2em">그룹 게시판</Text>
-                    <TableContainer w={"1000px"}>
-                            <Table  m={"40px 0"}>
+                <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}} ml={'20px'}>
+                    <Text as={'b'} fontSize="1.2em" mt={'10px'}>그룹 게시판</Text>
+                    <TableContainer w={"1000px"} key={'board'}>
+                            <Table >
                                 <Thead>
                                     <Tr>
                                         <Th>순서</Th>
@@ -101,19 +145,22 @@ const StudyBoard = () =>{
                                 </Thead>
                                 <Tbody>
                                     {post.map((post, index) => (
-                                        <>
-                                            <Tr>
-                                                <Td>{number + index}</Td>
-                                                <Td w={'200px'}>{post.title}</Td>
-                                                <Td>{post.updateDate}</Td>
-                                            </Tr>
-                                        </>
+                                        <Tr key={post.postCode}>
+                                            <Td>{((page-1) * 6) + index+1}</Td>
+                                            <Td w={'200px'}>{post.title}</Td>
+                                            <Td>{post.updateDate}</Td>
+                                        </Tr>
                                     ))}
                                 </Tbody>
                                 <Tfoot>
                                 </Tfoot>
                             </Table>
                         </TableContainer>
+                        <HStack m={'auto'}>
+                            <Icon as={MdNavigateBefore} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor:"pointer"}}></Icon>
+                            <Text fontSize={'1.1em'}  textAlign={'center'} _hover={{ cursor:"pointer"}}>{page}</Text>
+                            <Icon as={MdNavigateNext} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor:"pointer"}}></Icon>
+                        </HStack>
                 </HStack>
                 
             </form>

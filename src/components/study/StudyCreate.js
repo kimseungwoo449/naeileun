@@ -32,7 +32,7 @@ const StudyCreate = () =>{
 
     return(
         <>
-        <Box h={'75vh'} w={'600px'} m={"auto"}  mt={"100px"}>
+        <Box h={'75vh'} w={'600px'} m={"auto"}  mt={"50px"} mb={'20px'}>
             <form method="POST" action="/study/create" >
                 <HStack>
                     <Text as="h2" fontSize={"2xl"} margin={"auto"} mb={"30px"}>스터디 생성하기</Text>

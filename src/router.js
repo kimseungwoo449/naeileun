@@ -33,7 +33,7 @@ import UpdateResume from "./components/resume/UpdateResume";
 import StudySetting from "./components/study/StudySetting";
 import DeleteUser from "./components/study/setting/DeleteUser";
 import UserAcess from "./components/study/setting/UserAcess";
-
+import Study from "./components/study/setting/Study";
 
 
 const router = createBrowserRouter([
@@ -160,6 +160,11 @@ const router = createBrowserRouter([
                         path : "/study/setting/delete",
                         element : <>
                             <DeleteUser />
+                        </>
+                    },{
+                        path : "/study/setting/study",
+                        element : <>
+                            <Study />
                         </>
                     }
                 ]
