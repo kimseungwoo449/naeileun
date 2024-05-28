@@ -1,26 +1,37 @@
 // Sidebar.js
 import React from 'react';
 import { Box, VStack, Text, Link } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
+    const navigate = useNavigate();
+    const movePage = (e) => {
+        const command = e.target.id;
+        if (command === 'resume')
+            navigate('/user/resume');
+        else if (command === 'study')
+            navigate('/user/study');
+        else if (command === 'home')
+            navigate('/user/home');
+    }
     return (
         <Box bg="gray.100" w="250px" p="4">
             <VStack align="stretch">
-                <Link href="/home">
-                    <Text>MY홈</Text>
-                </Link>
-                <Link href="/resume">
-                    <Text>이력서/자소서</Text>
-                </Link>
-                <Link href="/scraps">
-                    <Text>스크랩/관심기업</Text>
-                </Link>
-                <Link href="/applicable">
-                    <Text>지원할 만한 공고</Text>
-                </Link>
-                <Link href="/offers">
-                    <Text>받은 제안</Text>
-                </Link>
+
+                <Text id='home' _hover={{
+                    cursor: 'pointer'
+                }} onClick={movePage}>MY홈</Text>
+                <Text id='home' _hover={{
+                    cursor: 'pointer'
+                }} onClick={movePage}>스크랩/관심기업</Text>
+
+                <Text id='resume' _hover={{
+                    cursor: 'pointer'
+                }} onClick={movePage}>나의 이력서</Text>
+                <Text id='study' _hover={{
+                    cursor: 'pointer'
+                }} onClick={movePage}>나의 스터디</Text>
+
                 <Link href="/applications">
                     <Text>지원 내역</Text>
                 </Link>

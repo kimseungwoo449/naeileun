@@ -1,37 +1,104 @@
-import { Box, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
-import React from 'react';
+// src/BoardDetail.js
+import React, { useEffect, useRef, useState } from 'react';
+import {
+    Box,
+    Text,
+    VStack,
+    HStack,
+    Divider,
+    IconButton,
+    useColorModeValue,
+} from '@chakra-ui/react';
+import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BoardDetail = () => {
-    return (
-        <>
-            <Box>
-                <TableContainer w={"1000px"}>
-                    <Table  m={"40px 0"}>
-                        <Thead>
-                            <Tr>
-                                <Th>제목</Th>
-                                <Th>작성자</Th>
-                                <Th>작성일</Th>
-                                <Th>추천수</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            <>
-                                <Tr>
-                                    <Td>제목</Td>
-                                    <Td>작성자</Td>
-                                    <Td>작성일</Td>
-                                    <Td>추천수</Td>
-                                </Tr>
-                            </>
-                        </Tbody>
-                        <Tfoot>
+    const navigate = useNavigate();
 
-                        </Tfoot>
-                    </Table>
-                </TableContainer>
-            </Box>
-        </>
+    const [post, setPost] = useState([]);
+    const [page, setPage] = useState(1);
+
+    const pageCount = useRef(1);
+
+    const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
+
+    const location = useLocation();
+    const postCode = location.state.postCode;
+    const bordCode = location.state.bordCode;
+    const boardList = location.state.board;
+    console.log("postCode: " + postCode)
+    console.log("boardList: " + boardList)
+
+    const fetchPost = async () => {
+        const url = `${process.env.REACT_APP_SERVER_URL}/board/view/${bordCode}/${postCode}`;
+        const response = await fetch(
+            url,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                },
+            }
+        );
+
+        const data = await response.json();
+        console.log(data)
+
+        if (data.status) {
+            navigate('/board');
+        } else {
+            // pageCount.current = Math.ceil(data.meta.pageable_count / 10);
+            // pageCount.current = Math.min(pageCount.current, 15);
+
+            setPost(data.result);
+        }
+    }
+
+    useEffect(() => {
+        fetchPost();
+    }, [page]);
+
+    return (
+        <Box p={4} w="1200px" mx="auto" bg="white" boxShadow="md" borderRadius="md" minHeight="90vh">
+            <VStack align="start" spacing={3} w="full">
+                <HStack justify="space-between" w="full">
+                    <Text fontSize="xl" fontWeight="bold">
+                        {post.title}
+                    </Text>
+                </HStack>
+                <HStack spacing={2} fontSize="sm" color="gray.500" w="full">
+                    <Text>{post.userId}</Text>
+                    <Divider orientation="vertical" height="16px" />
+                    <Text>{post.writeDate}</Text>
+                </HStack>
+                <Text w="full">
+                    <br />
+                    {post.content}
+                    <br />
+                    <br />
+                </Text>
+                <HStack justify="space-between" w="full">
+                    <HStack spacing={1}>
+                        <IconButton
+                            icon={<FaThumbsUp />}
+                            size="sm"
+                            isRound
+                            aria-label="Like"
+                        />
+                        <Text fontSize="sm">{post.recommandation}</Text>
+                    </HStack>
+                    <HStack spacing={1}>
+                        <IconButton
+                            icon={<FaCommentDots />}
+                            size="sm"
+                            isRound
+                            aria-label="Comment"
+                        />
+                        <Text fontSize="sm">21</Text>
+                    </HStack>
+                </HStack>
+            </VStack>
+        </Box>
     );
 };
 

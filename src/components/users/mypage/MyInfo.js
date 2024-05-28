@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useLogin } from '../../LoginContext';
 import { Box, Flex, Text, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Input } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../module/SideBar';
 const MyInfo = () => {
+    const navigate = useNavigate();
     const { user, setUser } = useLogin();
     const [isOpen, setIsOpen] = useState(false);
     const [field, setField] = useState('');
@@ -10,7 +12,7 @@ const MyInfo = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
-
+    const {userInfo} = sessionStorage.getItem('user');
     const openModal = (fieldName) => {
         setField(fieldName);
         setValue(user[fieldName] || '');
@@ -26,10 +28,14 @@ const MyInfo = () => {
 
     const handleSave = () => {
 
-        const payload = { field, value };
+        const payload = { field : field,
+            value : value,
+            id : user.id
+         };
         const updateInfo = {
             id: user.id,
             [field]: value,
+            payload,
             name: user.name,
             resident_number: user.resident_number,
             user_age: user.age,
@@ -39,6 +45,7 @@ const MyInfo = () => {
             admin: user.admin
         };
         console.log(updateInfo);
+        //update action 에서 처리하기
         if (field === 'password') {
             if (newPassword !== confirmNewPassword) {
                 alert('새 비밀번호가 일치하지 않습니다.');
@@ -56,20 +63,13 @@ const MyInfo = () => {
                 'authorization': 'ADMIN ${process.env.REACT_APP_ADMIN_KEY}'
             },
             
-            body: JSON.stringify(updateInfo),
+            body: JSON.stringify(payload),
            
         })
-        .then(response => response => response.json())
+        .then(response => response.json())
         .then(data => {
-            if (data.status === 200) {
-                if (field !== 'password') {
-                    setUser({ ...user, [field]: value });
-                    sessionStorage.setItem('user', JSON.stringify({ ...user, [field]: value }));
-                }
-                closeModal();
-            } else {
-                alert(data.message);
-            }
+            setUser({ ...user, [field]: value });
+            closeModal();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -78,6 +78,7 @@ const MyInfo = () => {
 
     return (
         <Box bg="teal.100" p={4} borderRadius="md">
+            <Sidebar/>
             <Text fontSize="lg" fontWeight="bold" mb={2}>{user.name}</Text>
             <Flex alignItems="center" mb={2}>
                 <Text flex="1" fontSize="md">+82 {user.phone}</Text>
@@ -91,7 +92,7 @@ const MyInfo = () => {
                 <Text flex="1" fontSize="md">비밀번호 변경</Text>
                 <Button size="sm" onClick={() => openModal('password')}>수정</Button>
             </Flex>
-
+        <Button onClick={() => navigate('/user/delete')}>회원 탈퇴</Button>
             <Modal isOpen={isOpen} onClose={closeModal}>
                 <ModalOverlay />
                 <ModalContent>
