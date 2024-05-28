@@ -11,6 +11,7 @@ const Board = () => {
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
 
+    const postsPerPage = 10; // 페이지당 보여줄 게시판 수
     const pageCount = useRef(1);
 
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
@@ -48,12 +49,17 @@ const Board = () => {
         );
 
         const data = await response.json();
+        console.log(data);
 
         if (data.status) {
             navigate('/board');
         } else {
-            pageCount.current = Math.ceil(data.meta.pageable_count / 10);
-            pageCount.current = Math.min(pageCount.current, 15);
+            const totalPosts = data.result.length; // 총 게시판 수
+            pageCount.current = Math.ceil(totalPosts / postsPerPage);
+            pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
+
+            console.log("totalPosts: " + totalPosts);
+            console.log("pageCount.current: " + pageCount.current);
 
             setPostList(data.result);
         }
@@ -67,6 +73,7 @@ const Board = () => {
         fetchPosts();
     }, [page, search]);
 
+    const currentPosts = postList.slice((page - 1) * postsPerPage, page * postsPerPage);
     return (
         // Flex 컨테이너를 사용하여 전체 레이아웃을 세로로 정렬합니다.
         <Flex minW={'900px'} ml={'150px'} margin={"auto"} direction="column">
@@ -75,38 +82,40 @@ const Board = () => {
                 {boardList.map((board, index) => (
                     <Heading size='lg' mb="4">{board.boardCode == code ? board.boardName : ""}</Heading>
                 ))}
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<RiArrowDownSLine />}>
-                        게시판 선택
-                    </MenuButton>
-                    <MenuList>
-                        {boardList.map((board, index) => (
-                            <MenuItem key={index}>{board.boardName}</MenuItem>
-                        ))}
-                    </MenuList>
-                </Menu>
-                <Input 
-                    placeholder="검색어 입력" 
-                    size="md" 
-                    w={"300px"} 
-                    mt="4" 
-                    value={search}
-                    onChange={changeSearch}
-                />
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<TiArrowUnsorted />}>
-                        통합 검색
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem>제목 검색</MenuItem>
-                        <MenuItem>작성자 아이디</MenuItem>
-                    </MenuList>
-                </Menu>
+                <Box justifyContent='flex-end'>
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<RiArrowDownSLine />}>
+                            게시판 선택
+                        </MenuButton>
+                        <MenuList>
+                            {boardList.map((board, index) => (
+                                <MenuItem key={index}>{board.boardName}</MenuItem>
+                            ))}
+                        </MenuList>
+                    </Menu>
+                    <Input 
+                        placeholder="검색어 입력" 
+                        size="md" 
+                        w={"300px"} 
+                        mt="4" 
+                        value={search}
+                        onChange={changeSearch}
+                    />
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<TiArrowUnsorted />}>
+                            통합 검색
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem>제목 검색</MenuItem>
+                            <MenuItem>작성자 아이디</MenuItem>
+                        </MenuList>
+                    </Menu>
+                </Box>
             </Box>
 
             {/* 게시글 목록 */}
             <Box p="6" minHeight="70vh">
-                {postList.map((post, index) => (
+                {currentPosts.map((post, index) => (
                     <Box onClick={movePage} id = "board-detail"  name={post.postCode} key={index} p="4" borderWidth="1px" borderRadius="md" mb="4" _hover={{ cursor: "pointer" }}>
                         <Text id = "board-detail"  name={post.postCode} fontSize='xl' fontWeight={"bold"}>{post.title}</Text>
                         <Text id = "board-detail"  name={post.postCode}>{post.content}</Text>
@@ -126,8 +135,10 @@ const Board = () => {
                     {Array.from({ length: pageCount.current }, (_, index) => (
                         <Button
                             key={index}
-                            colorScheme={page === index + 1 ? "gray" : buttonScheme}
-                            onClick={() => setPage(index + 1)}
+                            colorScheme={page === index + 1 ? buttonScheme : "gray"}
+                            onClick={(e) => {
+                                setPage(index + 1);
+                            }}
                         >
                             {index + 1}
                         </Button>
