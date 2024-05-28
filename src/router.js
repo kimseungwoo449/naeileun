@@ -21,6 +21,8 @@ import BoardDetail from "./components/board/BoardDetail";
 
 import StudyCreate from "./components/study/StudyCreate";
 import StudySetting from "./components/study/StudySetting";
+import DeleteUser from "./components/study/setting/DeleteUser";
+import UserAcess from "./components/study/setting/UserAcess";
 
 
 const router = createBrowserRouter([
@@ -123,8 +125,15 @@ const router = createBrowserRouter([
                 </>,
                 children : [
                     {
-                        path : "/study/setting/approve",
-                        element : <></>
+                        path : "/study/setting/access",
+                        element : <>
+                            <UserAcess />
+                        </>
+                    },{
+                        path : "/study/setting/delete",
+                        element : <>
+                            <DeleteUser />
+                        </>
                     }
                 ]
 
