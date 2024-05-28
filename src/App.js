@@ -4,8 +4,8 @@ import { LoginProvider } from "./components/LoginContext";
 function App() {
   return (
     <>
-    <LoginProvider>
-      <RouterProvider router={router} />
+      <LoginProvider>
+        <RouterProvider router={router} />
       </LoginProvider>
     </>
   );
