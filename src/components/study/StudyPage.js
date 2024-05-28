@@ -85,7 +85,7 @@ const StudyPage = () =>{
                         {studyList.map((study,index) =>(
                             <Card id={study.groupCode} key={study.groupCode} boxSize={'200px'} mr={'30px'} _hover={{ cursor:"pointer"}} onClick={submit} >
                                 <CardBody id={study.groupCode}>
-                                    <Image id={study.groupCode} w={'150px'} h={'120px'} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFXOOcZnaslyfjPTGV4q_PlLC9Ypmg8kzTgBP5Nrg_FA&s" alt="" />
+                                    <Image id={study.groupCode} w={'150px'} h={'120px'} src="" alt="" />
                                     <Stack id={study.groupCode} mt={'5px'}>
                                         <Text id={study.groupCode} as={'h4'} fontSize={'0.8em'}>{study.name}</Text>
                                         <Text id={study.groupCode} as={'h5'} fontSize={'0.7em'}>{study.decription}</Text>    
@@ -103,7 +103,7 @@ const StudyPage = () =>{
                         {popularList.map((popular,index) =>(
                             <Card id={popular.groupCode} key={popular.groupCode} boxSize={'200px'} mr={'30px'} _hover={{ cursor:"pointer"}} onClick={submit} >
                                 <CardBody id={popular.groupCode}>
-                                    <Image id={popular.groupCode} w={'150px'} h={'120px'} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFXOOcZnaslyfjPTGV4q_PlLC9Ypmg8kzTgBP5Nrg_FA&s" alt="" />
+                                    <Image id={popular.groupCode} w={'150px'} h={'120px'} src="" alt="" />
                                     <Stack id={popular.groupCode} mt={'5px'}>
                                         <Text id={popular.groupCode} as={'h4'} fontSize={'0.8em'}>{popular.name}</Text>
                                         <Text id={popular.groupCode} as={'h5'} fontSize={'0.7em'}>{popular.decription}</Text>    
