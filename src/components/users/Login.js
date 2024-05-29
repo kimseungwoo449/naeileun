@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 
 const Login = () => {
-    // const { setIsLoggedIn, setUser } = useLogin();
+
     const { login } = useContext(LoginContext);
 
     const navigate = useNavigate();

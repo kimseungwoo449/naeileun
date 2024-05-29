@@ -15,7 +15,6 @@ export const LoginProvider = ({ children }) => {
             console.log(user);
         }
     }
-
     const logout = () => {
         setUser(null);
     }
@@ -32,10 +31,3 @@ export default LoginContext;
 // 로그인 정보를 사용하는 커스텀 훅
 export const useLogin = () => useContext(LoginContext);
 
-// const [isLoggedIn, setIsLoggedIn] = useState(false);
-//     const [user, setUser] = useState(null);  // 사용자 정보를 저장할 상태 변수
-//     useEffect(() => {
-//         const storedUser = sessionStorage.getItem('user');
-//         if (storedUser) {
-//             setIsLoggedIn(true);
-//             setUser(JSON.parse(storedUser));

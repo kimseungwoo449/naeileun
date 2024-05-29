@@ -31,8 +31,8 @@ const Header = () => {
             navigate('/user/join');
         else if(command==='logout')
             navigate('/user/logout')
-        else if(command==='myinfo')
-            navigate('/user/info');
+        else if(command==='myhome')
+            navigate('/user/home');
     }
 
     return (
@@ -67,9 +67,9 @@ const Header = () => {
                     {user ? (
                         // 로그인 상태일 때 보여줄 버튼들
                         <>
-                            {/* <Link to={'/user/info'}> */}
-                                <Button id='myinfo' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>내정보</Button>
-                            {/* </Link> */}
+                            
+                                <Button id='myhome' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>마이페이지</Button>
+                            
                             <Button id='logout' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>로그아웃</Button>
                         </>
                     ) : (
