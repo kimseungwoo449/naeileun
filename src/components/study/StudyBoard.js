@@ -104,7 +104,7 @@ const StudyBoard = () =>{
         <Box h={'80vh'} w={"750px"} margin={'auto'}>
             <form method="POST" action="">
                 <HStack ml={'20px'}>
-                    <Text as={'b'} fontSize={'1.5em'} ml={'20px'} textAlign={'center'}>{study.name}</Text>
+                    <Text as={'b'} fontSize={'1.5em'} ml={'5px'} mr={'10px'} textAlign={'center'}>{study.name}</Text>
                     <Text>그룹 채팅방 입장</Text>
                     <Icon as={IoChatbubble}></Icon>
                     <HStack ml={'auto'}>
