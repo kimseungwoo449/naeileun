@@ -15,9 +15,9 @@ const StudyCreate = () =>{
         const dec = document.querySelector('#decription').value;
 
         const req = {
-                "name" : name,
-                "is-public" : isPublic,
-                "auto-member-access" : access,
+                "group_name" : name,
+                "is_public" : isPublic,
+                "auto_member_access" : access,
                 "decription" : dec === "" ? null : dec
         };
 
