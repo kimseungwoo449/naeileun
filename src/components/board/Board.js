@@ -18,7 +18,7 @@ const Board = () => {
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const location = useLocation();
-    const code = location.state.bordCode;
+    const code = location.state.boardCode;
     const boardList = location.state.board;
     console.log("code: " + code)
     console.log("boardList: " + boardList)
