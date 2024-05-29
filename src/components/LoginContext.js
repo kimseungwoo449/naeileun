@@ -8,7 +8,7 @@ export const LoginProvider = ({ children }) => {
     const [user, setCurrentUser] = useState(null);  // 사용자 정보를 저장할 상태 변수
 
     const login = (response) => {
-      
+
         if(response && response.status == 200) {
             setCurrentUser(response.user);
             console.log('로그인 처리 완료');
@@ -21,7 +21,7 @@ export const LoginProvider = ({ children }) => {
     }
 
     return (
-        <LoginContext.Provider value={{ currentUser, login, logout }}>
+        <LoginContext.Provider value={{ user, login, logout }}>
             {children}
         </LoginContext.Provider>
     );

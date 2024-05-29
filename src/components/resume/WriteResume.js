@@ -1,12 +1,13 @@
 import { Box, Button, Flex, Grid, Input, Text, VStack, HStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Form, useNavigate } from 'react-router-dom';
-import { useLogin } from '../LoginContext';
+import LoginContext, { useLogin } from '../LoginContext';
 
 const WriteResume = () => {
     const navigate = useNavigate();
-    const userStr = sessionStorage.getItem('user');
-    const user = JSON.parse(userStr);
+    const { user } = useLogin();
+
+    console.log(user.name);
 
     const submit = e => {
         e.preventDefault();
