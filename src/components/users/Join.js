@@ -17,6 +17,8 @@ const Join = () => {
         agree: false
     });
     const [touched, setTouched] = useState({});
+    const [errorBox1, setErrorBox1] = useState({});
+    const [errorBox2, setErrorBox2] = useState({});
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -32,20 +34,50 @@ const Join = () => {
             ...touched,
             [name]: true
         });
+
+        if (name === 'id' && !formData.id) {
+            setErrorBox1(prev => ({ ...prev, id: '아이디는 필수 정보입니다.' }));
+        } else if (name === 'password' && !formData.password) {
+            setErrorBox1(prev => ({ ...prev, password: '비밀번호는 필수 정보입니다.' }))
+        } else if (name === 'name' && !formData.name) {
+            setErrorBox2(prev => ({ ...prev, name: '이름은 필수 정보입니다.' }))
+        }
+        else if (name === 'residentNumber1' && !formData.residentNumber1) {
+            setErrorBox2(prev => ({ ...prev, residentNumber1: '주민등록번호는 필수 정보입니다.' }))
+        } else if (name === 'residentNumber2' && !formData.residentNumber2) {
+            setErrorBox2(prev => ({ ...prev, residentNumber2: '주민등록번호는 필수 정보입니다.' }))
+        }
+        else if (name === 'phone' && !formData.phone) {
+            setErrorBox2(prev => ({ ...prev, phone: '전화번호는 필수 정보입니다.' }))
+        }
+
+
     };
 
+    const checkIdAvailability = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/check`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ check: formData.id })
+            });
+            const result = await response.json();
+            if (result.isAvailable) {
+                setErrorBox1(prev => ({ ...prev, id: '' })); // 에러 메시지 제거
+            } else {
+                setErrorBox1(prev => ({ ...prev, id: '사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.' }));
+            }
+        }
+        catch (error) {
+            console.error('오류:', error);
+        }
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        
-        const id = formData.get('id');
-        const password = formData.get('pw');
-        const email = formData.get('email');
-        const name = formData.get('name');
-        const residentFirst = formData.get('first');
-        const residentLast = formData.get('last');
-        const phone = formData.get('phone');
-        const agree = formData.get('agree');
+
 
 
         if (!formData.id || !formData.password || !formData.name || !formData.residentNumber1 || !formData.residentNumber2 || !formData.phone || !formData.agree) {
@@ -87,7 +119,7 @@ const Join = () => {
             <form method="POST" onSubmit={handleSubmit}>
                 <VStack spacing={4} align="stretch">
 
-                    <Box border="none"  p={0} >
+                    <Box border="none" p={0} >
                         <FormControl isInvalid={isFieldInvalid('id')}>
                             <Input
                                 type="text"
@@ -96,9 +128,9 @@ const Join = () => {
                                 placeholder="아이디"
                                 value={formData.id}
                                 onChange={handleChange}
-                                onBlur={handleBlur}
+                                onBlur={checkIdAvailability}
                                 borderColor={isFieldInvalid('id') ? 'red.500' : 'gray.200'}
-                                focusBorderColor="green.500"
+                                focusBorderColor="rgb(202, 244, 255)"
                                 borderRadius="10px 10px 0 0"
                                 mb={0}
                             />
@@ -114,8 +146,8 @@ const Join = () => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 borderColor={isFieldInvalid('password') ? 'red.500' : 'gray.200'}
-                                focusBorderColor="green.500"
-                                borderRadius= "0"
+                                focusBorderColor="rgb(202, 244, 255)"
+                                borderRadius="0"
                                 mb={0}
                             />
                         </FormControl>
@@ -130,14 +162,17 @@ const Join = () => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 borderColor={'gray.200'}
-                                focusBorderColor="green.500"
+                                focusBorderColor="rgb(202, 244, 255)"
                                 borderRadius="0 0 10px 10px"
                                 mb={0}
                             />
                         </FormControl>
+                        {Object.values(errorBox1).map((error, index) => (
+                            error && <Text key={index} color="red.500">{error}</Text>
+                        ))}
                     </Box>
 
-                    <Box border="none"  p={0} >
+                    <Box border="none" p={0} >
                         <FormControl isInvalid={isFieldInvalid('name')}>
                             <Input
                                 type="text"
@@ -148,7 +183,7 @@ const Join = () => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 borderColor={isFieldInvalid('name') ? 'red.500' : 'gray.200'}
-                                focusBorderColor="green.500"
+                                focusBorderColor="rgb(202, 244, 255)"
                                 borderRadius="10px 10px 0 0"
                                 mb={0}
                             />
@@ -165,8 +200,8 @@ const Join = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     borderColor={isFieldInvalid('residentNumber1') ? 'red.500' : 'gray.200'}
-                                    focusBorderColor="green.500"
-                                    borderRadius= "0"
+                                    focusBorderColor="rgb(202, 244, 255)"
+                                    borderRadius="0"
                                     maxLength="6"
                                 />
                                 <Text>-</Text>
@@ -179,11 +214,11 @@ const Join = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     borderColor={isFieldInvalid('residentNumber2') ? 'red.500' : 'gray.200'}
-                                    focusBorderColor="green.500"
-                                    borderRadius= "0"
+                                    focusBorderColor="rgb(202, 244, 255)"
+                                    borderRadius="0"
                                     maxLength="7"
                                 />
-                                
+
                             </HStack>
                         </FormControl>
 
@@ -197,10 +232,13 @@ const Join = () => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 borderColor={isFieldInvalid('phone') ? 'red.500' : 'gray.200'}
-                                focusBorderColor="green.500"
+                                focusBorderColor="rgb(202, 244, 255)"
                                 borderRadius="0 0 10px 10px"
                             />
                         </FormControl>
+                        {Object.values(errorBox2).map((error, index) => (
+                            error && <Text key={index} color="red.500">{error}</Text>
+                        ))}
                     </Box>
 
                     <Box border="1px" borderColor="gray.200" p={0} rounded="md">
@@ -218,15 +256,16 @@ const Join = () => {
                                 </FormLabel>
                             </Checkbox>
                         </FormControl>
+
                     </Box>
 
-                    <Button type="submit" colorScheme="green" width="full">
+                    <Button type="submit" bg="rgb(160, 222, 255)" color="white" width="full">
                         가입하기
                     </Button>
                 </VStack>
             </form>
         </Box>
-      
+
     );
 };
 
