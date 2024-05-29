@@ -8,6 +8,7 @@ const MyResume = () => {
     
     // const {user} = sessionStorage.getItem('user');
     const {user} = useLogin();
+   
         useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/resume`,{
             method: 'POST',

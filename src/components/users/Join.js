@@ -172,7 +172,7 @@ const Join = () => {
                         ))}
                     </Box>
 
-                    <Box border="none" p={0} >
+                   <Box border="none" p={0} >
                         <FormControl isInvalid={isFieldInvalid('name')}>
                             <Input
                                 type="text"
