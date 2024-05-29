@@ -1,33 +1,45 @@
-import { Box, Button, Flex, Grid, Input, Text, VStack, HStack } from '@chakra-ui/react';
-import React, { useContext } from 'react';
+import { Box, Button, Flex, Grid, Input, Text, VStack, HStack, Select } from '@chakra-ui/react';
+import React, { useContext, useState } from 'react';
 import { Form, useNavigate } from 'react-router-dom';
 import LoginContext, { useLogin } from '../LoginContext';
 
 const WriteResume = () => {
     const navigate = useNavigate();
     const { user } = useLogin();
-
+    const [careerShow, setCareerShow] = useState(false);
     console.log(user.name);
+
+    const careerChange = e => {
+        console.log(e.target.value);
+        if (e.target.value === "newbie") {
+            setCareerShow(false);
+        } else {
+            setCareerShow(true);
+        }
+    }
 
     const submit = e => {
         e.preventDefault();
-    
+
         const splitValue = "wLYPvSwquc";
-    
+
         const req = {
             "user_id": user.id,
             "name": e.target.name.value,
             "title": e.target.title.value,
             "user_age": e.target.age.value,
-            "academic_career": e.target.ac1.value + splitValue + e.target.ac2.value + splitValue + e.target.ac3.value,
+            "phone" : e.target.phone.value,
+            "is_newbie" : e.target.careerable.value === "experienced-person" ? false:true,
             "career": e.target.career1.value + splitValue + e.target.career2.value + splitValue + e.target.career3.value,
+            "academic_career": e.target.ac.value,
             "skill": e.target.skill1.value + splitValue + e.target.skill2.value + splitValue + e.target.skill3.value,
             "certificate": e.target.certificate1.value + splitValue + e.target.certificate2.value + splitValue + e.target.certificate3.value,
             "language": e.target.language1.value + splitValue + e.target.language2.value + splitValue + e.target.language3.value,
             "award": e.target.award1.value + splitValue + e.target.award2.value + splitValue + e.target.award3.value,
-            "split_value": splitValue
+            "expected_salary" : e.target.es.value ===''?"회사 내규에 따름": e.target.es.value,
+            "expected_region" : e.target.er1.value + splitValue + e.target.er2.value + splitValue + e.target.er3.value
         }
-        
+
         console.log(req);
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/resume`, {
@@ -42,9 +54,9 @@ const WriteResume = () => {
             .then(data => {
                 console.log(data);
 
-                if(data.status){
+                if (data.status) {
                     navigate('/');
-                }else{
+                } else {
                     navigate('/resume/write');
                 }
             });
@@ -59,19 +71,25 @@ const WriteResume = () => {
                         <Box id='user_info-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
                             <Input type='text' name='title' id='resume-title' placeholder='이력서 제목' mb={4} />
                             <Input type='text' name='name' id='user-name' placeholder='이름' mb={4} value={user.name} disabled />
-                            <Input type='number' name='age' id='user-age' placeholder='나이' value={user.age} disabled />
+                            <Input type='number' name='age' id='user-age' placeholder='나이' mb={4} value={user.age} disabled />
+                            <Input type='phone' name='phone' id='user-phone' placeholder='핸드폰 번호' value={user.phone} disabled />
                         </Box>
-                        <Box id='career-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
-                            <Text as='b' fontSize="xl" mb={4}>경력</Text>
-                            <Input type='text' name='career1' id='resume-career1' placeholder='경력1' mb={4} />
-                            <Input type='text' name='career2' id='resume-career2' placeholder='경력2' mb={4} />
-                            <Input type='text' name='career3' id='resume-career3' placeholder='경력3' />
-                        </Box>
+                        <Select name='careerable' placeholder='경력유무' onChange={careerChange}>
+                            <option value='newbie' selected>신입</option>
+                            <option value='experienced-person'>경력</option>
+                        </Select>
+                        {
+                            careerShow &&
+                            <Box id='career-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
+                                <Text as='b' fontSize="xl" mb={4}>경력</Text>
+                                <Input type='text' name='career1' id='resume-career1' placeholder='경력1' mb={4} />
+                                <Input type='text' name='career2' id='resume-career2' placeholder='경력2' mb={4} />
+                                <Input type='text' name='career3' id='resume-career3' placeholder='경력3' />
+                            </Box>
+                        }
                         <Box id='academic-career-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
                             <Text as='b' fontSize="xl" mb={4}>학력</Text>
-                            <Input type='text' name='ac1' id='resume-academic-career1' placeholder='학력1' mb={4} />
-                            <Input type='text' name='ac2' id='resume-academic-career2' placeholder='학력2' mb={4} />
-                            <Input type='text' name='ac3' id='resume-academic-career3' placeholder='학력3' />
+                            <Input type='text' name='ac' id='resume-academic-career' placeholder='최종학력' />
                         </Box>
                         <HStack spacing={4} w="100%">
                             <Box id='certificate-container' p={4} bg="white" borderRadius="md" boxShadow="sm" w="50%">
@@ -101,6 +119,16 @@ const WriteResume = () => {
                                 <Input type='text' name='award3' id='resume-award3' placeholder='수상이력3' />
                             </Box>
                         </HStack>
+                        <Box id='expected-salary-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
+                            <Text as='b' fontSize="xl" mb={4}>희망연봉</Text>
+                            <Input type='text' name='es' id='expected-salary' placeholder='회사 내규에 따름' />
+                        </Box>
+                        <Box id='expected-region-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
+                            <Text as='b' fontSize="xl" mb={4}>희망지역</Text>
+                            <Input type='text' name='er1' id='expected-region1' placeholder='희망지역1' />
+                            <Input type='text' name='er2' id='expected-region2' placeholder='희망지역2' />
+                            <Input type='text' name='er3' id='expected-region3' placeholder='희망지역3' />
+                        </Box>
                     </VStack>
                     <HStack spacing={4} mt={6}>
                         <Button type='submit' bg="teal.500" color="white" _hover={{ bg: 'teal.600' }}>저장하기</Button>

@@ -43,7 +43,7 @@ const ResumeDetail = () => {
         if(e.target.id === 'button-delete'){
             deleteResume();
         }else if(e.target.id ==='button-update'){
-            console.log("update")
+            navigate(`/resume/update/${resumeCode}`)
         }
     }
 

@@ -1,6 +1,7 @@
 import { Box, Button, Flex, HStack, Input, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Form, useNavigate, useParams } from 'react-router-dom';
+import { useLogin } from '../LoginContext';
 
 const UpdateResume = () => {
     const [resume, setResume] = useState({});
@@ -26,13 +27,58 @@ const UpdateResume = () => {
         award3: '',
     });
     const { resumeCode } = useParams();
+    const { user } = useLogin();
     const navigate = useNavigate();
     const splitValue = 'wLYPvSwquc';
-    const userStr = sessionStorage.getItem('user');
-    const user = JSON.parse(userStr);
 
-    const fetchResume = async () => {
-        await fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
+
+    // const fetchResume = () => {
+    //     fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
+    //         method: 'GET',
+    //         headers: {
+    //             Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+    //             "Content-Type": "application/json;charset=UTF8"
+    //         }
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log("data : ",data);
+    //             setResume(data);
+    //             console.log("resume : ",resume);
+
+    //             if (user === null || user.id !== data.user_id) {
+    //                 navigate("/");
+    //                 console.log("user.id : ",user.id);
+    //                 console.log("resume.user_id : ",resume.user_id);
+    //             } else {
+    //                 setFormValues({
+    //                     title: data.title || '',
+    //                     career1: data.career?.split(splitValue)[0] || '',
+    //                     career2: data.career?.split(splitValue)[1] || '',
+    //                     career3: data.career?.split(splitValue)[2] || '',
+    //                     ac1: data.academic_career?.split(splitValue)[0] || '',
+    //                     ac2: data.academic_career?.split(splitValue)[1] || '',
+    //                     ac3: data.academic_career?.split(splitValue)[2] || '',
+    //                     certificate1: data.certificate?.split(splitValue)[0] || '',
+    //                     certificate2: data.certificate?.split(splitValue)[1] || '',
+    //                     certificate3: data.certificate?.split(splitValue)[2] || '',
+    //                     language1: data.language?.split(splitValue)[0] || '',
+    //                     language2: data.language?.split(splitValue)[1] || '',
+    //                     language3: data.language?.split(splitValue)[2] || '',
+    //                     skill1: data.skill?.split(splitValue)[0] || '',
+    //                     skill2: data.skill?.split(splitValue)[1] || '',
+    //                     skill3: data.skill?.split(splitValue)[2] || '',
+    //                     award1: data.award?.split(splitValue)[0] || '',
+    //                     award2: data.award?.split(splitValue)[1] || '',
+    //                     award3: data.award?.split(splitValue)[2] || '',
+    //                 });
+    //             }
+    //         })
+    //         ;
+    // };
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
             method: 'GET',
             headers: {
                 Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
@@ -41,37 +87,42 @@ const UpdateResume = () => {
         })
             .then(response => response.json())
             .then(data => {
+                console.log("data : ",data);
                 setResume(data);
-                setFormValues({
-                    title: data.title || '',
-                    career1: data.career?.split(splitValue)[0] || '',
-                    career2: data.career?.split(splitValue)[1] || '',
-                    career3: data.career?.split(splitValue)[2] || '',
-                    ac1: data.academic_career?.split(splitValue)[0] || '',
-                    ac2: data.academic_career?.split(splitValue)[1] || '',
-                    ac3: data.academic_career?.split(splitValue)[2] || '',
-                    certificate1: data.certificate?.split(splitValue)[0] || '',
-                    certificate2: data.certificate?.split(splitValue)[1] || '',
-                    certificate3: data.certificate?.split(splitValue)[2] || '',
-                    language1: data.language?.split(splitValue)[0] || '',
-                    language2: data.language?.split(splitValue)[1] || '',
-                    language3: data.language?.split(splitValue)[2] || '',
-                    skill1: data.skill?.split(splitValue)[0] || '',
-                    skill2: data.skill?.split(splitValue)[1] || '',
-                    skill3: data.skill?.split(splitValue)[2] || '',
-                    award1: data.award?.split(splitValue)[0] || '',
-                    award2: data.award?.split(splitValue)[1] || '',
-                    award3: data.award?.split(splitValue)[2] || '',
-                });
-            });
-    };
 
-    useEffect(() => {
-        fetchResume();
-        if(user==null||user.id!==resume.user_id){
-            navigate("/");
-        }
+
+                if (user === null || user.id !== data.user_id) {
+                    navigate("/");
+                } else {
+                    setFormValues({
+                        title: data.title || '',
+                        career1: data.career?.split(splitValue)[0] || '',
+                        career2: data.career?.split(splitValue)[1] || '',
+                        career3: data.career?.split(splitValue)[2] || '',
+                        ac1: data.academic_career?.split(splitValue)[0] || '',
+                        ac2: data.academic_career?.split(splitValue)[1] || '',
+                        ac3: data.academic_career?.split(splitValue)[2] || '',
+                        certificate1: data.certificate?.split(splitValue)[0] || '',
+                        certificate2: data.certificate?.split(splitValue)[1] || '',
+                        certificate3: data.certificate?.split(splitValue)[2] || '',
+                        language1: data.language?.split(splitValue)[0] || '',
+                        language2: data.language?.split(splitValue)[1] || '',
+                        language3: data.language?.split(splitValue)[2] || '',
+                        skill1: data.skill?.split(splitValue)[0] || '',
+                        skill2: data.skill?.split(splitValue)[1] || '',
+                        skill3: data.skill?.split(splitValue)[2] || '',
+                        award1: data.award?.split(splitValue)[0] || '',
+                        award2: data.award?.split(splitValue)[1] || '',
+                        award3: data.award?.split(splitValue)[2] || '',
+                    });
+                }
+            })
+            ;
     }, []);
+
+    useEffect(()=>{
+        console.log("resume : ",resume);
+    },[resume])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
