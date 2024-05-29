@@ -58,7 +58,7 @@ const StudyPage = () =>{
     useEffect(() =>{
         fetchMyStudy();
         fetchPopularStudy();
-    },[setIsLoggedIn]);
+    },[]);
     
     const submit= (e) =>{
         e.preventDefault();
