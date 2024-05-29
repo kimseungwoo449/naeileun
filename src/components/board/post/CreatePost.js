@@ -112,7 +112,7 @@ const CreatePost = () => {
                     <Heading as="h3" size="lg">게시글 작성</Heading>
                 </Box>
                 {/* 폼 시작 */}
-                <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/board/write`} onSubmit={submit}>
+                <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/board/write`} onSubmit={submit} encType='multipart/form-data'>
                     <VStack spacing={4} align="stretch">
                         {/* 게시판 선택 */}
                         <Select variant='flushed'>
