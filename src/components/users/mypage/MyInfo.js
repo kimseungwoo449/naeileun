@@ -80,12 +80,6 @@ const MyInfo = () => {
     };
 
     return (
-        <>
-            <p>check</p>
-        </>
-        /** 
-        <Box bg="teal.100" p={4} borderRadius="md">
-          
         
         
         
@@ -152,7 +146,7 @@ const MyInfo = () => {
                 </ModalContent>
             </Modal>
         </Box>
-        **/
+        
     );
 };
 
