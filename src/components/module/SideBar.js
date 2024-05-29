@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, VStack, Text, Icon, Button, Collapse } from '@chakra-ui/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaHome, FaFileAlt, FaBook, FaBars, FaTimes } from 'react-icons/fa';
+import { RiSettings4Fill } from 'react-icons/ri';
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ const Sidebar = () => {
             navigate('/user/study');
         else if (command === 'home')
             navigate('/user/home');
+        else if (command === 'info')
+            navigate('/user/info');
     };
 
 
@@ -26,7 +29,7 @@ const Sidebar = () => {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <Box bg="gray.100" w={isOpen ? "250px" : "60px"} h="100vh" position="relative">
+        <Box borderWidth={1} borderTop={'none'} w={isOpen ? "250px" : "60px"} h="100vh" position="relative">
             <Box position="absolute" top="10px" left="10px">
                 <Button 
                     onClick={toggleSidebar} 
@@ -79,6 +82,19 @@ const Sidebar = () => {
                                 <Icon as={FaBook} mr={2} color="blue.500" />
                                 <Text color="blue.500">나의 스터디</Text>
                             </Box>
+                            <Box
+                                id='info'
+                                display="flex"
+                                alignItems="center"
+                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
+                                onClick={movePage}
+                                bg={isActive('/user/info') ? 'blue.100' : 'transparent'}
+                                p={3}
+                                borderRadius="md"
+                            >
+                                <Icon as={RiSettings4Fill} mr={2} color="blue.500" />
+                                <Text color="blue.500">나의 정보</Text>
+                            </Box>
                             {/* Add other items here in similar fashion */}
                         </VStack>
                     </Box>
@@ -88,6 +104,8 @@ const Sidebar = () => {
                         <Icon as={FaHome} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/home')} />
                         <Icon as={FaFileAlt} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/resume')} />
                         <Icon as={FaBook} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/study')} />
+                        <Icon as={RiSettings4Fill} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/info')} />
+                        
                         {/* Add other icons here in similar fashion */}
                     </VStack>
                 )}

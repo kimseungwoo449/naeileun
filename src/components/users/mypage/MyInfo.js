@@ -50,6 +50,10 @@ const MyInfo = () => {
         console.log(updateInfo);
         //update action 에서 처리하기
         if (field === 'password') {
+            if (currentPassword !== user.password) {
+                alert('현재비밀번호가 일치하지 않습니다.');
+                return;
+            }
             if (newPassword !== confirmNewPassword) {
                 alert('새 비밀번호가 일치하지 않습니다.');
                 return;

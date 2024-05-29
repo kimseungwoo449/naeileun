@@ -21,7 +21,13 @@ const MyResume = () => {
             body: JSON.stringify(user)
         })
             .then(response => response.json())
-            .then(data => setResumes(data))
+            .then( data => {
+                if (data) {
+                    setResumes(data);
+                } else {
+                    console.error('No data received');
+                }
+            })
             .catch(error => console.error('Error fetching resume data:', error));
     }, []);
 

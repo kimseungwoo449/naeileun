@@ -76,24 +76,26 @@ const Join = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
+      
 
 
+        const data = formData;
 
-        if (!formData.id || !formData.password || !formData.name || !formData.residentNumber1 || !formData.residentNumber2 || !formData.phone || !formData.agree) {
-            alert('모든 필수 항목을 입력하고 약관에 동의해야 합니다.');
-            return;
-        }
+    if (!data.id || !data.password || !data.name || !data.residentNumber1 || !data.residentNumber2 || !data.phone || !data.agree) {
+        console.log(data.agree);
+        alert('모든 필수 항목을 입력하고 약관에 동의해야 합니다.');
+        return;
+    }
 
-        const data = {
-            id: formData.id,
-            password: formData.password,
-            email: formData.email,
-            name: formData.name,
-            resident_number: `${formData.residentNumber1}-${formData.residentNumber2}`,
-            phone: formData.phone,
-            admin: false // 이 폼에서는 'admin'이 항상 false라고 가정합니다
-        };
+    const payload = {
+        id: data.id,
+        password: data.password,
+        email: data.email,
+        name: data.name,
+        resident_number: `${data.residentNumber1}-${data.residentNumber2}`,
+        phone: data.phone,
+        admin: false // 이 폼에서는 'admin'이 항상 false라고 가정합니다
+    };
 
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/join`, {
@@ -101,9 +103,12 @@ const Join = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(payload)
             });
-
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Server Error: ${errorText}`);
+            }
             const result = await response.json();
             console.log('성공:', result);
             navigate("/");
@@ -244,6 +249,7 @@ const Join = () => {
                     <Box border="1px" borderColor="gray.200" p={0} rounded="md">
                         <FormControl isInvalid={isFieldInvalid('agree')}>
                             <Checkbox
+                              
                                 id="agree"
                                 name="agree"
                                 isChecked={formData.agree}
