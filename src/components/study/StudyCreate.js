@@ -18,7 +18,7 @@ const StudyCreate = () =>{
                 "group_name" : name,
                 "is_public" : isPublic,
                 "auto_member_access" : access,
-                "decription" : dec === "" ? null : dec
+                "decription" : dec
         };
 
         console.log(req);
@@ -35,6 +35,9 @@ const StudyCreate = () =>{
 
         const data = await response.json();
         console.log(data);
+
+        if(data.state === true)
+            navigate('/study');
     }
 
 
