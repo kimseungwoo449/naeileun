@@ -8,9 +8,15 @@ import {
     Divider,
     IconButton,
     useColorModeValue,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    MenuDivider,
 } from '@chakra-ui/react';
 import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 const BoardDetail = () => {
     const navigate = useNavigate();
@@ -29,6 +35,20 @@ const BoardDetail = () => {
     console.log("postCode: " + postCode)
     console.log("boardCode: " + boardCode)
     console.log("boardList: " + boardList)
+
+    const movePage = (e) => {
+        const command = e.target.name;
+        const code = boardCode;
+        const board = boardList;
+
+        console.log("board : " + board);
+        console.log("postCode : " + postCode);
+        console.log("command : " + command);
+
+        if(command === 'update-post') {
+            navigate('/board/update', { state: { code: code, board: board, postCode : postCode } } );
+        }
+    }
 
     const fetchPost = async () => {
         const url = `${process.env.REACT_APP_SERVER_URL}/board/view/${boardCode}/${postCode}`;
@@ -66,6 +86,23 @@ const BoardDetail = () => {
                     <Text fontSize="xl" fontWeight="bold">
                         {post.title}
                     </Text>
+                    <Menu>
+                        <MenuButton
+                            as={IconButton}
+                            aria-label='Options'
+                            icon={<GiHamburgerMenu />}
+                            variant='outline'
+                        />
+                        <MenuList>
+                            <MenuItem onClick={movePage} name='update-post'>
+                                수정
+                            </MenuItem>
+                            <MenuDivider />
+                            <MenuItem>
+                                삭제
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
                 </HStack>
                 <HStack spacing={2} fontSize="sm" color="gray.500" w="full">
                     <Text>{post.userId}</Text>
