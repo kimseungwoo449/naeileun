@@ -55,7 +55,7 @@ const StudyBoard = () =>{
         console.log(data.meta);
         setPost(data.result[0].post);
         setStudy(data.result[0].study);
-        setIsMember(data.result[0].isMember);
+        setIsMember(data.result[0].isMember.isMember);
 
         const postSize = data.meta.total_count;
         console.log(postSize);
@@ -96,25 +96,27 @@ const StudyBoard = () =>{
 
     useEffect(()=>{
         fetchBoard();
-    },[page])
+    },[page]);
+    
 
     return(
         <>
         <Box h={'80vh'} w={"750px"} margin={'auto'}>
             <form method="POST" action="">
                 <HStack ml={'20px'}>
-                    <Text as={'b'} fontSize={'1.5em'} w={'100px'} textAlign={'center'}>{study.name}</Text>
+                    <Text as={'b'} fontSize={'1.5em'} ml={'20px'} textAlign={'center'}>{study.name}</Text>
                     <Text>그룹 채팅방 입장</Text>
                     <Icon as={IoChatbubble}></Icon>
                     <HStack ml={'auto'}>
                         {
-                            isMember === true ?
+                             //user //need user update
+                            study.adminCode === "2" ?
+                            <Input type='hidden'></Input> : 
                             (
-                                study.adminCode === "2" ? //user //need user update 
-                                <Input type='hidden'></Input> : 
-                                <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>
+                                isMember === true ?
+                                <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>:
+                                <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button>
                             )
-                            : <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button>
                         }
                     </HStack>
                 </HStack>
