@@ -2,18 +2,17 @@ import {React, useState, useEffect} from 'react';
 import { Heading, Box, HStack,Card,Image,Stack,CardBody,Text,IconButton} from '@chakra-ui/react';
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
+import { useLogin } from '../LoginContext';
 //import { useLogin } from '../LoginContext';
 
 const StudyPage = () =>{
     const navigate = useNavigate();
 
     const [studyList,setStudyList] = useState([]);
-    const [load, setLoad] = useState();
     const [popularList, setPopularList] = useState([]);
-    
-    //const {user} = useLogin();
+    const {setIsLoggedIn, setUser} = useLogin();
 
-    //console.log(user);
+    //const userId = setIsLoggedIn.id;
 
     const fetchMyStudy = async() =>{
 
@@ -29,8 +28,12 @@ const StudyPage = () =>{
         )
 
         const studyData = await response.json();
+        console.log(studyData.result);
         setStudyList(studyData.result);
+    }
 
+    const fetchPopularStudy = async() =>{
+        
         const pgResponse = await fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/popularGroup`,
             {
@@ -43,6 +46,7 @@ const StudyPage = () =>{
         )
         
         const popularData = await pgResponse.json();
+        console.log(popularData.result);
         setPopularList(popularData.result);
     }
     
@@ -53,8 +57,8 @@ const StudyPage = () =>{
 
     useEffect(() =>{
         fetchMyStudy();
-    },[load]);
-
+        fetchPopularStudy();
+    },[]);
     
     const submit= (e) =>{
         e.preventDefault();
@@ -83,7 +87,7 @@ const StudyPage = () =>{
 
                     <HStack wrap={"wrap"} minH={'200px'} maxw={'980px'} gap={"10px"} m={"40px"} >
                         {studyList.map((study,index) =>(
-                            <Card id={study.groupCode} key={study.groupCode} boxSize={'180px'} mr={'20px'} _hover={{ cursor:"pointer"}} onClick={submit} >
+                            <Card key={index} id={study.groupCode} boxSize={'180px'} mr={'20px'} _hover={{ cursor:"pointer"}} onClick={submit} >
                                 <CardBody id={study.groupCode}>
                                     <Image id={study.groupCode} w={'130px'} h={'100px'} src="" alt="" />
                                     <Stack id={study.groupCode} mt={'5px'}>
@@ -101,7 +105,7 @@ const StudyPage = () =>{
                     
                     <HStack wrap={"wrap"} minH={'200px'} maxw={'980px'} gap={"10px"} m={"40px"} >
                         {popularList.map((popular,index) =>(
-                            <Card id={popular.groupCode} key={popular.groupCode}  boxSize={'180px'} mr={'20px'} _hover={{ cursor:"pointer"}} onClick={submit} >
+                            <Card id={popular.groupCode} key={index+1000}  boxSize={'180px'} mr={'20px'} _hover={{ cursor:"pointer"}} onClick={submit} >
                                 <CardBody id={popular.groupCode}>
                                     <Image id={popular.groupCode} w={'130px'} h={'100px'} src="" alt="" />
                                     <Stack id={popular.groupCode} mt={'5px'}>
