@@ -22,21 +22,21 @@ const BoardAll = () => {
             const command = e.target.classList.item(i);
             console.log("command : " + command);
             
-            const bordCode = e.target.id;
-            console.log("bordCode : " + bordCode);
+            const boardCode = e.target.id;
+            console.log("boardCode : " + boardCode);
             
             const board = boardList;
             console.log("board : " + board);
 
 
             if (command === 'board-view'){
-                navigate('/board/view', { state: { bordCode: bordCode, board: board } } );
+                navigate('/board/view', { state: { boardCode: boardCode, board: board } } );
             }
             else if(command === 'board-detail'){
                 const postCode = e.target.getAttribute("name");
                 console.log("postCode : " + postCode);
                 
-                navigate('/board/detail', { state: { bordCode: bordCode, postCode: postCode, board: board } } );
+                navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, board: board } } );
             }
         }
         
