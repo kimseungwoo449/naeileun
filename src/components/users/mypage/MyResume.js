@@ -15,7 +15,7 @@ const MyResume = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(currentUser)
+            body: JSON.stringify(user)
         })
             .then(response => response.json())
             .then(data => setResumes(data))

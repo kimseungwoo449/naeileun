@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { useLogin } from '../LoginContext';
 import { useNavigate } from 'react-router-dom';
 const Logout = () => {
-    const {setIsLoggedIn, setUser} = useLogin();
+    const {logout} = useLogin();
     const navigate = useNavigate();
     useEffect(() => {
-        setIsLoggedIn(false);
-        setUser(null);
-        sessionStorage.removeItem('user');
+     
+        logout();
+       
         navigate('/');
-    }, [setIsLoggedIn, setUser, navigate])
+    }, [navigate])
     return (
         <div>
             

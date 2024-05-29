@@ -1,14 +1,13 @@
 import { Box, Button, Flex, Grid, Img, Text } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import LoginContext, { useLogin } from '../LoginContext';
+import { useNavigate } from 'react-router-dom';
+import  { useLogin } from '../LoginContext';
 
 const Header = () => {
-    const {currentUser} = useContext(LoginContext);
+    const {user} = useLogin();
 
     const navigate = useNavigate();
-    const {isLoggedIn} = useLogin();
-
+   
     const movePage = (e)=>{
         const command = e.target.id;
 
@@ -65,7 +64,7 @@ const Header = () => {
                     }} onClick={movePage}>스터디그룹</Text>
                 </Box>
                 <Box id='buttons' display={'flex'} alignItems={'center'} justifyContent='space-around' >
-                    {currentUser ? (
+                    {user ? (
                         // 로그인 상태일 때 보여줄 버튼들
                         <>
                             {/* <Link to={'/user/info'}> */}
