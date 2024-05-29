@@ -27,6 +27,7 @@ const BoardDetail = () => {
     const boardCode = location.state.boardCode;
     const boardList = location.state.board;
     console.log("postCode: " + postCode)
+    console.log("boardCode: " + boardCode)
     console.log("boardList: " + boardList)
 
     const fetchPost = async () => {
