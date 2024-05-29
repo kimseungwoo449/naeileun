@@ -1,15 +1,15 @@
-
 import React, { useState } from 'react';
-import { Box, VStack, Text, Link, Icon, Button, Collapse } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { FaHome, FaFileAlt, FaBook, FaClipboardList, FaBuilding, FaClipboardCheck, FaUserTie, FaMedal, FaBars, FaTimes } from 'react-icons/fa';
+import { Box, VStack, Text, Icon, Button, Collapse } from '@chakra-ui/react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { FaHome, FaFileAlt, FaBook, FaBars, FaTimes } from 'react-icons/fa';
 
 const Sidebar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isOpen, setIsOpen] = useState(true);
 
     const movePage = (e) => {
-        const command = e.target.id;
+        const command = e.currentTarget.id;
         if (command === 'resume')
             navigate('/user/resume');
         else if (command === 'study')
@@ -22,8 +22,10 @@ const Sidebar = () => {
         setIsOpen(!isOpen);
     };
 
+    const isActive = (path) => location.pathname === path;
+
     return (
-        <Box bg="gray.100" w={isOpen ? "250px" : "60px"} position="relative">
+        <Box bg="gray.100" w={isOpen ? "250px" : "60px"} h="100vh" position="relative">
             <Box position="absolute" top="10px" left="10px">
                 <Button 
                     onClick={toggleSidebar} 
@@ -33,56 +35,59 @@ const Sidebar = () => {
                     {isOpen ? <FaTimes /> : <FaBars />}
                 </Button>
             </Box>
-            <VStack align="stretch" spacing={4}  mt={12} p="4">
+            <VStack align="stretch" spacing={4} mt={12} p="4">
                 <Collapse in={isOpen} animateOpacity>
                     <Box>
                         <VStack align="stretch" spacing={2}>
-
-                            <Text id='home' _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={movePage}>
-                            <Icon as={FaHome} mr={isOpen ? 2 : 0} />MY홈
-                            </Text>
-                            <Text id='resume' _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={movePage}>
-                            <Icon as={FaFileAlt} mr={isOpen ? 2 : 0} />나의 이력서
-                            </Text>
-                            <Text id='study' _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={movePage}>
-                            <Icon as={FaHome} mr={isOpen ? 2 : 0} />나의 스터디
-                            </Text>
-                            <Text id='dataDisplay' _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={movePage}>
-                            <Icon as={FaHome} mr={isOpen ? 2 : 0} />데이터 전송 및 표시
-                            </Text>
-                            <Text id='authError' _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={movePage}>
-                            <Icon as={FaHome} mr={isOpen ? 2 : 0} />인증 오류: 서버 요청
-                            </Text>
-                            <Text id='updateInfo' _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={movePage}>
-                            <Icon as={FaHome} mr={isOpen ? 2 : 0} /> 업데이트 정보 표시
-                            </Text>
-                            <Text id='dataTransfer' _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={movePage}>
-                            <Icon as={FaHome} mr={isOpen ? 2 : 0} />수집 및 전송 방법
-                            </Text>
+                            <Box
+                                id='home'
+                                display="flex"
+                                alignItems="center"
+                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
+                                onClick={movePage}
+                                bg={isActive('/user/home') ? 'blue.100' : 'transparent'}
+                                p={3}
+                                borderRadius="md"
+                            >
+                                <Icon as={FaHome} mr={2} color="blue.500" />
+                                <Text color="blue.500">MY홈</Text>
+                            </Box>
+                            <Box
+                                id='resume'
+                                display="flex"
+                                alignItems="center"
+                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
+                                onClick={movePage}
+                                bg={isActive('/user/resume') ? 'blue.100' : 'transparent'}
+                                p={3}
+                                borderRadius="md"
+                            >
+                                <Icon as={FaFileAlt} mr={2} color="blue.500" />
+                                <Text color="blue.500">나의 이력서</Text>
+                            </Box>
+                            <Box
+                                id='study'
+                                display="flex"
+                                alignItems="center"
+                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
+                                onClick={movePage}
+                                bg={isActive('/user/study') ? 'blue.100' : 'transparent'}
+                                p={3}
+                                borderRadius="md"
+                            >
+                                <Icon as={FaBook} mr={2} color="blue.500" />
+                                <Text color="blue.500">나의 스터디</Text>
+                            </Box>
+                            {/* Add other items here in similar fashion */}
                         </VStack>
                     </Box>
                 </Collapse>
                 {!isOpen && (
                     <VStack spacing={4}>
                         <Icon as={FaHome} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/home')} />
-                        <Icon as={FaClipboardList} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/home')} />
                         <Icon as={FaFileAlt} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/resume')} />
                         <Icon as={FaBook} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/study')} />
-                        <Link href="/applications" _hover={{ color: 'blue.500' }}>
-                            <Icon as={FaClipboardCheck} boxSize={6} />
-                        </Link>
-                        <Link href="/companies" _hover={{ color: 'blue.500' }}>
-                            <Icon as={FaBuilding} boxSize={6} />
-                        </Link>
-                        <Link href="/tests" _hover={{ color: 'blue.500' }}>
-                            <Icon as={FaClipboardCheck} boxSize={6} />
-                        </Link>
-                        <Link href="/interview" _hover={{ color: 'blue.500' }}>
-                            <Icon as={FaUserTie} boxSize={6} />
-                        </Link>
-                        <Link href="/career" _hover={{ color: 'blue.500' }}>
-                            <Icon as={FaMedal} boxSize={6} />
-                        </Link>
+                        {/* Add other icons here in similar fashion */}
                     </VStack>
                 )}
             </VStack>

@@ -6,11 +6,9 @@ import Sidebar from '../../module/SideBar';
 const MyInfo = () => {
     const navigate = useNavigate();
     // const { user, setUser } = useLogin();
-    const {currentUser} = useContext(LoginContext);
+    const {user, setUser} = useLogin();
 
-    console.log("currentUser : " + currentUser);
-    console.log("currentUser : " + currentUser.name);
-
+   
 
     const [isOpen, setIsOpen] = useState(false);
     const [field, setField] = useState('');
@@ -18,75 +16,74 @@ const MyInfo = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
-    // const openModal = (fieldName) => {
-    //     setField(fieldName);
-    //     setValue(user[fieldName] || '');
-    //     setCurrentPassword('');
-    //     setNewPassword('');
-    //     setConfirmNewPassword('');
-    //     setIsOpen(true);
-    // };
+    const openModal = (fieldName) => {
+        setField(fieldName);
+        setValue(user[fieldName] || '');
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+        setIsOpen(true);
+    };
 
-    // const closeModal = () => {
-    //     setIsOpen(false);
-    // };
+    const closeModal = () => {
+        setIsOpen(false);
+    };
 
-    // const handleSave = () => {
+    const handleSave = () => {
 
-    //     const payload = { field : field,
-    //         value : value,
-    //         id : user.id
-    //      };
-    //     const updateInfo = {
-    //         id: user.id,
-    //         [field]: value,
-    //         payload,
-    //         name: user.name,
-    //         resident_number: user.resident_number,
-    //         user_age: user.age,
-    //         phone: user.phone,
-    //         email: user.email,
-    //         address: user.address,
-    //         admin: user.admin
-    //     };
-    //     console.log(updateInfo);
-    //     //update action 에서 처리하기
-    //     if (field === 'password') {
-    //         if (newPassword !== confirmNewPassword) {
-    //             alert('새 비밀번호가 일치하지 않습니다.');
-    //             return;
-    //         }
-    //         payload.currentPassword = currentPassword;
-    //         payload.newPassword = newPassword;
-    //     }
+        const payload = { field : field,
+            value : value,
+            id : user.id
+         };
+        const updateInfo = {
+            id: user.id,
+            [field]: value,
+            payload,
+            name: user.name,
+            resident_number: user.resident_number,
+            user_age: user.age,
+            phone: user.phone,
+            email: user.email,
+            address: user.address,
+            admin: user.admin
+        };
+        console.log(updateInfo);
+        //update action 에서 처리하기
+        if (field === 'password') {
+            if (newPassword !== confirmNewPassword) {
+                alert('새 비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            payload.currentPassword = currentPassword;
+            payload.newPassword = newPassword;
+        }
 
-    //     fetch(`${process.env.REACT_APP_SERVER_URL}/user/update`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'authorization': 'ADMIN ${process.env.REACT_APP_ADMIN_KEY}'
-    //         },
+        fetch(`${process.env.REACT_APP_SERVER_URL}/user/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'authorization': 'ADMIN ${process.env.REACT_APP_ADMIN_KEY}'
+            },
             
-    //         body: JSON.stringify(payload),
+            body: JSON.stringify(payload),
            
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         setUser({ ...user, [field]: value });
-    //         closeModal();
-    //     })
-    //     .catch(error => {
-    //         console.error('Error:', error);
-    //     });
-    // };
+        })
+        .then(response => response.json())
+        .then(data => {
+            setUser({ ...user, [field]: value });
+            closeModal();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    };
 
     return (
-        <>
-            <p>check</p>
-        </>
-        /** 
-        <Box bg="teal.100" p={4} borderRadius="md">
+        
+        
+        
+        <Box bg="teal.100" p={4} borderRadius="md" justifyContent={"center"}>
             
             <Text fontSize="lg" fontWeight="bold" mb={2}>{user.name}</Text>
             <Flex alignItems="center" mb={2}>
@@ -149,7 +146,7 @@ const MyInfo = () => {
                 </ModalContent>
             </Modal>
         </Box>
-        */
+        
     );
 };
 
