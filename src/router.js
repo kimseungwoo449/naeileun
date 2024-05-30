@@ -36,6 +36,8 @@ import UserAcess from "./components/study/setting/UserAcess";
 import Study from "./components/study/setting/Study";
 import CreatePost from "./components/board/post/CreatePost";
 import MyIntroduction from "./components/users/mypage/MyIntroduction";
+import DeletePost from "./components/board/post/DeletePost";
+import UpdatePost from "./components/board/post/UpdatePost";
 
 
 
@@ -133,6 +135,22 @@ const router = createBrowserRouter([
                 element: (
                     <>
                         <CreatePost />
+                    </>
+                ),
+            },
+            {
+                path: "/board/delete",
+                element: (
+                    <>
+                        <DeletePost />
+                    </>
+                ),
+            },
+            {
+                path: "/board/update",
+                element: (
+                    <>
+                        <UpdatePost />
                     </>
                 ),
             },

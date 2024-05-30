@@ -4,6 +4,7 @@ import { FaPencil } from 'react-icons/fa6';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { TiArrowUnsorted } from 'react-icons/ti';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useLogin } from '../LoginContext';
 
 const Board = () => {
     const navigate = useNavigate();
@@ -11,6 +12,8 @@ const Board = () => {
     const [postList, setPostList] = useState([]);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
+    
+    const { user } = useLogin();
 
     const postsPerPage = 10; // 페이지당 보여줄 게시판 수
     const pageCount = useRef(1);
@@ -18,7 +21,7 @@ const Board = () => {
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const location = useLocation();
-    const code = location.state.bordCode;
+    const code = location.state.boardCode;
     const boardList = location.state.board;
     console.log("code: " + code)
     console.log("boardList: " + boardList)
@@ -118,11 +121,14 @@ const Board = () => {
                     
                 </Box>
             </Box>
+            {(user != null)
+            &&
             <Stack direction='row' spacing={4} justify={"end"} mr="10">
                 <Button id='write-post' size='lg' rightIcon={<FaPencil />} colorScheme='gray' variant='solid' onClick={movePage}>
                     글쓰기
                 </Button>
             </Stack>
+            }
 
             {/* 게시글 목록 */}
             <Box p="6" minHeight="70vh">
