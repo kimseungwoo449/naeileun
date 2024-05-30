@@ -17,12 +17,15 @@ import {
 import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { useLogin } from '../LoginContext';
 
 const BoardDetail = () => {
     const navigate = useNavigate();
 
     const [post, setPost] = useState([]);
     const [page, setPage] = useState(1);
+    const { user } = useLogin();
+    {user != null ? console.log("userId : " + user.id) : console.log("user : " + user) }
 
     const pageCount = useRef(1);
 
@@ -86,6 +89,9 @@ const BoardDetail = () => {
                     <Text fontSize="xl" fontWeight="bold">
                         {post.title}
                     </Text>
+                    {/* 로그인 상태이면서 user가 작성자와 같을 때 */}
+                    {(user != null && user.id === post.userId)
+                    && 
                     <Menu>
                         <MenuButton
                             as={IconButton}
@@ -103,6 +109,7 @@ const BoardDetail = () => {
                             </MenuItem>
                         </MenuList>
                     </Menu>
+                    }
                 </HStack>
                 <HStack spacing={2} fontSize="sm" color="gray.500" w="full">
                     <Text>{post.userId}</Text>
@@ -115,7 +122,7 @@ const BoardDetail = () => {
                     <br />
                     <br />
                 </Text>
-                <HStack justify="space-between" w="full">
+                <HStack justify="space-between" w="full" p={"40px"}>
                     <HStack spacing={1}>
                         <IconButton
                             icon={<FaThumbsUp />}
@@ -123,7 +130,7 @@ const BoardDetail = () => {
                             isRound
                             aria-label="Like"
                         />
-                        <Text fontSize="sm">{post.recommandation}</Text>
+                        <Text fontSize="sm">&emsp;{post.recommendation}</Text>
                     </HStack>
                     <HStack spacing={1}>
                         <IconButton
@@ -132,7 +139,7 @@ const BoardDetail = () => {
                             isRound
                             aria-label="Comment"
                         />
-                        <Text fontSize="sm">21</Text>
+                        <Text fontSize="sm">&emsp;21</Text>
                     </HStack>
                 </HStack>
             </VStack>
