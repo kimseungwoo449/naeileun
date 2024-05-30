@@ -37,7 +37,7 @@ const Header = () => {
 
     return (
         <>
-            <Grid id='header' w={'70%'} m={'auto'} gridTemplateColumns={'20% 60% 20%'}>
+            <Grid id='header' w={'70%'} m={'20px auto 50px auto'} gridTemplateColumns={'20% 60% 20%'}>
                 <Box id='logo' display={'flex'} alignItems={'center'} mr={'30px'}>
                     <Img id='logo-img' src='https://i.ibb.co/Zf814Wd/logo.png' _hover={{
                         cursor : 'pointer'
