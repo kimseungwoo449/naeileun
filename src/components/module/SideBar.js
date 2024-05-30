@@ -110,7 +110,7 @@ const Sidebar = () => {
                                 <Icon as={RiSettings4Fill} mr={2} color="blue.500" />
                                 <Text color="blue.500">나의 정보</Text>
                             </Box>
-                            {/* Add other items here in similar fashion */}
+                          
                         </VStack>
                     </Box>
                 </Collapse>
@@ -121,7 +121,7 @@ const Sidebar = () => {
                         <Icon as={FaBook} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/study')} />
                         <Icon as={RiSettings4Fill} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/info')} />
                         
-                        {/* Add other icons here in similar fashion */}
+                 
                     </VStack>
                 )}
 
