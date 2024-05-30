@@ -4,6 +4,7 @@ import { FaRegSmile } from 'react-icons/fa';
 import { BsImage } from 'react-icons/bs';
 import { Form, useLocation, useNavigate } from 'react-router-dom';
 import Picker from 'emoji-picker-react';
+import { useLogin } from '../../LoginContext';
 
 const CreatePost = () => {
     const navigate = useNavigate(); // 페이지 이동을 위한 훅
@@ -14,8 +15,7 @@ const CreatePost = () => {
     const TITLE_MAX_LENGTH = 50; // 제목 최대 글자수
     const CONTENT_MAX_LENGTH = 4000; // 내용 최대 글자수
 
-     const userStr = sessionStorage.getItem('user'); // 세션 스토리지에서 사용자 정보 가져오기
-    const user = JSON.parse(userStr); // JSON 문자열을 객체로 변환
+    const { user } = useLogin();
 
     const [title, setTitle] = useState(''); // 제목 상태 추가
     const [content, setContent] = useState('');
