@@ -19,6 +19,8 @@ const Sidebar = () => {
             navigate('/user/home');
         else if (command === 'info')
             navigate('/user/info');
+        else if(command ==='introduction')
+            navigate('/user/introduction');
     };
 
 
@@ -81,6 +83,19 @@ const Sidebar = () => {
                             >
                                 <Icon as={FaBook} mr={2} color="blue.500" />
                                 <Text color="blue.500">나의 스터디</Text>
+                            </Box>
+                            <Box
+                                id='introduction'
+                                display="flex"
+                                alignItems="center"
+                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
+                                onClick={movePage}
+                                bg={isActive('/user/introduction') ? 'blue.100' : 'transparent'}
+                                p={3}
+                                borderRadius="md"
+                            >
+                                <Icon as={FaBook} mr={2} color="blue.500" />
+                                <Text color="blue.500">나의 자기소개서</Text>
                             </Box>
                             <Box
                                 id='info'
