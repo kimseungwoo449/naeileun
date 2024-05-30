@@ -44,13 +44,18 @@ const BoardDetail = () => {
         const command = e.target.name;
         const code = boardCode;
         const board = boardList;
+        const postCode = e.target.value;
 
         console.log("board : " + board);
         console.log("postCode : " + postCode);
         console.log("command : " + command);
+        console.log("postCode : " + postCode);
 
         if(command === 'update-post') {
             navigate('/board/update', { state: { code: code, board: board, postCode : postCode } } );
+        }
+        else if(command === 'delete-post') {
+            navigate('/board/delete', { state: {postCode: postCode}})
         }
     }
 
@@ -102,7 +107,7 @@ const BoardDetail = () => {
                                 수정
                             </MenuItem>
                             <MenuDivider />
-                            <MenuItem>
+                            <MenuItem onClick={movePage} name='delete-post' value={post.postCode}>
                                 삭제
                             </MenuItem>
                         </MenuList>
