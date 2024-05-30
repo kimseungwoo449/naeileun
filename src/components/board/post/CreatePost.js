@@ -14,6 +14,7 @@ const CreatePost = () => {
 
     const TITLE_MAX_LENGTH = 50; // 제목 최대 글자수
     const CONTENT_MAX_LENGTH = 4000; // 내용 최대 글자수
+    const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;  // 5MB
 
     const { user } = useLogin();
 
@@ -79,19 +80,25 @@ const CreatePost = () => {
             setContent(value);
         }
 
-        setInputCount(value.length);// 입력된 글자수 상
+        setInputCount(value.length); // 입력된 글자수 상태 업데이트
     };
 
     // 파일 선택 핸들러
     const handleFileChange = (e) => {
         const file = e.target.files[0]; // 선택된 파일
         if (file) {
-            setSelectedFile(file); // 선택된 파일 상태 업데이트
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreview(reader.result); // 파일 미리보기 URL 생성 및 상태 업데이트
-            };
-            reader.readAsDataURL(file);
+            if (file.size > FILE_SIZE_MAX_LIMIT) {
+                alert("파일 크기는 5MB를 초과할 수 없습니다."); // 경고 메시지 표시
+                setSelectedFile(null); // 선택된 파일 초기화
+                setPreview(null); // 파일 미리보기 초기화
+            } else {
+                setSelectedFile(file); // 선택된 파일 상태 업데이트
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setPreview(reader.result); // 파일 미리보기 URL 생성 및 상태 업데이트
+                };
+                reader.readAsDataURL(file);
+            }
         }
     };
 
