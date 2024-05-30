@@ -116,7 +116,7 @@ const BoardDetail = () => {
                     <Divider orientation="vertical" height="16px" />
                     <Text>{post.writeDate}</Text>
                 </HStack>
-                <Text w="full">
+                <Text w="full" whiteSpace="pre-line">
                     <br />
                     {post.content}
                     <br />
