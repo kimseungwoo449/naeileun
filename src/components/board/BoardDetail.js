@@ -55,7 +55,7 @@ const BoardDetail = () => {
             navigate('/board/update', { state: { code: code, board: board, postCode : postCode } } );
         }
         else if(command === 'delete-post') {
-            navigate('/board/delete', { state: {postCode: postCode}})
+            navigate('/board/delete', { state: { code: code, board: board, postCode : postCode }})
         }
     }
 
