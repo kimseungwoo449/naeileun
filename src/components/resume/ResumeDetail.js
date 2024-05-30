@@ -7,7 +7,8 @@ const ResumeDetail = () => {
     const { resumeCode } = useParams();
     const [resume, setResume] = useState({});
     const splitValue = 'wLYPvSwquc';
-// test
+    const [careerShow, setCareerShow] = useState(false);
+    // test
     const fetchResume = async () => {
         await fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
             method: 'GET',
@@ -19,6 +20,7 @@ const ResumeDetail = () => {
             .then(response => response.json())
             .then(data => {
                 console.log('fetch-data', data);
+                setCareerShow(data.is_newbie);
                 setResume(data);
             });
     }
@@ -33,16 +35,16 @@ const ResumeDetail = () => {
         })
             .then(response => response.json())
             .then(data => {
-                if(data.status){
+                if (data.status) {
                     navigate("/");
                 }
             });
     }
 
     const buttonAction = e => {
-        if(e.target.id === 'button-delete'){
+        if (e.target.id === 'button-delete') {
             deleteResume();
-        }else if(e.target.id ==='button-update'){
+        } else if (e.target.id === 'button-update') {
             navigate(`/resume/update/${resumeCode}`)
         }
     }
@@ -60,21 +62,24 @@ const ResumeDetail = () => {
                         <Text fontSize="lg" fontWeight="bold" mb={2}>개인 정보</Text>
                         <Text>이름: {resume.name}</Text>
                         <Text>나이: {resume.user_age}</Text>
+                        <Text>핸드폰 : {resume.phone}</Text>
+                        <Text>경력 유무 : {resume.is_newbie?"신입":"경력직"}</Text>
                     </Box>
-                    <Box id="career-container" p={4} bg="white" borderRadius="md" boxShadow="sm">
-                        <Text fontSize="lg" fontWeight="bold" mb={2}>경력</Text>
-                        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                            <Text>경력1: {resume.career?.split(splitValue)[0]}</Text>
-                            <Text>경력2: {resume.career?.split(splitValue)[1]}</Text>
-                            <Text>경력3: {resume.career?.split(splitValue)[2]}</Text>
-                        </SimpleGrid>
-                    </Box>
+                    {
+                        !careerShow &&
+                        <Box id="career-container" p={4} bg="white" borderRadius="md" boxShadow="sm">
+                            <Text fontSize="lg" fontWeight="bold" mb={2}>경력</Text>
+                            <SimpleGrid rows={{ base: 1, md: 3 }} spacing={4}>
+                                <Text>경력1: {resume.career?.split(splitValue)[0]}</Text>
+                                <Text>경력2: {resume.career?.split(splitValue)[1]}</Text>
+                                <Text>경력3: {resume.career?.split(splitValue)[2]}</Text>
+                            </SimpleGrid>
+                        </Box>
+                    }
                     <Box id="academic-career-container" p={4} bg="white" borderRadius="md" boxShadow="sm">
                         <Text fontSize="lg" fontWeight="bold" mb={2}>학력</Text>
                         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                            <Text>학력1: {resume.academic_career?.split(splitValue)[0]}</Text>
-                            <Text>학력2: {resume.academic_career?.split(splitValue)[1]}</Text>
-                            <Text>학력3: {resume.academic_career?.split(splitValue)[2]}</Text>
+                            <Text>학력: {resume.academic_career}</Text>
                         </SimpleGrid>
                     </Box>
                     <HStack spacing={4} w="100%">
@@ -113,6 +118,20 @@ const ResumeDetail = () => {
                             </SimpleGrid>
                         </Box>
                     </HStack>
+                    <Box id="expected-salary-container" p={4} bg="white" borderRadius="md" boxShadow="sm">
+                        <Text fontSize="lg" fontWeight="bold" mb={2}>희망 연봉</Text>
+                        <SimpleGrid rows={{ base: 1, md: 1 }} spacing={4}>
+                            <Text>희망 연봉: {resume.expected_salary}</Text>
+                        </SimpleGrid>
+                    </Box>
+                    <Box id="expected-region-container" p={4} bg="white" borderRadius="md" boxShadow="sm">
+                        <Text fontSize="lg" fontWeight="bold" mb={2}>희망 지역</Text>
+                        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+                            <Text>희망지역1: {resume.expected_region?.split(splitValue)[0]}</Text>
+                            <Text>희망지역2: {resume.expected_region?.split(splitValue)[1]}</Text>
+                            <Text>희망지역3: {resume.expected_region?.split(splitValue)[2]}</Text>
+                        </SimpleGrid>
+                    </Box>
                 </VStack>
                 <HStack spacing={4} mt={6}>
                     <Button id="button-delete" onClick={buttonAction} bg="red.500" color="white" _hover={{ bg: 'red.600' }}>삭제</Button>

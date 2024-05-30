@@ -28,16 +28,16 @@ const WriteResume = () => {
             "name": e.target.name.value,
             "title": e.target.title.value,
             "user_age": e.target.age.value,
-            "phone" : e.target.phone.value,
-            "is_newbie" : e.target.careerable.value === "experienced-person" ? false:true,
-            "career": e.target.career1.value + splitValue + e.target.career2.value + splitValue + e.target.career3.value,
+            "phone": e.target.phone.value,
+            "is_newbie": e.target.careerable.value === "experienced-person" ? false : true,
+            "career": careerShow ? e.target.career1.value + splitValue + e.target.career2.value + splitValue + e.target.career3.value : splitValue + splitValue,
             "academic_career": e.target.ac.value,
             "skill": e.target.skill1.value + splitValue + e.target.skill2.value + splitValue + e.target.skill3.value,
             "certificate": e.target.certificate1.value + splitValue + e.target.certificate2.value + splitValue + e.target.certificate3.value,
             "language": e.target.language1.value + splitValue + e.target.language2.value + splitValue + e.target.language3.value,
             "award": e.target.award1.value + splitValue + e.target.award2.value + splitValue + e.target.award3.value,
-            "expected_salary" : e.target.es.value ===''?"회사 내규에 따름": e.target.es.value,
-            "expected_region" : e.target.er1.value + splitValue + e.target.er2.value + splitValue + e.target.er3.value
+            "expected_salary": e.target.es.value === '' ? "회사 내규에 따름" : e.target.es.value,
+            "expected_region": e.target.er1.value + splitValue + e.target.er2.value + splitValue + e.target.er3.value
         }
 
         console.log(req);
@@ -125,8 +125,8 @@ const WriteResume = () => {
                         </Box>
                         <Box id='expected-region-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
                             <Text as='b' fontSize="xl" mb={4}>희망지역</Text>
-                            <Input type='text' name='er1' id='expected-region1' placeholder='희망지역1' />
-                            <Input type='text' name='er2' id='expected-region2' placeholder='희망지역2' />
+                            <Input type='text' name='er1' id='expected-region1' placeholder='희망지역1' mb={4} />
+                            <Input type='text' name='er2' id='expected-region2' placeholder='희망지역2' mb={4} />
                             <Input type='text' name='er3' id='expected-region3' placeholder='희망지역3' />
                         </Box>
                     </VStack>
