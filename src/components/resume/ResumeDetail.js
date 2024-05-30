@@ -7,8 +7,7 @@ const ResumeDetail = () => {
     const { resumeCode } = useParams();
     const [resume, setResume] = useState({});
     const splitValue = 'wLYPvSwquc';
-    // test
-    // test2
+
     const fetchResume = async () => {
         await fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
             method: 'GET',
@@ -44,7 +43,7 @@ const ResumeDetail = () => {
         if(e.target.id === 'button-delete'){
             deleteResume();
         }else if(e.target.id ==='button-update'){
-            console.log("update")
+            navigate(`/resume/update/${resumeCode}`)
         }
     }
 

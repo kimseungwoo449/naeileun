@@ -23,7 +23,7 @@ const Delete = () => {
                 if (response.ok) {
                     // 탈퇴 성공 시 메인 페이지로 이동
                 
-                    navigate('/logout')
+                    navigate('/user/logout')
                 } else {
                     // 탈퇴 실패 시 오류 메시지 출력
                    

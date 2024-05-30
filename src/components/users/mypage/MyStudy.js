@@ -15,7 +15,13 @@ const MyStudy = () => {
             body: JSON.stringify(user)
         })
             .then(response => response.json())
-            .then(data => setStudy(data))
+            .then( data => {
+                if (data) {
+                    setStudy(data);
+                } else {
+                    console.error('No data received');
+                }
+            })
             .catch(error => console.error('Error fetching resume data:', error));
     }, []);
 
