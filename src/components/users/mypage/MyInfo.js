@@ -87,7 +87,7 @@ const MyInfo = () => {
         
         
         
-        <Box bg="teal.100" p={4} borderRadius="md" justifyContent={"center"}>
+        <Box bg="blue.100" p={4} borderRadius="md" justifyContent={"center"}>
             
             <Text fontSize="lg" fontWeight="bold" mb={2}>{user.name}</Text>
             <Flex alignItems="center" mb={2}>
@@ -142,7 +142,7 @@ const MyInfo = () => {
                         )}
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={handleSave}>
+                        <Button bg={'blue.100'} mr={3} onClick={handleSave}>
                             저장
                         </Button>
                         <Button variant="ghost" onClick={closeModal}>취소</Button>
