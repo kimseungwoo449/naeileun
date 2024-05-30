@@ -13,6 +13,7 @@ import {
     MenuList,
     MenuItem,
     MenuDivider,
+    Image,
 } from '@chakra-ui/react';
 import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -71,9 +72,6 @@ const BoardDetail = () => {
         if (data.status) {
             navigate('/board');
         } else {
-            // pageCount.current = Math.ceil(data.meta.pageable_count / 10);
-            // pageCount.current = Math.min(pageCount.current, 15);
-
             setPost(data.result);
         }
     }
@@ -122,6 +120,7 @@ const BoardDetail = () => {
                     <br />
                     <br />
                 </Text>
+                <Image src={post.imagePath} />
                 <HStack justify="space-between" w="full" p={"40px"}>
                     <HStack spacing={1}>
                         <IconButton
