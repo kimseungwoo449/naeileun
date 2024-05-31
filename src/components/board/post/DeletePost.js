@@ -9,6 +9,7 @@ const DeletePost = () => {
     const boardCode = location.state.code;
     const boardList = location.state.board;
     const postCode = location.state.postCode;
+    const imagePath = location.state.imagePath;
 
     console.log("postCode: " + postCode);
     console.log("userId: " + user.id);
@@ -19,7 +20,8 @@ const DeletePost = () => {
     const req = {
         "user_id": user.id,
         "post_code": postCode,
-        "board_code": boardCode
+        "board_code": boardCode,
+        "image_path": imagePath
     }
 
     const fetchPost = async () => {
