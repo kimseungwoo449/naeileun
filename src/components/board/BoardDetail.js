@@ -42,20 +42,20 @@ const BoardDetail = () => {
 
     const movePage = (e) => {
         const command = e.target.name;
-        const code = boardCode;
         const board = boardList;
-        const postCode = e.target.value;
+        const imagePath = e.target.value;
 
+        console.log("command : " + command);
+        console.log("boardCode : " + boardCode);
         console.log("board : " + board);
         console.log("postCode : " + postCode);
-        console.log("command : " + command);
-        console.log("postCode : " + postCode);
+        console.log("imagePath : " + imagePath);
 
         if(command === 'update-post') {
-            navigate('/board/update', { state: { code: code, board: board, postCode : postCode } } );
+            navigate('/board/update', { state: { code: boardCode, board: board, postCode: postCode } } );
         }
         else if(command === 'delete-post') {
-            navigate('/board/delete', { state: { code: code, board: board, postCode : postCode }})
+            navigate('/board/delete', { state: { code: boardCode, board: board, postCode: postCode, imagePath: imagePath }})
         }
     }
 
@@ -107,7 +107,7 @@ const BoardDetail = () => {
                                 수정
                             </MenuItem>
                             <MenuDivider />
-                            <MenuItem onClick={movePage} name='delete-post' value={post.postCode}>
+                            <MenuItem onClick={movePage} name='delete-post' value={post.imagePath}>
                                 삭제
                             </MenuItem>
                         </MenuList>
