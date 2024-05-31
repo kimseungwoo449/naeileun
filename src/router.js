@@ -38,6 +38,9 @@ import CreatePost from "./components/board/post/CreatePost";
 import MyIntroduction from "./components/users/mypage/MyIntroduction";
 import DeletePost from "./components/board/post/DeletePost";
 import UpdatePost from "./components/board/post/UpdatePost";
+import IntroductionDetail from "./components/introduction/IntroductionDetail";
+import WriteIntroduction from "./components/introduction/WriteIntroduction";
+import UpdateIntroduction from "./components/introduction/UpdateIntroduction";
 
 
 
@@ -222,6 +225,25 @@ const router = createBrowserRouter([
             }
         ]
     },
+    {
+        path:"/introduction",
+        element : <Root />,
+        children:[
+            {
+                path:"/introduction/viewDetail/:documentCode",
+                element:<IntroductionDetail />
+            },
+            {
+                path:"/introduction/write",
+                element:<WriteIntroduction />
+            },
+            {
+                path:"/introduction/update/:documentCode",
+                element:<UpdateIntroduction />
+            }
+        ]
+
+    }
 ], {
     basename: "/naeileun",
 });
