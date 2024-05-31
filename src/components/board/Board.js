@@ -30,16 +30,15 @@ const Board = () => {
         const command = e.target.id;
         const boardCode = code;
         const postCode = e.target.getAttribute("name");
-        const board = boardList;
 
-        console.log("board : " + board);
+        console.log("boardList : " + boardList);
         console.log("postCode : " + postCode);
         console.log("command : " + command);
 
         if (command === 'board-detail')
-            navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, board: board } } );
+            navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } } );
         else if(command === 'write-post') {
-            navigate('/board/write', { state: { boardCode: boardCode, board: board } } );
+            navigate('/board/write', { state: { boardCode: boardCode, boardList: boardList } } );
         }
     }
 
@@ -140,7 +139,7 @@ const Board = () => {
                             <Text id = "board-detail"  name={post.postCode}>작성자 {post.userId}</Text>
                             <Text id = "board-detail"  name={post.postCode}>추천 {post.recommendation}</Text>
                             <Text id = "board-detail"  name={post.postCode}>댓글 {post.comments}</Text>
-                            <Text id = "board-detail"  name={post.postCode}>작성일자 {post.writeDate}</Text>
+                            <Text id = "board-detail"  name={post.postCode}>작성일자 {new Date(post.writeDate).toLocaleString()}</Text>
                         </HStack>
                     </Box>
                 ))}
