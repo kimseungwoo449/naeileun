@@ -1,4 +1,3 @@
-// src/BoardDetail.js
 import React, { useEffect, useRef, useState } from 'react';
 import {
     Box,
@@ -19,11 +18,13 @@ import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { useLogin } from '../LoginContext';
+import CommentList from './post-comment/CommentList'; // CommentList import
 
 const BoardDetail = () => {
     const navigate = useNavigate();
 
     const [post, setPost] = useState([]);
+    const [comments, setComments] = useState([]); // 댓글 상태 추가
     const [page, setPage] = useState(1);
     const { user } = useLogin();
     {user != null ? console.log("userId : " + user.id) : console.log("user : " + user) }
@@ -77,6 +78,7 @@ const BoardDetail = () => {
             navigate('/board');
         } else {
             setPost(data.result);
+            setComments(data.result.comments); // 댓글 데이터를 설정
         }
     }
 
@@ -84,16 +86,19 @@ const BoardDetail = () => {
         fetchPost();
     }, [page]);
 
+    // 댓글 추가 함수
+    const addComment = (newComment) => {
+        setComments([...comments, newComment]);
+    };
+
     return (
-        <Box p={4} w="1200px" mx="auto" bg="white" boxShadow="md" borderRadius="md" minHeight="90vh">
+        <Box p={4} w="1000px" padding="30px" mx="auto" bg="white" boxShadow="md" borderRadius="md" minHeight="90vh">
             <VStack align="start" spacing={3} w="full">
-                <HStack justify="space-between" w="full">
+                <HStack justify="space-between" w="full" mb={4}>
                     <Text fontSize="xl" fontWeight="bold">
                         {post.title}
                     </Text>
-                    {/* 로그인 상태이면서 user가 작성자와 같을 때 */}
-                    {(user != null && user.id === post.userId)
-                    && 
+                    {(user != null && user.id === post.userId) && 
                     <Menu>
                         <MenuButton
                             as={IconButton}
@@ -113,18 +118,20 @@ const BoardDetail = () => {
                     </Menu>
                     }
                 </HStack>
-                <HStack spacing={2} fontSize="sm" color="gray.500" w="full">
+                <HStack spacing={2} fontSize="sm" color="gray.500" w="full" mb={5}>
                     <Text>{post.userId}</Text>
                     <Divider orientation="vertical" height="16px" />
-                    <Text>{post.writeDate}</Text>
+                    <Text>{new Date(post.writeDate).toLocaleString()}</Text>
                 </HStack>
-                <Text w="full" whiteSpace="pre-line">
+                <Divider />
+                <Text w="full" whiteSpace="pre-line" ml={10}>
                     <br />
                     {post.content}
                     <br />
                     <br />
                 </Text>
                 <Image src={post.imagePath} />
+                <Divider />
                 <HStack justify="space-between" w="full" p={"40px"}>
                     <HStack spacing={1}>
                         <IconButton
@@ -145,6 +152,7 @@ const BoardDetail = () => {
                         <Text fontSize="sm">&emsp;21</Text>
                     </HStack>
                 </HStack>
+                <CommentList comments={comments} addComment={addComment} /> {/* CommentList 추가 */}
             </VStack>
         </Box>
     );
