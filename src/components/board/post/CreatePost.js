@@ -59,7 +59,7 @@ const CreatePost = () => {
                     const postCode = data.postCode;
                     navigate('/board/detail', { state: { boardCode: resBoardCode, postCode: postCode, boardList: boardList } }); // 게시글 상세 페이지로 이동
                 } else {
-                    navigate('/'); // 성공 시 홈으로 이동
+                    navigate('/'); 
                 }
             });
     }
