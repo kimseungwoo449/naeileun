@@ -9,12 +9,14 @@ import { useLogin } from '../../LoginContext';
 const UpdatePost = () => {
     const navigate = useNavigate(); // 페이지 이동을 위한 훅
     const location = useLocation(); // 현재 위치 정보를 가져오기 위한 훅
-    const boardCode = location.state.code; // 전달받은 boardCode
+    const boardCode = location.state.boardCode; // 전달받은 boardCode
     const postCode = location.state.postCode; // 전달받은 postCode
-    const boardList = location.state.board; // 전달받은 board 리스트
+    const boardList = location.state.boardList; // 전달받은 board 리스트
+    const imagePath = location.state.imagePath; // 전달받은 imagePath
     console.log("postCode: " + postCode);
     console.log("boardCode: " + boardCode);
     console.log("boardList: " + boardList);
+    console.log("imagePath: " + imagePath);
 
     const TITLE_MAX_LENGTH = 50; // 제목 최대 글자수
     const CONTENT_MAX_LENGTH = 4000; // 내용 최대 글자수
@@ -24,8 +26,9 @@ const UpdatePost = () => {
     const [content, setContent] = useState(''); // 내용 상태
     const [inputCount, setInputCount] = useState(0); // 입력된 글자수 상태
     const [selectedFile, setSelectedFile] = useState(null); // 선택된 파일 상태
-    const [preview, setPreview] = useState(null); // 파일 미리보기 URL 상태
+    const [preview, setPreview] = useState(imagePath || null); // 파일 미리보기 URL 상태, 초기값으로 imagePath 설정
     const [showEmojiPicker, setShowEmojiPicker] = useState(false); // 이모티콘 선택기 표시 상태
+    const [fileSelected, setFileSelected] = useState(false); // 파일이 선택되었는지 여부
     const { user } = useLogin(); // 로그인 상태를 가져오기 위한 훅
 
     const fileInputRef = useRef(null); // 파일 입력 요소에 접근하기 위한 ref
@@ -63,24 +66,26 @@ const UpdatePost = () => {
         }
     }, [post]); // post 상태가 업데이트될 때 실행
 
-    // 폼 제출 핸들러
     const submit = e => {
-        e.preventDefault(); // 기본 폼 제출 동작 방지
+        e.preventDefault();
 
         const formData = new FormData(); // 새로운 FormData 객체 생성
         formData.append("title", title); // 제목 추가
         formData.append("content", content); // 내용 추가
         formData.append("user_id", user.id); // 사용자 ID 추가
         formData.append("board_code", boardCode); // 게시판 코드 추가
-        if (selectedFile) {
-            formData.append("file", selectedFile); // 선택된 파일이 있을 경우 파일 추가
+        formData.append("post_code", postCode); // 게시글 코드 추가
+
+        if (fileSelected) {
+            formData.append("file", selectedFile); // 파일이 선택된 경우 파일 추가
+            formData.append("image_path", imagePath === "" ? "null" : imagePath); // 기존의 이미지 경로 추가
         }
 
         console.log("req : " + formData);
         
         // 서버로 폼 데이터 전송
-        fetch(`${process.env.REACT_APP_SERVER_URL}/board/write`, {
-            method: 'POST',
+        fetch(`${process.env.REACT_APP_SERVER_URL}/board/update`, {
+            method: 'PUT',
             headers: {
                 Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
             },
@@ -91,11 +96,11 @@ const UpdatePost = () => {
                 console.log(data);
 
                 if (data.status) {
-                    navigate('/'); // 성공 시 홈으로 이동
+                    const resBoardCode = data.boardCode;
+                    const resPostCode = data.postCode;
+                    navigate('/board/detail', { state: { boardCode: resBoardCode, postCode: resPostCode, boardList: boardList } }); // 게시글 상세 페이지로 이동
                 } else {
-                    const resBoardCode = data.result.boardCode;
-                    const postCode = data.result.postCode;
-                    navigate('/board/detail', { state: { boardCode: resBoardCode, postCode: postCode, boardList: boardList } }); // 게시글 상세 페이지로 이동
+                    navigate('/'); 
                 }
             });
     };
@@ -124,6 +129,7 @@ const UpdatePost = () => {
         const file = e.target.files[0]; // 선택된 파일
         if (file) {
             setSelectedFile(file); // 선택된 파일 상태 업데이트
+            setFileSelected(true); // 파일이 선택되었음을 표시
             const reader = new FileReader();
             reader.onloadend = () => {
                 setPreview(reader.result); // 파일 미리보기 URL 생성 및 상태 업데이트
