@@ -10,7 +10,7 @@ const CreatePost = () => {
     const navigate = useNavigate(); // 페이지 이동을 위한 훅
     const location = useLocation(); // 현재 위치 정보를 가져오기 위한 훅
     const boardCode = location.state.boardCode; // 전달받은 boardCode
-    const boardList = location.state.board; // 전달받은 board 리스트
+    const boardList = location.state.boardList; // 전달받은 board 리스트
 
     const TITLE_MAX_LENGTH = 50; // 제목 최대 글자수
     const CONTENT_MAX_LENGTH = 4000; // 내용 최대 글자수
