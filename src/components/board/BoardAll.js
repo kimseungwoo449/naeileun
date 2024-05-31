@@ -25,18 +25,17 @@ const BoardAll = () => {
             const boardCode = e.target.id;
             console.log("boardCode : " + boardCode);
             
-            const board = boardList;
-            console.log("board : " + board);
+            console.log("boardList : " + boardList);
 
 
             if (command === 'board-view'){
-                navigate('/board/view', { state: { boardCode: boardCode, board: board } } );
+                navigate('/board/view', { state: { boardCode: boardCode, boardList: boardList } } );
             }
             else if(command === 'board-detail'){
                 const postCode = e.target.getAttribute("name");
                 console.log("postCode : " + postCode);
                 
-                navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, board: board } } );
+                navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } } );
             }
         }
         

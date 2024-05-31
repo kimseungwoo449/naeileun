@@ -22,7 +22,7 @@ const Board = () => {
 
     const location = useLocation();
     const code = location.state.boardCode;
-    const boardList = location.state.board;
+    const boardList = location.state.boardList;
     console.log("code: " + code)
     console.log("boardList: " + boardList)
     

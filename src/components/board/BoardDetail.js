@@ -35,27 +35,26 @@ const BoardDetail = () => {
     const location = useLocation();
     const postCode = location.state.postCode;
     const boardCode = location.state.boardCode;
-    const boardList = location.state.board;
+    const boardList = location.state.boardList;
     console.log("postCode: " + postCode)
     console.log("boardCode: " + boardCode)
     console.log("boardList: " + boardList)
 
     const movePage = (e) => {
         const command = e.target.name;
-        const board = boardList;
         const imagePath = e.target.value;
 
         console.log("command : " + command);
         console.log("boardCode : " + boardCode);
-        console.log("board : " + board);
+        console.log("boardList : " + boardList);
         console.log("postCode : " + postCode);
         console.log("imagePath : " + imagePath);
 
         if(command === 'update-post') {
-            navigate('/board/update', { state: { code: boardCode, board: board, postCode: postCode } } );
+            navigate('/board/update', { state: { boardCode: boardCode, boardList: boardList, postCode: postCode, imagePath: imagePath } } );
         }
         else if(command === 'delete-post') {
-            navigate('/board/delete', { state: { code: boardCode, board: board, postCode: postCode, imagePath: imagePath }})
+            navigate('/board/delete', { state: { boardCode: boardCode, boardList: boardList, postCode: postCode, imagePath: imagePath }})
         }
     }
 
@@ -103,7 +102,7 @@ const BoardDetail = () => {
                             variant='outline'
                         />
                         <MenuList>
-                            <MenuItem onClick={movePage} name='update-post'>
+                            <MenuItem onClick={movePage} name='update-post' value={post.imagePath}>
                                 수정
                             </MenuItem>
                             <MenuDivider />

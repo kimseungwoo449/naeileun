@@ -6,8 +6,8 @@ const DeletePost = () => {
     const navigate = useNavigate();
     const { user } = useLogin();
     const location = useLocation();
-    const boardCode = location.state.code;
-    const boardList = location.state.board;
+    const boardCode = location.state.boardCode;
+    const boardList = location.state.boardList;
     const postCode = location.state.postCode;
     const imagePath = location.state.imagePath;
 
