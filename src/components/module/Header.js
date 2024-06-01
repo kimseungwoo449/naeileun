@@ -1,8 +1,8 @@
-import { Box, Button, Flex, Grid, Img, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, Icon, Img, Text } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import  { useLogin } from '../LoginContext';
-
+import { IoMdMailOpen } from "react-icons/io";
 const Header = () => {
     const {user} = useLogin();
 
@@ -67,9 +67,8 @@ const Header = () => {
                     {user ? (
                         // 로그인 상태일 때 보여줄 버튼들
                         <>
-                            
-                                <Button id='myhome' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>마이페이지</Button>
-                            
+                            <Link to='/message/myMessageBox'><Icon w={8} h={8} as={IoMdMailOpen} mr='20px' /></Link>
+                            <Button id='myhome' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>마이페이지</Button>
                             <Button id='logout' colorScheme='gray' variant='outline' borderRadius={'50px'} onClick={movePage}>로그아웃</Button>
                         </>
                     ) : (
