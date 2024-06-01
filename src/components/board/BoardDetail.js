@@ -24,7 +24,6 @@ const BoardDetail = () => {
     const navigate = useNavigate();
 
     const [post, setPost] = useState([]);
-    const [comments, setComments] = useState([]); // 댓글 상태 추가
     const [page, setPage] = useState(1);
     const { user } = useLogin();
     {user != null ? console.log("userId : " + user.id) : console.log("user : " + user) }
@@ -78,18 +77,12 @@ const BoardDetail = () => {
             navigate('/board');
         } else {
             setPost(data.result);
-            setComments(data.result.comments); // 댓글 데이터를 설정
         }
     }
 
     useEffect(() => {
         fetchPost();
     }, [page]);
-
-    // 댓글 추가 함수
-    const addComment = (newComment) => {
-        setComments([...comments, newComment]);
-    };
 
     return (
         <Box p={4} w="1000px" padding="30px" mx="auto" bg="white" boxShadow="md" borderRadius="md" minHeight="90vh">
@@ -152,7 +145,7 @@ const BoardDetail = () => {
                         <Text fontSize="sm">&emsp;21</Text>
                     </HStack>
                 </HStack>
-                <CommentList comments={comments} addComment={addComment} /> {/* CommentList 추가 */}
+                <CommentList postCode={postCode} /> {/* CommentList 추가 */}
             </VStack>
         </Box>
     );
