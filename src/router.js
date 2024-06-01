@@ -43,6 +43,7 @@ import WriteIntroduction from "./components/introduction/WriteIntroduction";
 import UpdateIntroduction from "./components/introduction/UpdateIntroduction";
 import MyMessageBox from "./components/message/MyMessageBox";
 import MessageDetail from "./components/message/MessageDetail";
+import FirstMessage from "./components/message/FirstMessage";
 
 
 
@@ -257,6 +258,9 @@ const router = createBrowserRouter([
             {
                 path:"/message/:target",
                 element:<MessageDetail />
+            },{
+                path:"/message/newTarget",
+                element : <FirstMessage />
             }
         ]
 
