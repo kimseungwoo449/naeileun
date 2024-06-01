@@ -64,7 +64,9 @@ const MyMessageBox = () => {
             <Box p={5} w={'70%'}>
                 <Flex justifyContent="space-between" alignItems="center" mb={4}>
                     <Text as={'b'} fontSize="3xl">나의 쪽지 목록</Text>
-                    <Button colorScheme="teal" size="sm" leftIcon={<MdOutlineMessage />}>새 쪽지</Button>
+                    <Button colorScheme="teal" size="sm" leftIcon={<MdOutlineMessage />} onClick={()=>{
+                        navigate("/message/newTarget");
+                    }}>새 쪽지</Button>
                 </Flex>
                 <VStack align="stretch" spacing={4}>
                     <List spacing={3} width="100%">
@@ -83,7 +85,7 @@ const MyMessageBox = () => {
                                             <GridItem>
                                                 <Text fontSize="lg" display={'flex'} alignItems={'center'}>
                                                     <Icon as={FaEnvelopeOpenText} mr={5} />
-                                                    {userId}과의 쪽지함
+                                                    {userId === user.id ? "나와의 쪽지함" : userId + "님과의 쪽지함"}
                                                 </Text>
                                             </GridItem>
                                             <GridItem ml={5} textAlign="start">
