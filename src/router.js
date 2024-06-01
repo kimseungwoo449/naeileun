@@ -41,6 +41,8 @@ import UpdatePost from "./components/board/post/UpdatePost";
 import IntroductionDetail from "./components/introduction/IntroductionDetail";
 import WriteIntroduction from "./components/introduction/WriteIntroduction";
 import UpdateIntroduction from "./components/introduction/UpdateIntroduction";
+import MyMessageBox from "./components/message/MyMessageBox";
+import MessageDetail from "./components/message/MessageDetail";
 
 
 
@@ -240,6 +242,21 @@ const router = createBrowserRouter([
             {
                 path:"/introduction/update/:documentCode",
                 element:<UpdateIntroduction />
+            }
+        ]
+
+    },
+    {
+        path:"/message",
+        element : <Root />,
+        children:[
+            {
+                path:"/message/myMessageBox",
+                element:<MyMessageBox />
+            },
+            {
+                path:"/message/:target",
+                element:<MessageDetail />
             }
         ]
 
