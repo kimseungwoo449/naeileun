@@ -31,8 +31,8 @@ const Header = () => {
             navigate('/user/join');
         else if(command==='logout')
             navigate('/user/logout')
-        else if(command==='myhome')
-            navigate('/user/home');
+        // else if(command==='myhome')
+        //     navigate('/user/home');
     }
 
     return (
@@ -52,9 +52,9 @@ const Header = () => {
                         cursor : 'pointer'
                     }} onClick={movePage}>게시판</Text>
                     
-                    <Text id='mypage' _hover={{
+                    {/* <Text id='mypage' _hover={{
                         cursor : 'pointer'
-                    }} onClick={movePage}>마이페이지</Text>
+                    }} onClick={movePage}>마이페이지</Text> */}
                     <Text id='study-group' _hover={{
                         cursor : 'pointer'
                     }} onClick={movePage}>스터디그룹</Text>
