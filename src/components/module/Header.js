@@ -31,8 +31,8 @@ const Header = () => {
             navigate('/user/join');
         else if(command==='logout')
             navigate('/user/logout')
-        // else if(command==='myhome')
-        //     navigate('/user/home');
+        else if(command==='myhome')
+            navigate('/user/home');
     }
 
     return (

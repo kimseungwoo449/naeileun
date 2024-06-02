@@ -23,9 +23,9 @@ const MyHome = () => {
           />
           <Box>
             <Text fontWeight="bold" fontSize="2xl">
-              경상국립대학교 (칠암)에서 공부했어요
+              서울대학교에서 공부했어요
             </Text>
-            <Text>경상국립대학교 (칠암) 기계공학부 졸업</Text>
+            <Text>서울대학교 기계공학부 졸업</Text>
             <HStack spacing={2} mt={2}>
               <Button size="sm" colorScheme="teal">AutoCAD</Button>
               <Button size="sm" colorScheme="teal">CAD</Button>
