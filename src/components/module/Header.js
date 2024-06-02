@@ -15,12 +15,12 @@ const Header = () => {
             navigate('/');
         else if(command==='home')
             navigate('/');
-        else if(command==='job-posting')
-            navigate('/jobPosting');
+        // else if(command==='job-posting')
+        //     navigate('/jobPosting');
         else if(command==='board')
             navigate('/board');
-        else if(command==='notice')
-            navigate('/notice');
+        // else if(command==='notice')
+        //     navigate('/notice');
         else if(command==='mypage')
             navigate('/user/info');
         else if(command==='study-group')
@@ -47,15 +47,11 @@ const Header = () => {
                     <Text id='home' _hover={{
                         cursor : 'pointer'
                     }} onClick={movePage}>홈</Text>
-                    <Text id='job-posting' _hover={{
-                        cursor : 'pointer'
-                    }} onClick={movePage}>채용공고</Text>
+                    
                     <Text id='board' _hover={{
                         cursor : 'pointer'
                     }} onClick={movePage}>게시판</Text>
-                    <Text id='notice' _hover={{
-                        cursor : 'pointer'
-                    }} onClick={movePage}>공지사항</Text>
+                    
                     <Text id='mypage' _hover={{
                         cursor : 'pointer'
                     }} onClick={movePage}>마이페이지</Text>
@@ -85,3 +81,10 @@ const Header = () => {
 };
 
 export default Header;
+
+{/* <Text id='job-posting' _hover={{
+                        cursor : 'pointer'
+                    }} onClick={movePage}>채용공고</Text>
+                    <Text id='notice' _hover={{
+                        cursor : 'pointer'
+                    }} onClick={movePage}>공지사항</Text> */}
