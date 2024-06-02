@@ -66,9 +66,9 @@ const Calendar = () => {
             {day.getDate()}
           </Text>
           {jobData
-            .filter(job => new Date(job.application_start).toDateString() === day.toDateString())
+            .filter(job => new Date(job.applicationStart).toDateString() === day.toDateString())
             .map(job => (
-              <Text key={job.posting_id} fontSize="xs">{job.company_name} - {job.job_title}</Text>
+              <Text key={job.postingId} fontSize="xs">{job.companyName} - {job.jobTitle}</Text>
             ))}
             
         </GridItem>
