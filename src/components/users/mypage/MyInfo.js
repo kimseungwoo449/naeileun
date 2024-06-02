@@ -35,20 +35,20 @@ const MyInfo = () => {
             value : value,
             id : user.id
          };
-        const updateInfo = {
-            id: user.id,
-            [field]: value,
-            payload,
-            name: user.name,
-            resident_number: user.resident_number,
-            user_age: user.age,
-            phone: user.phone,
-            email: user.email,
-            address: user.address,
-            admin: user.admin
-        };
-        console.log(updateInfo);
-        //update action 에서 처리하기
+        // const updateInfo = {
+        //     id: user.id,
+        //     [field]: value,
+        //     payload,
+        //     name: user.name,
+        //     resident_number: user.resident_number,
+        //     user_age: user.age,
+        //     phone: user.phone,
+        //     email: user.email,
+        //     address: user.address,
+        //     admin: user.admin
+        // };
+        // console.log(updateInfo);
+     
         if (field === 'password') {
             if (currentPassword !== user.password) {
                 alert('현재비밀번호가 일치하지 않습니다.');
@@ -63,7 +63,7 @@ const MyInfo = () => {
         }
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/update`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'accept': 'application/json',
