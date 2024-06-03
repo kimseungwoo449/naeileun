@@ -29,7 +29,9 @@ const DeletePost = () => {
         setIsFetched(true);
 
         const url = `${process.env.REACT_APP_SERVER_URL}/board/delete`;
-        const response = await fetch(url, {
+        fetch(
+            url, 
+            {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
