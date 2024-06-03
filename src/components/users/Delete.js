@@ -26,7 +26,6 @@ const Delete = () => {
                     navigate('/user/logout')
                 } else {
                     // 탈퇴 실패 시 오류 메시지 출력
-                   
                     console.error('탈퇴 실패:', result.message);
                 }
                 console.log('성공:', result);
