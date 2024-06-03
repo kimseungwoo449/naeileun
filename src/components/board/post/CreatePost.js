@@ -24,6 +24,7 @@ const CreatePost = () => {
     const [selectedFile, setSelectedFile] = useState(null); // 선택된 파일 상태 관리
     const [preview, setPreview] = useState(null); // 파일 미리보기 URL 상태 관리
     const [showEmojiPicker, setShowEmojiPicker] = useState(false); // 이모티콘 선택기 표시 상태 관리
+    const [selectBoardCode, setselectBoardCode] = useState(boardCode); // 선택된 게시판 코드 상태 관리
 
     const fileInputRef = useRef(null); // 파일 입력 요소에 접근하기 위한 ref
 
@@ -35,7 +36,9 @@ const CreatePost = () => {
         formData.append("title", title); // 제목 추가
         formData.append("content", content); // 내용 추가
         formData.append("user_id", user.id); // 사용자 ID 추가
-        formData.append("board_code", boardCode); // 게시판 코드 추가
+        formData.append("board_code", selectBoardCode);
+        console.log("boardCode : " + selectBoardCode);
+        // formData.append("board_code", boardCode); // 게시판 코드 추가
         if (selectedFile) {
             formData.append("file", selectedFile); // 선택된 파일이 있을 경우 파일 추가
         }
@@ -111,6 +114,11 @@ const CreatePost = () => {
         setShowEmojiPicker(false); // 이모티콘 선택기 숨기기
     };
 
+    // 게시판 선택 핸들러
+    const handleBoardChange = (e) => {
+        setselectBoardCode(parseInt(e.target.value)); // 선택된 게시판 코드 상태 업데이트
+    };
+
     return (
         <>
             <Box m={"60px 0"} p={5} shadow="md" borderWidth="1px" borderRadius={"md"} w="800px" mx="auto" minHeight="50vh">
@@ -122,10 +130,10 @@ const CreatePost = () => {
                 <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/board/write`} onSubmit={submit} encType='multipart/form-data'>
                     <VStack spacing={4} align="stretch">
                         {/* 게시판 선택 */}
-                        <Select variant='flushed'>
+                        <Select variant='flushed' onChange={handleBoardChange}>
                             <option value='option' disabled>게시판 선택</option>
                             {boardList.map((board, index) => (
-                                <option key={index} value={board.boardCode} selected={board.boardCode === boardCode}>{board.boardName}</option>
+                                <option id={"boardCode"} key={index} value={board.boardCode} selected={board.boardCode === boardCode}>{board.boardName}</option>
                             ))}
                         </Select>
                         {/* 제목 입력 */}
