@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/naeileun/static/js/main.ebba043b.js",
+    "main.js": "/naeileun/static/js/main.f3626793.js",
     "index.html": "/naeileun/index.html",
-    "main.ebba043b.js.map": "/naeileun/static/js/main.ebba043b.js.map"
+    "main.f3626793.js.map": "/naeileun/static/js/main.f3626793.js.map"
   },
   "entrypoints": [
-    "static/js/main.ebba043b.js"
+    "static/js/main.f3626793.js"
   ]
 }
