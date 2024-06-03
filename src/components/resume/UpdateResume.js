@@ -157,7 +157,7 @@ const UpdateResume = () => {
     };
 
     return (
-        <Box w={{ base: '90%', md: '70%' }} m="auto" p={5} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="gray.50">
+        <Box w={{ base: '90%', md: '1100px' }} m="auto" p={5} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="gray.50">
             <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/resume`} onSubmit={submit}>
                 <Flex direction="column" alignItems="center">
                     <Text as='b' fontSize="3xl" textAlign="center" mb={5} color="black">이력서 수정</Text>

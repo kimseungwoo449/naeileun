@@ -354,7 +354,7 @@ const ResumeDetail = () => {
     };
 
     return (
-        <Box w={{ base: '90%', md: '60%' }} m="auto" p={5} borderWidth="1px" borderRadius="md" boxShadow="dark-lg" bg="white">
+        <Box w={{ base: '90%', md: '1100px' }} m="auto" p={5} borderWidth="1px" borderRadius="md" boxShadow="dark-lg" bg="white">
             <Flex direction="column" alignItems="center">
                 <Text as="b" fontSize="2xl" textAlign="center" mb={5} color="black">{resume.title}</Text>
                 <VStack spacing={6} align="stretch" w="100%">
