@@ -12,38 +12,38 @@ const Board = () => {
     const [postList, setPostList] = useState([]);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
+    const [selectedBoardCode, setSelectedBoardCode] = useState(null);
     
     const { user } = useLogin();
 
-    const postsPerPage = 10; // 페이지당 보여줄 게시판 수
     const pageCount = useRef(1);
 
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const location = useLocation();
-    const code = location.state.boardCode;
+    const boardCode = location.state.boardCode;
     const boardList = location.state.boardList;
-    console.log("code: " + code)
+
+    useEffect(() => {
+        setSelectedBoardCode(boardCode);
+    }, [boardCode]);
+
+    console.log("boardCode: " + boardCode)
     console.log("boardList: " + boardList)
     
     const movePage = (e) => {
         const command = e.target.id;
-        const boardCode = code;
         const postCode = e.target.getAttribute("name");
 
-        console.log("boardList : " + boardList);
-        console.log("postCode : " + postCode);
-        console.log("command : " + command);
-
         if (command === 'board-detail')
-            navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } } );
+            navigate('/board/detail', { state: { boardCode: selectedBoardCode, postCode: postCode, boardList: boardList } } );
         else if(command === 'write-post') {
-            navigate('/board/write', { state: { boardCode: boardCode, boardList: boardList } } );
+            navigate('/board/write', { state: { boardCode: selectedBoardCode, boardList: boardList } } );
         }
     }
 
     const fetchPosts = async () => {
-        const url = `${process.env.REACT_APP_SERVER_URL}/board/view/${code}`;
+        const url = `${process.env.REACT_APP_SERVER_URL}/board/view/${selectedBoardCode}?search=${search}&page=${page}`;
         const response = await fetch(
             url,
             {
@@ -60,34 +60,36 @@ const Board = () => {
         if (data.status) {
             navigate('/board');
         } else {
-            const totalPosts = data.result.length; // 총 게시판 수
-            pageCount.current = Math.ceil(totalPosts / postsPerPage);
+            pageCount.current = data.meta.pageable_count % 10 > 0 ? data.meta.pageable_count / 10 + 1 : data.meta.pageable_count / 10;
+            pageCount.current = Math.floor(pageCount.current);
             pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
-
-            console.log("totalPosts: " + totalPosts);
-            console.log("pageCount.current: " + pageCount.current);
 
             setPostList(data.result);
         }
     }
 
     const changeSearch = e => {
+        // if(e.target.value.length >= 2)
         setSearch(e.target.value);
     }
 
-    useEffect(() => {
-        fetchPosts();
-    }, [page, search]);
+    const handleBoardSelect = (boardCode) => {
+        setSelectedBoardCode(boardCode);
+        setPage(1);  // 페이지를 처음으로 리셋
+    }
 
-    const currentPosts = postList.slice((page - 1) * postsPerPage, page * postsPerPage);
+    useEffect(() => {
+        if (selectedBoardCode) {
+            fetchPosts();
+        }
+    }, [selectedBoardCode, page, search]);
+
     return (
-        // Flex 컨테이너를 사용하여 전체 레이아웃을 세로로 정렬합니다.
         <Flex minW={'900px'} ml={'150px'} margin={"auto"} direction="column">
-            {/* 상단 헤더 및 검색창 */}
             <Box p="6" display={"flex"} justifyContent={"space-between"} m={"20px"}>
                 <Box display={"flex"}>
                     {boardList.map((board, index) => (
-                        <Heading size='lg' mb="4" mr="0.5">{board.boardCode == code ? board.boardName : ""}</Heading>
+                        <Heading size='lg' mb="4" mr="0.5" key={index}>{board.boardCode == selectedBoardCode ? board.boardName : ""}</Heading>
                     ))}
                     <Menu>
                         <MenuButton as={Button} rightIcon={<RiArrowDownSLine />}>
@@ -95,20 +97,20 @@ const Board = () => {
                         </MenuButton>
                         <MenuList>
                             {boardList.map((board, index) => (
-                                <MenuItem key={index}>{board.boardName}</MenuItem>
+                                <MenuItem key={index} onClick={() => handleBoardSelect(board.boardCode)}>{board.boardName}</MenuItem>
                             ))}
                         </MenuList>
                     </Menu>
                 </Box>
                 <Box>
                     <Input 
+                        type="text" 
                         placeholder="검색어 입력" 
                         size="md" 
                         w={"300px"}
-                        value={search}
                         onChange={changeSearch}
                     />
-                    <Menu>
+                    {/* <Menu>
                         <MenuButton as={Button} rightIcon={<TiArrowUnsorted />}>
                             통합 검색
                         </MenuButton>
@@ -116,7 +118,7 @@ const Board = () => {
                             <MenuItem>제목 검색</MenuItem>
                             <MenuItem>작성자 아이디</MenuItem>
                         </MenuList>
-                    </Menu>
+                    </Menu> */}
                     
                 </Box>
             </Box>
@@ -129,9 +131,8 @@ const Board = () => {
             </Stack>
             }
 
-            {/* 게시글 목록 */}
             <Box p="6" minHeight="70vh">
-                {currentPosts.map((post, index) => (
+                {postList.map((post, index) => (
                     <Box onClick={movePage} id = "board-detail"  name={post.postCode} key={index} p="4" borderWidth="1px" borderRadius="md" mb="4" _hover={{ cursor: "pointer" }}>
                         <Text id = "board-detail"  name={post.postCode} fontSize='xl' fontWeight={"bold"}>{post.title}</Text>
                         <Text id = "board-detail"  name={post.postCode}>{post.content}</Text>
@@ -145,16 +146,15 @@ const Board = () => {
                 ))}
             </Box>
 
-            {/* 페이지 네비게이션 */}
             <Box mt="6" mb="4" textAlign="center">
                 <HStack spacing="4" justify="center">
                     {Array.from({ length: pageCount.current }, (_, index) => (
                         <Button
-                            key={index}
                             colorScheme={page === index + 1 ? buttonScheme : "gray"}
                             onClick={(e) => {
                                 setPage(index + 1);
                             }}
+                            key={index}
                         >
                             {index + 1}
                         </Button>
