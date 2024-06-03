@@ -68,11 +68,11 @@ const MessageDetail = () => {
     useEffect(() => {
         combinedFetchAndUpdate();
 
-        const interval = setInterval(() => {
-            combinedFetchAndUpdate();
-        }, 5000); // 5초마다 실행
+        // const interval = setInterval(() => {
+        //     combinedFetchAndUpdate();
+        // }, 5000); // 5초마다 실행
 
-        return () => clearInterval(interval); // Cleanup on unmount
+        // return () => clearInterval(interval); // Cleanup on unmount
     }, [user, target, isSubmit]);
 
     const handleSendMessage = async (e) => {
