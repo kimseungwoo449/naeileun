@@ -44,10 +44,10 @@ const DeletePost = () => {
 
             if (data.status) {
                 alert("게시글 삭제가 완료되었습니다.");
-                navigate('/board/view', { state: { boardCode: boardCode, board: boardList } });
+                navigate('/board/view', { state: { boardCode: boardCode, boardList: boardList } });
             } else {
                 alert("게시글 삭제를 실패하였습니다.");
-                navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, board: boardList } });
+                navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } });
             }
         });
     };
