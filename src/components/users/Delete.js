@@ -74,7 +74,7 @@ const Delete = () => {
         if (user.password === password) {
             try {
                 const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/delete`, {
-                    method: 'POST',
+                    method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
                     },
