@@ -1,53 +1,3 @@
-// import React, { useState } from 'react';
-// import { useLogin } from '../LoginContext';
-// import { useNavigate } from 'react-router-dom';
-// import { Box } from '@chakra-ui/react';
-// const Delete = () => {
-//     const [password, setPassword] = useState('');
-//     const{user} = useLogin();
-//     const navigate = useNavigate();
-//     const submit = async e =>{
-//         console.log('bb')
-//         e.preventDefault();
-//         if(user.password === password){
-//             try {
-//                 const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/delete`, {
-//                     method: 'POST',
-//                     headers: {
-//                         'Content-Type': 'application/json'
-//                     },
-//                     body: JSON.stringify(user)
-//                 });
-    
-//                 const result = await response.json();
-//                 if (response.ok) {
-//                     // 탈퇴 성공 시 메인 페이지로 이동
-                
-//                     navigate('/user/logout')
-//                 } else {
-//                     // 탈퇴 실패 시 오류 메시지 출력
-                   
-//                     console.error('탈퇴 실패:', result.message);
-//                 }
-//                 console.log('성공:', result);
-//             } catch (error) {
-//                 console.error('오류:', error);
-//             }
-//         }
-//     }
-//     return (
-//         <div>
-//             <Box>
-//                 <form method='POST' onSubmit={submit}>
-//                 <input type='pasword' id ="pw" name = "pw" placeholder='비밀번호' value={password} onChange={e=>setPassword(e.target.value)}/>
-//                 <input type='submit' value={'회원탈퇴'}/>
-//                 </form>
-//             </Box>
-//         </div>
-//     );
-// };
-
-// export default Delete;
 import React, { useState } from 'react';
 import { useLogin } from '../LoginContext';
 import { useNavigate } from 'react-router-dom';
@@ -69,16 +19,73 @@ const Delete = () => {
     const navigate = useNavigate();
     const toast = useToast();
 
+    const combinedFetchDeleteInfo = async () => {
+        await Promise.all([deleteResumeAll(), deleteIntroductionAll(),deleteMessageAll()]);
+    };
+
+    const deleteResumeAll = ()=>{
+        fetch(`${process.env.REACT_APP_SERVER_URL}/resume`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                "Content-Type": "application/json;charset=UTF8"
+            },
+            body: JSON.stringify({
+                "user_id" : user.id
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
+    }
+
+    const deleteIntroductionAll = ()=>{
+        fetch(`${process.env.REACT_APP_SERVER_URL}/self-introduction`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                "Content-Type": "application/json;charset=UTF8"
+            },
+            body: JSON.stringify({
+                "user_id" : user.id
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
+    }
+
+    const deleteMessageAll = ()=>{
+        fetch(`${process.env.REACT_APP_SERVER_URL}/message`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                "Content-Type": "application/json;charset=UTF8"
+            },
+            body: JSON.stringify({
+                "send_user_id" : user.id,
+                "receive_user_id" : user.id
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
+    }
+
     const submit = async e => {
         e.preventDefault();
         if (user.password === password) {
+            combinedFetchDeleteInfo();
             try {
                 const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/delete`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ userCode: user.userCode, password: password })
+                    body: JSON.stringify(user)
                 });
 
                 const result = await response.json();
