@@ -92,9 +92,7 @@ const Delete = () => {
                     });
                     navigate('/user/logout');
                 } else {
-<<<<<<< HEAD
                     // 탈퇴 실패 시 오류 메시지 출력
-=======
                     toast({
                         title: "탈퇴 실패",
                         description: result.message || "회원 탈퇴에 실패했습니다.",
@@ -102,7 +100,6 @@ const Delete = () => {
                         duration: 3000,
                         isClosable: true,
                     });
->>>>>>> f8c90c39fd18a8bd298195e02fedf029cf7e1a61
                     console.error('탈퇴 실패:', result.message);
                 }
             } catch (error) {
