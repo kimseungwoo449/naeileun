@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Box, Button, FormControl, Input, Textarea, VStack, HStack, IconButton, Heading, Select, Image } from '@chakra-ui/react';
+import { Box, Button, FormControl, Input, Textarea, VStack, HStack, IconButton, Heading, Select, Image, Alert, AlertIcon } from '@chakra-ui/react';
 import { FaRegSmile } from 'react-icons/fa';
 import { BsImage } from 'react-icons/bs';
 import { Form, useLocation, useNavigate } from 'react-router-dom';
@@ -25,6 +25,7 @@ const CreatePost = () => {
     const [preview, setPreview] = useState(null); // 파일 미리보기 URL 상태 관리
     const [showEmojiPicker, setShowEmojiPicker] = useState(false); // 이모티콘 선택기 표시 상태 관리
     const [selectBoardCode, setselectBoardCode] = useState(boardCode); // 선택된 게시판 코드 상태 관리
+    const [fileError, setFileError] = useState(false);
 
     const fileInputRef = useRef(null); // 파일 입력 요소에 접근하기 위한 ref
 
@@ -91,10 +92,16 @@ const CreatePost = () => {
         const file = e.target.files[0]; // 선택된 파일
         if (file) {
             if (file.size > FILE_SIZE_MAX_LIMIT) {
-                alert("파일 크기는 5MB를 초과할 수 없습니다."); // 경고 메시지 표시
+                <Alert status='error'>
+                    <AlertIcon />
+                    파일 크기는 5MB를 초과할 수 없습니다.
+                </Alert> // 경고 메시지 표시
+                // alert("파일 크기는 5MB를 초과할 수 없습니다."); 
+                setFileError(true); // 파일 크기 초과 경고 메시지 표시
                 setSelectedFile(null); // 선택된 파일 초기화
                 setPreview(null); // 파일 미리보기 초기화
             } else {
+                setFileError(false); // 파일 크기 초과 경고 메시지 숨김
                 setSelectedFile(file); // 선택된 파일 상태 업데이트
                 const reader = new FileReader();
                 reader.onloadend = () => {
@@ -198,6 +205,12 @@ const CreatePost = () => {
                             </HStack>
                             <Button type='submit' colorScheme="gray" size="md">등록</Button>
                         </HStack>
+                        {fileError && (
+                            <Alert status='error' mt={4}>
+                                <AlertIcon />
+                                파일 크기는 5MB를 초과할 수 없습니다.
+                            </Alert>
+                        )}
                     </VStack>
                 </Form>
             </Box>
