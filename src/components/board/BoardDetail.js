@@ -22,16 +22,13 @@ import CommentList from './post-comment/CommentList'; // CommentList import
 
 const BoardDetail = () => {
     const navigate = useNavigate();
-
     const [post, setPost] = useState([]);
     const [page, setPage] = useState(1);
     const { user } = useLogin();
+    const [totalComments, setTotalComments] = useState(0); // totalComments 상태 추가
     {user != null ? console.log("userId : " + user.id) : console.log("user : " + user) }
-
     const pageCount = useRef(1);
-
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
-
     const location = useLocation();
     const postCode = location.state.postCode;
     const boardCode = location.state.boardCode;
@@ -43,13 +40,11 @@ const BoardDetail = () => {
     const movePage = (e) => {
         const command = e.target.name;
         const imagePath = e.target.value;
-
         console.log("command : " + command);
         console.log("boardCode : " + boardCode);
         console.log("boardList : " + boardList);
         console.log("postCode : " + postCode);
         console.log("imagePath : " + imagePath);
-
         if(command === 'update-post') {
             navigate('/board/update', { state: { boardCode: boardCode, boardList: boardList, postCode: postCode, imagePath: imagePath } } );
         }
@@ -69,10 +64,8 @@ const BoardDetail = () => {
                 },
             }
         );
-
         const data = await response.json();
         console.log(data)
-
         if (data.status) {
             navigate('/board');
         } else {
@@ -91,7 +84,6 @@ const BoardDetail = () => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-
             if (data.status) {
                 alert("게시글 추천이 완료되었습니다.");
                 fetchPost(); // 댓글 목록을 다시 불러옵니다.
@@ -112,7 +104,7 @@ const BoardDetail = () => {
                     <Text fontSize="xl" fontWeight="bold">
                         {post.title}
                     </Text>
-                    {(user != null && user.id === post.userId) && 
+                    {(user != null && user.id === post.userId) &&
                     <Menu>
                         <MenuButton
                             as={IconButton}
@@ -164,10 +156,10 @@ const BoardDetail = () => {
                             isRound
                             aria-label="Comment"
                         />
-                        <Text fontSize="sm">&emsp;21</Text>
+                        <Text fontSize="sm">&emsp;{totalComments}</Text> {/* totalComments 사용 */}
                     </HStack>
                 </HStack>
-                <CommentList postCode={postCode} /> {/* CommentList 추가 */}
+                <CommentList postCode={postCode} setTotalComments={setTotalComments} /> {/* CommentList에 setTotalComments 전달 */}
             </VStack>
         </Box>
     );
