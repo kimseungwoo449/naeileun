@@ -14,28 +14,30 @@ import {
     Td,
     TableContainer,
 } from '@chakra-ui/react'
+import { useLogin } from '../LoginContext';
 
 const StudyBoard = () =>{
     const navigate = useNavigate();
     const location = useLocation(); // 2번 라인
     const groupCode = location.state.groupCode;
-    //const {setIsLoggedIn, setUser} = useLogin();
-    
-    console.log(groupCode);
+
+    const { user } = useLogin();
 
     const [post, setPost] = useState([]);
     const [study, setStudy] = useState([]);
     const [isMember,setIsMember] = useState(false);
+
     const [page, setPage] = useState(1);
+    const [load, setLoad] = useState();
 
     const postsPerPage = 5; // 페이지당 보여줄 게시판 수
     const pageCount = useRef(1);
 
-    const fetchBoard = async() => {
+    const fetchBoard = async(userCode) => {
         const req = {
             "group_code" : groupCode,
             //user 수정 연결 후 수정 **********
-            "user_code" : "2"
+            "user_code" : userCode
         }
 
         console.log(req);
@@ -70,7 +72,7 @@ const StudyBoard = () =>{
     const quit = async() =>{
         const request = { 
             "group_code" : groupCode,
-            "user_code" : "2" //login 구현 후 수정
+            "user_code" : user.userCode //login 구현 후 수정
         }
 
         const response = await fetch(
@@ -98,7 +100,7 @@ const StudyBoard = () =>{
 
         const request = { 
             "group_code" : groupCode,
-            "user_code" : "2"  //userId일 시 백도 수정
+            "user_code" : user.userCode  //userId일 시 백도 수정
         }
 
         const response = await fetch(
@@ -112,20 +114,30 @@ const StudyBoard = () =>{
         });
 
         const data = await response.json();
-        
+        console.log(data);
+        console.log("status : "+data.status);
         if(data.status === true){
-            fetchBoard();
+            setLoad(1);
         }
         
     }
 
     const setting =(e)=>{
-        navigate('/study/setting/access',{state :{groupCode : groupCode, adminCode :study.adminCode}})
+        if(study.adminCode === user.userCode){
+            navigate('/study/setting/access',{state :{groupCode : groupCode, adminCode :study.adminCode}});
+            return;
+        }
+
+        navigate('/study/board',{state:{groupCode : groupCode}});
     }
 
     useEffect(()=>{
-        fetchBoard();
-    },[page]);
+        if (user) {
+            fetchBoard(user.userCode);
+        } else {
+            navigate('/user/login');
+        }
+    },[load,page,user,navigate]);
     
 
     return(
@@ -139,7 +151,7 @@ const StudyBoard = () =>{
                     <HStack ml={'auto'}>
                         {
                              //user //need user update
-                            study.adminCode === "2" ?
+                            study.adminCode === user.userCode ?
                             <Input type='hidden'></Input> : 
                             (
                                 isMember === true ?
@@ -156,7 +168,7 @@ const StudyBoard = () =>{
                         {
                             //수정 수정 수정 수정 수정 수정
                             //user code 가져오기 //수정요함
-                            "2" === study.adminCode ?
+                            user.userCode === study.adminCode ?
                             <Icon as={MdSettings} onClick={setting} boxSize={'1.4em'}></Icon> : 
                             <Input type='hidden'></Input>
                         }
