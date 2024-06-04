@@ -90,9 +90,12 @@ const Calendar = () => {
           <Text fontSize="sm" color={isToday ? 'blue.600' : 'black'}>
             {day.getDate()}
           </Text>
-          {filteredJobs.map(job => (
-            <Text key={job.postingId} fontSize="xs">{job.companyName} - {job.jobTitle}</Text>
-          ))}
+          {jobData
+            .filter(job => new Date(job.applicationStart).toDateString() === day.toDateString())
+            .map(job => (
+              <Text key={job.postingId} fontSize="xs">{job.companyName} - {job.jobTitle}</Text>
+            ))}
+            
         </GridItem>
       );
       day.setDate(day.getDate() + 1);
