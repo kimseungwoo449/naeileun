@@ -139,7 +139,7 @@ const Board = () => {
                         <HStack id = "board-detail"  name={post.postCode} spacing="4" mt="2">
                             <Text id = "board-detail"  name={post.postCode}>작성자 {post.userId}</Text>
                             <Text id = "board-detail"  name={post.postCode}>추천 {post.recommendation}</Text>
-                            <Text id = "board-detail"  name={post.postCode}>댓글 {post.comments}</Text>
+                            <Text id = "board-detail"  name={post.postCode}>댓글 {post.commentCount}</Text>
                             <Text id = "board-detail"  name={post.postCode}>작성일자 {new Date(post.writeDate).toLocaleString()}</Text>
                         </HStack>
                     </Box>
