@@ -3,7 +3,7 @@ import { Box, VStack, Textarea, Button } from '@chakra-ui/react';
 import Comment from '../../module/Comment';
 import { useLogin } from '../../LoginContext';
 
-const CommentList = ({ postCode }) => {
+const CommentList = ({ postCode, setTotalComments }) => {
     const [commentList, setCommentList] = useState([]);
     const [newComment, setNewComment] = useState('');
     const { user } = useLogin();
@@ -25,7 +25,7 @@ const CommentList = ({ postCode }) => {
         } else {
             const totalComments = data.result.length; // 총 댓글 수
             console.log("totalComments: " + totalComments);
-
+            setTotalComments(totalComments); // totalComments 값을 상위 컴포넌트로 전달
             setCommentList(data.result);
         }
     };
