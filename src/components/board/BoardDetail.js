@@ -80,6 +80,27 @@ const BoardDetail = () => {
         }
     }
 
+    const updateRecommendation = (comment) => {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/board/recommendation?post_code=${postCode}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+
+            if (data.status) {
+                alert("게시글 추천이 완료되었습니다.");
+                fetchPost(); // 댓글 목록을 다시 불러옵니다.
+            } else {
+                alert("게시글 추천에 실패하였습니다.");
+            }
+        });
+    };
+
     useEffect(() => {
         fetchPost();
     }, [page]);
@@ -132,6 +153,7 @@ const BoardDetail = () => {
                             size="sm"
                             isRound
                             aria-label="Like"
+                            onClick={updateRecommendation}
                         />
                         <Text fontSize="sm">&emsp;{post.recommendation}</Text>
                     </HStack>
