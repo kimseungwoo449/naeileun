@@ -4,6 +4,7 @@ import { FaPencil } from 'react-icons/fa6';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { TiArrowUnsorted } from 'react-icons/ti';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useLogin } from '../LoginContext';
 
 const Board = () => {
     const navigate = useNavigate();
@@ -11,6 +12,8 @@ const Board = () => {
     const [postList, setPostList] = useState([]);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
+    
+    const { user } = useLogin();
 
     const postsPerPage = 10; // 페이지당 보여줄 게시판 수
     const pageCount = useRef(1);
@@ -18,8 +21,8 @@ const Board = () => {
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const location = useLocation();
-    const code = location.state.bordCode;
-    const boardList = location.state.board;
+    const code = location.state.boardCode;
+    const boardList = location.state.boardList;
     console.log("code: " + code)
     console.log("boardList: " + boardList)
     
@@ -27,16 +30,15 @@ const Board = () => {
         const command = e.target.id;
         const boardCode = code;
         const postCode = e.target.getAttribute("name");
-        const board = boardList;
 
-        console.log("board : " + board);
+        console.log("boardList : " + boardList);
         console.log("postCode : " + postCode);
         console.log("command : " + command);
 
         if (command === 'board-detail')
-            navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, board: board } } );
+            navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } } );
         else if(command === 'write-post') {
-            navigate('/board/write', { state: { boardCode: boardCode, board: board } } );
+            navigate('/board/write', { state: { boardCode: boardCode, boardList: boardList } } );
         }
     }
 
@@ -118,11 +120,14 @@ const Board = () => {
                     
                 </Box>
             </Box>
+            {(user != null)
+            &&
             <Stack direction='row' spacing={4} justify={"end"} mr="10">
                 <Button id='write-post' size='lg' rightIcon={<FaPencil />} colorScheme='gray' variant='solid' onClick={movePage}>
                     글쓰기
                 </Button>
             </Stack>
+            }
 
             {/* 게시글 목록 */}
             <Box p="6" minHeight="70vh">
@@ -134,7 +139,7 @@ const Board = () => {
                             <Text id = "board-detail"  name={post.postCode}>작성자 {post.userId}</Text>
                             <Text id = "board-detail"  name={post.postCode}>추천 {post.recommendation}</Text>
                             <Text id = "board-detail"  name={post.postCode}>댓글 {post.comments}</Text>
-                            <Text id = "board-detail"  name={post.postCode}>작성일자 {post.writeDate}</Text>
+                            <Text id = "board-detail"  name={post.postCode}>작성일자 {new Date(post.writeDate).toLocaleString()}</Text>
                         </HStack>
                     </Box>
                 ))}

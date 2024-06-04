@@ -35,7 +35,15 @@ import DeleteUser from "./components/study/setting/DeleteUser";
 import UserAcess from "./components/study/setting/UserAcess";
 import Study from "./components/study/setting/Study";
 import CreatePost from "./components/board/post/CreatePost";
-import JoinStudy from "./components/study/JoinStudy";
+import MyIntroduction from "./components/users/mypage/MyIntroduction";
+import DeletePost from "./components/board/post/DeletePost";
+import UpdatePost from "./components/board/post/UpdatePost";
+import IntroductionDetail from "./components/introduction/IntroductionDetail";
+import WriteIntroduction from "./components/introduction/WriteIntroduction";
+import UpdateIntroduction from "./components/introduction/UpdateIntroduction";
+import MyMessageBox from "./components/message/MyMessageBox";
+import MessageDetail from "./components/message/MessageDetail";
+import FirstMessage from "./components/message/FirstMessage";
 
 
 
@@ -44,6 +52,12 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
+        children : [
+            {
+                path : "/",
+                element : <BoardAll />
+            }
+        ]
 
     },
     {
@@ -94,6 +108,10 @@ const router = createBrowserRouter([
                 element: <MyResume />,
 
             },
+            {
+                path:"/user/introduction",
+                element:<MyIntroduction />
+            }
         ]
     },
     {
@@ -129,6 +147,22 @@ const router = createBrowserRouter([
                 element: (
                     <>
                         <CreatePost />
+                    </>
+                ),
+            },
+            {
+                path: "/board/delete",
+                element: (
+                    <>
+                        <DeletePost />
+                    </>
+                ),
+            },
+            {
+                path: "/board/update",
+                element: (
+                    <>
+                        <UpdatePost />
                     </>
                 ),
             },
@@ -206,6 +240,43 @@ const router = createBrowserRouter([
             }
         ]
     },
+    {
+        path:"/introduction",
+        element : <Root />,
+        children:[
+            {
+                path:"/introduction/viewDetail/:documentCode",
+                element:<IntroductionDetail />
+            },
+            {
+                path:"/introduction/write",
+                element:<WriteIntroduction />
+            },
+            {
+                path:"/introduction/update/:documentCode",
+                element:<UpdateIntroduction />
+            }
+        ]
+
+    },
+    {
+        path:"/message",
+        element : <Root />,
+        children:[
+            {
+                path:"/message/myMessageBox",
+                element:<MyMessageBox />
+            },
+            {
+                path:"/message/:target",
+                element:<MessageDetail />
+            },{
+                path:"/message/newTarget",
+                element : <FirstMessage />
+            }
+        ]
+
+    }
 ], {
     basename: "/naeileun",
 });

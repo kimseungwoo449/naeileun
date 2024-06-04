@@ -35,20 +35,20 @@ const MyInfo = () => {
             value : value,
             id : user.id
          };
-        const updateInfo = {
-            id: user.id,
-            [field]: value,
-            payload,
-            name: user.name,
-            resident_number: user.resident_number,
-            user_age: user.age,
-            phone: user.phone,
-            email: user.email,
-            address: user.address,
-            admin: user.admin
-        };
-        console.log(updateInfo);
-        //update action 에서 처리하기
+        // const updateInfo = {
+        //     id: user.id,
+        //     [field]: value,
+        //     payload,
+        //     name: user.name,
+        //     resident_number: user.resident_number,
+        //     user_age: user.age,
+        //     phone: user.phone,
+        //     email: user.email,
+        //     address: user.address,
+        //     admin: user.admin
+        // };
+        // console.log(updateInfo);
+     
         if (field === 'password') {
             if (currentPassword !== user.password) {
                 alert('현재비밀번호가 일치하지 않습니다.');
@@ -63,7 +63,7 @@ const MyInfo = () => {
         }
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/update`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'accept': 'application/json',
@@ -87,7 +87,7 @@ const MyInfo = () => {
         
         
         
-        <Box bg="teal.100" p={4} borderRadius="md" justifyContent={"center"}>
+        <Box bg="blue.100" p={4} borderRadius="md" justifyContent={"center"}>
             
             <Text fontSize="lg" fontWeight="bold" mb={2}>{user.name}</Text>
             <Flex alignItems="center" mb={2}>
@@ -142,7 +142,7 @@ const MyInfo = () => {
                         )}
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={handleSave}>
+                        <Button bg={'blue.100'} mr={3} onClick={handleSave}>
                             저장
                         </Button>
                         <Button variant="ghost" onClick={closeModal}>취소</Button>

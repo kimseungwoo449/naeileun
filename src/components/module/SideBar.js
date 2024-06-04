@@ -19,6 +19,8 @@ const Sidebar = () => {
             navigate('/user/home');
         else if (command === 'info')
             navigate('/user/info');
+        else if(command ==='introduction')
+            navigate('/user/introduction');
     };
 
 
@@ -83,6 +85,19 @@ const Sidebar = () => {
                                 <Text color="blue.500">나의 스터디</Text>
                             </Box>
                             <Box
+                                id='introduction'
+                                display="flex"
+                                alignItems="center"
+                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
+                                onClick={movePage}
+                                bg={isActive('/user/introduction') ? 'blue.100' : 'transparent'}
+                                p={3}
+                                borderRadius="md"
+                            >
+                                <Icon as={FaBook} mr={2} color="blue.500" />
+                                <Text color="blue.500">나의 자기소개서</Text>
+                            </Box>
+                            <Box
                                 id='info'
                                 display="flex"
                                 alignItems="center"
@@ -95,7 +110,7 @@ const Sidebar = () => {
                                 <Icon as={RiSettings4Fill} mr={2} color="blue.500" />
                                 <Text color="blue.500">나의 정보</Text>
                             </Box>
-                            {/* Add other items here in similar fashion */}
+                          
                         </VStack>
                     </Box>
                 </Collapse>
@@ -106,7 +121,7 @@ const Sidebar = () => {
                         <Icon as={FaBook} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/study')} />
                         <Icon as={RiSettings4Fill} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/info')} />
                         
-                        {/* Add other icons here in similar fashion */}
+                 
                     </VStack>
                 )}
 
