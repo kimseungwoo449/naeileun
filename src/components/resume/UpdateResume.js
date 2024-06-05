@@ -1,5 +1,5 @@
-import { Box, Button, Flex, HStack, Input, Select, Text, VStack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { Box, Button, Flex, HStack, Input, Select, Text, VStack, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Form, useNavigate, useParams } from 'react-router-dom';
 import { useLogin } from '../LoginContext';
 
@@ -34,23 +34,30 @@ const UpdateResume = () => {
     const { user } = useLogin();
     const navigate = useNavigate();
     const splitValue = 'wLYPvSwquc';
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [alert, setAlert] = useState({ show: false, title: '', description: '' });
+    const cancelRef = useRef();
 
     const [careerShow, setCareerShow] = useState(false);
 
     const careerChange = (e) => {
-        console.log(e.target.value);
         if (e.target.value === "newbie") {
-            formValues.isNewbie = true;
+            setFormValues({
+                ...formValues,
+                isNewbie: true,
+                career1: '',
+                career2: '',
+                career3: ''
+            });
             setCareerShow(false);
-            formValues.career1 = '';
-            formValues.career2 = '';
-            formValues.career3 = '';
         } else {
-            formValues.isNewbie = false;
+            setFormValues({
+                ...formValues,
+                isNewbie: false
+            });
             setCareerShow(true);
         }
-
-    }
+    };
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
@@ -62,13 +69,10 @@ const UpdateResume = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log("data : ", data);
-                setResume(data);
-
-
                 if (user === null || user.id !== data.user_id) {
                     navigate("/");
                 } else {
+                    setResume(data);
                     setFormValues({
                         title: data.title || '',
                         career1: data.career?.split(splitValue)[0] || '',
@@ -97,12 +101,14 @@ const UpdateResume = () => {
                     setCareerShow(!data.is_newbie);
                 }
             })
-            ;
+            .catch(error => {
+                setAlert({
+                    show: true,
+                    title: 'Error',
+                    description: 'An error occurred while fetching the resume. Please try again later.'
+                });
+            });
     }, []);
-
-    useEffect(() => {
-        console.log("resume : ", resume);
-    }, [resume])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -114,7 +120,8 @@ const UpdateResume = () => {
 
     const submit = e => {
         e.preventDefault();
-
+        setIsSubmitting(true);
+        setAlert({ show: false, title: '', description: '' });
 
         const req = {
             "user_id": user.id,
@@ -134,8 +141,6 @@ const UpdateResume = () => {
             "is_newbie" : formValues.isNewbie
         };
 
-        console.log("update : ",req)
-
         fetch(`${process.env.REACT_APP_SERVER_URL}/resume`, {
             method: 'PUT',
             headers: {
@@ -146,18 +151,51 @@ const UpdateResume = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-
+                setIsSubmitting(false);
                 if (data.status) {
-                    navigate('/');
+                    navigate('/user/resume');
                 } else {
-                    navigate(`/resume/update/${resumeCode}`);
+                    setAlert({
+                        show: true,
+                        title: 'Error',
+                        description: '업데이트에 실패했습니다. 다시 시도해 주세요.'
+                    });
                 }
+            })
+            .catch(error => {
+                setIsSubmitting(false);
+                setAlert({
+                    show: true,
+                    title: 'Error',
+                    description: '업데이트에 실패했습니다. 다시 시도해 주세요.'
+                });
             });
     };
 
     return (
         <Box w={{ base: '90%', md: '1100px' }} m="auto" p={5} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="gray.50">
+            <AlertDialog
+                isOpen={alert.show}
+                leastDestructiveRef={cancelRef}
+                onClose={() => setAlert({ show: false, title: '', description: '' })}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent backgroundColor = '#eb7368'>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold" color={'white'}>
+                            {alert.title}
+                        </AlertDialogHeader>
+                        <AlertDialogBody color={'white'}>
+                            {alert.description}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button backgroundColor='lightgray' ref={cancelRef} onClick={() => setAlert({ show: false, title: '', description: '' })}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+
             <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/resume`} onSubmit={submit}>
                 <Flex direction="column" alignItems="center">
                     <Text as='b' fontSize="3xl" textAlign="center" mb={5} color="black">이력서 수정</Text>
@@ -196,11 +234,10 @@ const UpdateResume = () => {
                                 placeholder='핸드폰 번호'
                                 value={resume.phone}
                                 disabled
-
                             />
                         </Box>
 
-                        <Select name='careerable' placeholder='경력유무' onChange={careerChange} value={formValues.isNewbie?"newbie":"experienced-person"}>
+                        <Select name='careerable' placeholder='경력유무' onChange={careerChange} value={formValues.isNewbie ? "newbie" : "experienced-person"}>
                             <option value='newbie' >신입</option>
                             <option value='experienced-person' >경력</option>
                         </Select>
@@ -383,7 +420,7 @@ const UpdateResume = () => {
                         </Box>
                     </VStack>
                     <HStack spacing={4} mt={6}>
-                        <Button type="submit" bg="teal.500" color="white" _hover={{ bg: 'teal.600' }}>저장하기</Button>
+                        <Button type="submit" bg="teal.500" color="white" _hover={{ bg: 'teal.600' }} isLoading={isSubmitting}>저장하기</Button>
                         <Button bg="red.500" color="white" _hover={{ bg: 'red.600' }} onClick={() => navigate('/')}>취소하기</Button>
                     </HStack>
                 </Flex>

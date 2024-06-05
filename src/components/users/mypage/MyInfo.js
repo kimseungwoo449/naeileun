@@ -66,12 +66,11 @@ const MyInfo = () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'accept': 'application/json',
-                'authorization': 'ADMIN ${process.env.REACT_APP_ADMIN_KEY}'
+                // 'accept': 'application/json',
+                'authorization': `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
             },
             
-            body: JSON.stringify(payload),
-           
+            body: JSON.stringify(payload), 
         })
         .then(response => response.json())
         .then(data => {
@@ -95,7 +94,7 @@ const MyInfo = () => {
                 <Button size="sm" onClick={() => openModal('phone')}>수정</Button>
             </Flex>
             <Flex alignItems="center" mb={2}>
-                <Text flex="1" fontSize="md">{user.email}</Text>
+                <Text flex="1" fontSize="md">{user.email==null?"이메일 변경" : user.email}</Text>
                 <Button size="sm" onClick={() => openModal('email')}>수정</Button>
             </Flex>
             <Flex alignItems="center" mb={2}>

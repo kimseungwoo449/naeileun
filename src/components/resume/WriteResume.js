@@ -1,16 +1,17 @@
-import { Box, Button, Flex, Grid, Input, Text, VStack, HStack, Select } from '@chakra-ui/react';
-import React, { useContext, useState } from 'react';
+import { Box, Button, Flex, Grid, Input, Text, VStack, HStack, Select, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
+import React, { useState, useRef } from 'react';
 import { Form, useNavigate } from 'react-router-dom';
-import LoginContext, { useLogin } from '../LoginContext';
+import { useLogin } from '../LoginContext';
 
 const WriteResume = () => {
     const navigate = useNavigate();
     const { user } = useLogin();
     const [careerShow, setCareerShow] = useState(false);
-    console.log(user.name);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [alert, setAlert] = useState({ show: false, title: '', description: '' });
+    const cancelRef = useRef();
 
     const careerChange = e => {
-        console.log(e.target.value);
         if (e.target.value === "newbie") {
             setCareerShow(false);
         } else {
@@ -20,6 +21,8 @@ const WriteResume = () => {
 
     const submit = e => {
         e.preventDefault();
+        setIsSubmitting(true);
+        setAlert({ show: false, title: '', description: '' });
 
         const splitValue = "wLYPvSwquc";
 
@@ -40,8 +43,6 @@ const WriteResume = () => {
             "expected_region": e.target.er1.value + splitValue + e.target.er2.value + splitValue + e.target.er3.value
         }
 
-        console.log(req);
-
         fetch(`${process.env.REACT_APP_SERVER_URL}/resume`, {
             method: 'POST',
             headers: {
@@ -52,16 +53,50 @@ const WriteResume = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-
+                setIsSubmitting(false);
                 if (data.status) {
-                    navigate('/');
+                    navigate('/user/resume');
+                } else {
+                    setAlert({
+                        show: true,
+                        title: 'Error',
+                        description: '저장에 실패했습니다. 다시 시도해주세요.'
+                    });
                 }
+            })
+            .catch(error => {
+                setIsSubmitting(false);
+                setAlert({
+                    show: true,
+                    title: 'Error',
+                    description: '저장에 실패했습니다. 다시 시도해주세요.'
+                });
             });
     }
 
     return (
         <Box w={{ base: '90%', md: '1100px' }} m="auto" p={5} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="gray.50">
+            <AlertDialog
+                isOpen={alert.show}
+                leastDestructiveRef={cancelRef}
+                onClose={() => setAlert({ show: false, title: '', description: '' })}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent backgroundColor = '#eb7368'>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold" color={'white'}>
+                            {alert.title}
+                        </AlertDialogHeader>
+                        <AlertDialogBody color={'white'}>
+                            {alert.description}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button backgroundColor='lightgray' ref={cancelRef} onClick={() => setAlert({ show: false, title: '', description: '' })}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
             <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/resume`} onSubmit={submit}>
                 <Flex direction="column" alignItems="center">
                     <Text as='b' fontSize="3xl" textAlign="center" mb={5} color="black">이력서 작성</Text>
@@ -129,7 +164,7 @@ const WriteResume = () => {
                         </Box>
                     </VStack>
                     <HStack spacing={4} mt={6}>
-                        <Button type='submit' bg="teal.500" color="white" _hover={{ bg: 'teal.600' }}>저장하기</Button>
+                        <Button type='submit' bg="teal.500" color="white" _hover={{ bg: 'teal.600' }} isLoading={isSubmitting}>저장하기</Button>
                         <Button bg="red.500" color="white" _hover={{ bg: 'red.600' }} onClick={() => navigate('/')}>취소하기</Button>
                     </HStack>
                 </Flex>

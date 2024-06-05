@@ -1,5 +1,5 @@
-import { Box, Button, Flex, Text, Input, VStack, Grid, GridItem, Heading } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { Box, Button, Flex, Text, Input, VStack, Grid, GridItem, Heading, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../LoginContext';
 
@@ -8,7 +8,9 @@ const MessageDetail = () => {
     const { user } = useLogin();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-    const [isSubmit, setIsSubmit] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [alert, setAlert] = useState({ show: false, title: '', description: '' });
+    const cancelRef = useRef();
 
     const fetchMessages = async () => {
         try {
@@ -19,20 +21,24 @@ const MessageDetail = () => {
                     'Content-Type': 'application/json;charset=UTF8'
                 }
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
+            
             const data = await response.json();
 
             if (data && data[target]) {
                 setMessages(data[target]);
             } else {
-                console.error('No messages found for user');
+                setAlert({
+                    show: true,
+                    title: 'Error',
+                    description: '쪽지를 가져오는 중 오류가 발생했습니다. 다시 시도해주세요.'
+                });
             }
         } catch (error) {
-            console.error('Error fetching message details:', error);
+            setAlert({
+                show: true,
+                title: 'Error',
+                description: '쪽지를 가져오는 중 오류가 발생했습니다. 다시 시도해주세요.'
+            });
         }
     };
 
@@ -51,13 +57,20 @@ const MessageDetail = () => {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                setAlert({
+                    show: true,
+                    title: 'Error',
+                    description: '쪽지를 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.'
+                });
             }
 
             const data = await response.json();
-            console.log("Messages updated:", data);
         } catch (error) {
-            console.error('Error updating messages:', error);
+            setAlert({
+                show: true,
+                title: 'Error',
+                description: '쪽지를 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.'
+            });
         }
     };
 
@@ -67,16 +80,11 @@ const MessageDetail = () => {
 
     useEffect(() => {
         combinedFetchAndUpdate();
-
-        // const interval = setInterval(() => {
-        //     combinedFetchAndUpdate();
-        // }, 5000); // 5초마다 실행
-
-        // return () => clearInterval(interval); // Cleanup on unmount
-    }, [user, target, isSubmit]);
+    }, [user, target, isSubmitting]);
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
         const req = {
             "user_id": user.id,
@@ -101,15 +109,20 @@ const MessageDetail = () => {
             }
 
             const data = await response.json();
-            setIsSubmit(!isSubmit);
+            setIsSubmitting(false);
             setNewMessage('');  // Clear the input field after sending the message
         } catch (error) {
-            console.error('Error sending message:', error);
+            setIsSubmitting(false);
+            setAlert({
+                show: true,
+                title: 'Error',
+                description: '메세지 전송에 실패했습니다. 다시 시도해주세요.'
+            });
         }
     };
 
     return (
-        <Flex direction="column" h="100vh" p={5} w={'50%'} m={'auto'} justifyContent={'center'} >
+        <Flex direction="column" h="100vh" p={5} w={'50%'} m={'auto'} justifyContent={'center'}>
             <Heading mb={5} textAlign="center">{target}과의 쪽지함</Heading>
             <Box flex="1" overflowY="auto" border={'1px solid lightgray'} p={'50px'} borderRadius={'20px'} boxShadow={'lg'}>
                 <VStack spacing={4} align="stretch">
@@ -141,10 +154,31 @@ const MessageDetail = () => {
                 <Box mt={4}>
                     <Flex>
                         <Input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="메세지 입력" />
-                        <Button type='submit' colorScheme="teal" ml={2}>전송</Button>
+                        <Button type='submit' colorScheme="teal" ml={2} isLoading={isSubmitting}>전송</Button>
                     </Flex>
                 </Box>
             </form>
+            <AlertDialog
+                isOpen={alert.show}
+                leastDestructiveRef={cancelRef}
+                onClose={() => setAlert({ show: false, title: '', description: '' })}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent backgroundColor='#eb7368'>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold" color={'white'}>
+                            {alert.title}
+                        </AlertDialogHeader>
+                        <AlertDialogBody color={'white'}>
+                            {alert.description}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button backgroundColor='lightgray' ref={cancelRef} onClick={() => setAlert({ show: false, title: '', description: '' })}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
         </Flex>
     );
 };
