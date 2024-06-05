@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Image, Text, VStack, HStack, Button, Grid } from '@chakra-ui/react';
-import Calendar from '../../module/Calendar';
+import Calendar from '../../module/calendar/Calendar';
 
 const MyHome = () => {
   return (

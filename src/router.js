@@ -38,6 +38,7 @@ import CreatePost from "./components/board/post/CreatePost";
 import MyIntroduction from "./components/users/mypage/MyIntroduction";
 import DeletePost from "./components/board/post/DeletePost";
 import UpdatePost from "./components/board/post/UpdatePost";
+import SearchPost from "./components/job-posting/SearchPost";
 
 
 
@@ -221,7 +222,16 @@ const router = createBrowserRouter([
                 element:<UpdateResume />
             }
         ]
-    },
+    }, {
+        path: "/job",
+        element: <Root />,
+        children:[
+            {
+                path:"/job/search",
+                element:<SearchPost />
+            }
+        ]
+    }
 ], {
     basename: "/naeileun",
 });
