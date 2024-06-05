@@ -1,12 +1,16 @@
 import {React, useRef, useState,useEffect } from 'react';
 import {useNavigate, useLocation, Form} from 'react-router-dom';
 import {Textarea,Button,Stack,Text,Box} from '@chakra-ui/react';
+import { useLogin } from '../LoginContext';
 
 const JoinStudy = () =>{
     const navigate = useNavigate();
     const location = useLocation();
     const groupCode = location.state.groupCode;
+
     const [comment,setComment] = useState("");
+
+    const {user} = useLogin();
 
     const checkComment =(e) =>{
         const data = e.target.value;
@@ -18,10 +22,10 @@ const JoinStudy = () =>{
     }
 
 
-    const checkAwait = async () =>{
+    const checkStandbyMember = async () =>{
         const req ={
             "group_code" : groupCode,
-            "user_code" : "2"   //userCode
+            "user_code" : user.userCode
         }
 
         const response = await fetch(
@@ -35,18 +39,17 @@ const JoinStudy = () =>{
         ) 
 
         const data = await response.json();
-        console.log(data.status);
-        if(data.status === true){
+        if(data.status){
             alert("이미 가입 신청했습니다.");
             navigate('/study/board',{state:{groupCode : groupCode}});
         }
 
     }
 
-    const addAwaiter = async() =>{
+    const addStandbyMember = async() =>{
         const req={
             "group_code" : groupCode,
-            "user_code" : "2", //로그인 완성 시 수정userCode
+            "user_code" : user.userCode,
             "comment" : comment
         }
 
@@ -61,7 +64,7 @@ const JoinStudy = () =>{
         )
 
         const data = await response.json();
-        if(data.status === true){
+        if(data.status){
             navigate('/study');
         }
 
@@ -69,12 +72,13 @@ const JoinStudy = () =>{
 
     const submit = (e) =>{
         e.preventDefault();
-        addAwaiter();
+        
+        addStandbyMember();
     }
 
 
     useEffect(()=>{
-        checkAwait()
+        checkStandbyMember()
     },[])
 
     return(
