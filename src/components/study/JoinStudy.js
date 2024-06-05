@@ -6,8 +6,6 @@ const JoinStudy = () =>{
     const navigate = useNavigate();
     const location = useLocation();
     const groupCode = location.state.groupCode;
-    //const {setIsLoggedIn, setUser} = useLogin();
-    //const userCode = setIsLoggedIn.userCode;
     const [comment,setComment] = useState("");
 
     const checkComment =(e) =>{
@@ -27,7 +25,7 @@ const JoinStudy = () =>{
         }
 
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/checkAwaiter`, {
+            `${process.env.REACT_APP_SERVER_URL}/study/checkStandbyMember`, {
                 method: 'POST',
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
@@ -53,7 +51,7 @@ const JoinStudy = () =>{
         }
 
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/addAwaiter`, {
+            `${process.env.REACT_APP_SERVER_URL}/study/addStandbyMember`, {
                 method: 'POST',
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
