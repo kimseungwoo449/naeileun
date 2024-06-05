@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, useToast } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, useToast, FormControl, FormLabel } from '@chakra-ui/react';
 
 const UpdatePost = ({ isOpen, onClose, job, fetchJobData }) => {
     const [updatedJob, setUpdatedJob] = useState({ ...job });
