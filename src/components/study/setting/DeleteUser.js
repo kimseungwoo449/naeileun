@@ -9,14 +9,12 @@ const DeleteUser = () =>{
     const groupCode = location.state.groupCode;
     const adminCode = location.state.adminCode;
     const [members,setMember] = useState([]);
+    const {user} = useLogin();
 
-    const admin = useLogin().id;
-    const adminId = "asdf";
     const getMembers = async() =>{
 
         const req ={
-            "group_code" : groupCode,
-            "user_id" : "2"  //user 수정 요함
+            "group_code" : groupCode
         }
 
         const request = await fetch(
@@ -76,7 +74,7 @@ const DeleteUser = () =>{
             <Stack ml={'45px'} >
                 <Text as={'b'} fontSize={'1.2em'} >멤버 관리</Text>
                 {members.map((member,index) => (
-                    member.userId === adminId ?
+                    member.userCode=== adminCode ?
                     <Input type='hidden' key={index}></Input> :
                     (<HStack key={index}>
                         <Text   id={member.memberCode} w={'140px'}>{member.userId}</Text>
