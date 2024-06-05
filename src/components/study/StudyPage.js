@@ -12,33 +12,30 @@ const StudyPage = () => {
     const [popularList, setPopularList] = useState([]);
 
     const [fetched,setFetched] = useState(false);
+    const [load,setLoad] = useState(1);
 
-    const fetchMyStudy = async (userId, userCode) => {
+    const fetchMyStudy = async (userCode) => {
         if(fetched){
             return;
         }
-        setFetched(true);
-
-        const req = {
-            "user_id" : userId,
-            "user_code" : userCode
-        };
 
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/myGroup`,
+            `${process.env.REACT_APP_SERVER_URL}/study/myGroup?user_code=${userCode}`,
             {
-                method: "POST",
+                method: "GET",
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
-                },
-                body: JSON.stringify(req)
+                }
             }
         );
 
         const studyData = await response.json();
-        if (!studyData.status) {
-            return;
+
+        if (studyData.status) {
+            setFetched(true);
+        }else {
+            setLoad(load+1);
         }
 
         console.log(studyData.result);
@@ -52,12 +49,12 @@ const StudyPage = () => {
 
     useEffect(() => {
         if (user) {
-            fetchMyStudy(user.id, user.userCode);
+            fetchMyStudy(user.userCode);
         } else {
             alert("로그인 후 이용가능합니다.");
             navigate('/user/login');
         }
-    }, [user, navigate]);
+    }, [user, navigate,load]);
 
     const submit = (e) => {
         e.preventDefault();

@@ -40,29 +40,21 @@ const StudyBoard = () =>{
         if(fetched){
             return;
         }
-        setFetched(true);
-        
-        const req = {
-            "group_code" : groupCode,
-            "user_code" :user.userCode
-        }
-
-        console.log(req);
 
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/board`, {
-                method: 'POST',
+            `${process.env.REACT_APP_SERVER_URL}/study/board?group_code=${groupCode}&user_code=${user.userCode}`, {
+                method: 'GET',
                 headers: {
-                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
-                    "Content-Type": "application/json;charset=UTF8"
-                },
-                body:JSON.stringify(req)
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                }
         });
 
         const data  = await response.json();
 
         if(!data.status){
             setLoad(load+1);
+        }else{
+            setFetched(true);
         }
 
         setPost(data.result[0].post);
