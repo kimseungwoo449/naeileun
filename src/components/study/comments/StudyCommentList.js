@@ -35,7 +35,7 @@ const StudyCommentList = ({ postCode }) => {
     }, []);
 
     const addComment = async () => {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/comment`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/groupComment/add`, {
             method: 'POST',
             headers: {
                 Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
@@ -59,7 +59,7 @@ const StudyCommentList = ({ postCode }) => {
     };
 
     const updateComment = (comment) => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/comment`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/groupComment/update`, {
             method: 'PUT',
             headers: {
                 Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
@@ -86,7 +86,7 @@ const StudyCommentList = ({ postCode }) => {
     };
     
     const deleteComment = (comment) => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/comment`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/groupComment/delete`, {
             method: 'DELETE',
             headers: {
                 Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,

@@ -1,25 +1,26 @@
-import {React, useRef, useState, useEffect } from 'react';
+import {React, useState, useEffect } from 'react';
 import {useNavigate, useLocation,Form} from 'react-router-dom';
 import { Box, Button, FormControl, Input, Textarea, VStack, HStack, Heading,Stack,Text} from '@chakra-ui/react';
 import { useLogin } from '../../LoginContext';
 
 const UpdateGroupPost = () =>{
     const navigate = useNavigate();
-    const location = useLocation(); // 2번 라인
+
+    const location = useLocation(); 
     const groupCode = location.state.groupCode;
     const postCode = location.state.postCode;
 
-    const TITLE_MAX_LENGTH = 50; // 제목 최대 글자수
-    const CONTENT_MAX_LENGTH = 4000; // 내용 최대 글자수
+    const TITLE_MAX_LENGTH = 50; 
+    const CONTENT_MAX_LENGTH = 4000;
 
     const { user } = useLogin();
 
-    const [post, setPost] = useState({}); // post 상태 초기값을 빈 객체로 설정
-    const [title, setTitle] = useState(''); // 제목 상태 추가
+    const [post, setPost] = useState({}); 
+    const [title, setTitle] = useState(''); 
     const [content, setContent] = useState('');
+    const [fetched,setFetched] = useState(false);
 
     const fetchPost = async () => {
-        console.log(postCode);
         const url = `${process.env.REACT_APP_SERVER_URL}/study/post?post_code=${postCode}`;
         const response = await fetch(
             url,
@@ -36,37 +37,32 @@ const UpdateGroupPost = () =>{
         console.log(data)
 
         if(data.status){
-            setTitle(data.result.title);
-            setContent(data.result.content);
-
-            const titleInput = document.querySelector('.title');
-            titleInput.value = data.result.title;
+            setPost(data.result);
         }
     }
 
     const updatePost = async () =>{
-        const req={
-            "group_code" : groupCode,
-            "user_code" : user.userCode,
-            "title" : title,
-            "content" : content,
-            "post" : post
+        const req ={
+            title : title,
+            content : content,
+            postCode : postCode
         }
 
-        const response = await fetch(
+        fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/updatePost`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
                 },
                 body:JSON.stringify(req)
         })
-
-        const data = await response.json();
-        if(data.status === true){
-            navigate('/study/post',{state:{groupCode : groupCode,postCode : postCode}});
-        }
+        .then(response => response.json())
+        .then(data => {
+            if (data.status) {
+                navigate('/study/post',{state:{groupCode : groupCode,postCode : postCode}});
+            }
+        });
     }
 
     const submit = (e) =>{
@@ -124,22 +120,20 @@ const UpdateGroupPost = () =>{
         }
     }
 
-    // 컴포넌트가 마운트될 때 게시글 데이터를 가져옴
     useEffect(()=>{
         if(!user){
             navigate('/user/login');
         }else{
             fetchPost();
         }
-    },[navigate])
+    },[])
 
-    // post 상태가 업데이트될 때 title과 content 상태를 업데이트
     useEffect(() => {
         if (post.title) {
-            setTitle(post.title); // 제목 상태 설정
-            setContent(post.content); // 내용 상태 설정
+            setTitle(post.title);
+            setContent(post.content); 
         }
-    }, [post]); // post 상태가 업데이트될 때 실행
+    }, [post]); 
 
 
     return(
@@ -150,11 +144,11 @@ const UpdateGroupPost = () =>{
                     <Heading as="h3" size="lg">게시글 수정</Heading>
                 </Box>
                 {/* 폼 시작 */}
-                <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/board/write`} onSubmit={submit}>
+                <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/study/updatePost`} onSubmit={submit}>
                     <VStack spacing={4} align="stretch">
                         {/* 제목 입력 */}
                         <FormControl id="title">
-                            <Input id='title' className='title' name='reqTitle' minHeight="5vh" type="text" placeholder="제목" onChange={onInputHandler} maxLength={TITLE_MAX_LENGTH} />
+                            <Input id='title' className='title' name='reqTitle' minHeight="5vh" type="text" placeholder="제목" value={title} onChange={onInputHandler} maxLength={TITLE_MAX_LENGTH} />
                             <Box textAlign={"end"}>
                                 <span>{title.length}</span>
                                 {/* 글자수 표시 */}
