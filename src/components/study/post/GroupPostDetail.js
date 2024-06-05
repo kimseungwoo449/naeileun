@@ -32,20 +32,17 @@ const GroupPostDetail = () => {
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const location = useLocation();
+    const groupCode = location.state.groupCode;
     const postCode = location.state.postCode;
-    console.log("postCode: " + postCode)
 
     const movePage = (e) => {
         const command = e.target.name;
 
-        console.log("command : " + command);
-        console.log("postCode : " + postCode);
-
         if(command === 'update-post') {
-            navigate('/board/update', { state: { postCode: postCode} } );
+            navigate('/study/postUpdate', { state: {groupCode: groupCode, postCode: postCode} } );
         }
         else if(command === 'delete-post') {
-            navigate('/board/delete', { state: { postCode: postCode}})
+            navigate('/board/postDelete', { state: {groupCode: groupCode, postCode: postCode}})
         }
     }
 
@@ -64,7 +61,6 @@ const GroupPostDetail = () => {
         );
 
         const data = await response.json();
-        console.log(data)
 
         if(data.status){
             setPost(data.result);
