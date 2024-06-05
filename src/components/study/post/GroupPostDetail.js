@@ -42,7 +42,7 @@ const GroupPostDetail = () => {
             navigate('/study/postUpdate', { state: {groupCode: groupCode, postCode: postCode} } );
         }
         else if(command === 'delete-post') {
-            navigate('/board/postDelete', { state: {groupCode: groupCode, postCode: postCode}})
+            navigate('/study/postDelete', { state: {groupCode: groupCode, postCode: postCode}})
         }
     }
 
