@@ -8,6 +8,7 @@ import { useLogin } from '../LoginContext';
 const SearchPost = ({ onClose, fetchJobData }) => {
     const [input, setInput] = useState('');
     const [totalListCount, setTotalListCount] = useState(null);
+    const [searchListCount, setSearchListCount] = useState();
     const [searchType, setSearchType] = useState('JO_SJ');
     const [result, setResult] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -72,6 +73,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
              
             const filteredResults = results.flat().filter(job => job[searchType] && job[searchType].includes(input));
             setResult(filteredResults);
+            setSearchListCount(filteredResults.length);
             setCurrentPage(1);
         } catch (error) {
             console.error('Error in onSearch:', error);
@@ -109,6 +111,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/create`, {
                 method: 'POST',
                 headers: {
+                    "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(event)
@@ -142,14 +145,14 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                 <Input 
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Enter search query"
+                    placeholder="검색어 입력"
                     mb={2}
                 />
                 <Button type="submit" mb={2}>Search</Button>
                 {loading && <Spinner size="xl" />}
                 {totalListCount !== null && (
                     <Box mt={4}>
-                        Total List Count: {totalListCount}
+                        검색된 리스트: {setSearchListCount}
                     </Box>
                 )}
                 <Accordion allowToggle mt={4}>
@@ -160,6 +163,8 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                                     <Box flex="1" textAlign="left">
                                         <Text>구인제목: {job.JO_SJ}</Text>
                                         <Text>기업이름: {job.CMPNY_NM}</Text>
+                                        <Text>모집요강: {job.DTY_CN}</Text>
+                                        
                                     </Box>
                                     <AccordionIcon />
                                 </AccordionButton>

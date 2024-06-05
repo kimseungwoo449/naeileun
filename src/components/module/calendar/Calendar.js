@@ -24,6 +24,7 @@ const Calendar = () => {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/read`, {
         method: 'POST',
         headers: {
+          "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
           'Content-Type': 'application/json;charset=UTF8'
         },
         body: user.userCode

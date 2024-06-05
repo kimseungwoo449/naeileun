@@ -27,6 +27,7 @@ const WritePost = ({ isOpen, onClose, fetchJobData }) => {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/create`, {
         method: 'POST',
         headers: {
+          "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(event)

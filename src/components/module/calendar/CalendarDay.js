@@ -31,7 +31,7 @@ const CalendarDay = ({ day, isToday, jobData, fetchJobData }) => {
         border="1px solid"
         borderColor={isToday ? 'blue.500' : 'gray.200'}
         p={2}
-        minH="50px"
+        minH="100px"
         verticalAlign="top"
         bg={isToday ? 'blue.50' : 'white'}
       >
@@ -42,14 +42,14 @@ const CalendarDay = ({ day, isToday, jobData, fetchJobData }) => {
           .filter(job => new Date(job.applicationStart).toDateString() === day.toDateString())
           .map(job => (
             <Text key={job.postingId} fontSize="xs" onClick={() => handleClick(job)}>
-              {job.companyName} - {job.jobTitle} (Start)
+              {job.companyName} - {job.jobTitle} 
             </Text>
           ))}
         {jobData
           .filter(job => new Date(job.applicationEnd).toDateString() === day.toDateString())
           .map(job => (
             <Text color="tomato" key={`${job.postingId}-end`} fontSize="xs" onClick={() => handleClick(job)}>
-              {job.companyName} - {job.jobTitle} (End)
+              {job.companyName} - {job.jobTitle} 
             </Text>
           ))}
       </GridItem>
@@ -62,8 +62,8 @@ const CalendarDay = ({ day, isToday, jobData, fetchJobData }) => {
               <ModalHeader>Manage Job Posting</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <Text fontWeight="bold">{selectedJob.jobTitle}</Text>
-                <Text>{selectedJob.companyName}</Text>
+                <Text fontWeight="bold">{selectedJob.companyName}</Text>
+                <Text>{selectedJob.jobTitle}</Text>
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={handleUpdateClick}>
