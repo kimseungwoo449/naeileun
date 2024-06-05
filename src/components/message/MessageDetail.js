@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Input, VStack, Grid, GridItem, Heading, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Input, VStack, Grid, GridItem, Heading, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Skeleton } from '@chakra-ui/react';
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLogin } from '../LoginContext';
@@ -10,7 +10,9 @@ const MessageDetail = () => {
     const [newMessage, setNewMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [alert, setAlert] = useState({ show: false, title: '', description: '' });
+    const [isLoading, setIsLoading] = useState(true);
     const cancelRef = useRef();
+    const messagesEndRef = useRef(null);
 
     const fetchMessages = async () => {
         try {
@@ -22,6 +24,10 @@ const MessageDetail = () => {
                 }
             });
             
+            if (!response.ok) {
+                throw new Error('Failed to fetch messages');
+            }
+
             const data = await response.json();
 
             if (data && data[target]) {
@@ -39,6 +45,8 @@ const MessageDetail = () => {
                 title: 'Error',
                 description: '쪽지를 가져오는 중 오류가 발생했습니다. 다시 시도해주세요.'
             });
+        } finally {
+            setIsLoading(false); // 로딩 상태 종료
         }
     };
 
@@ -57,14 +65,9 @@ const MessageDetail = () => {
             });
 
             if (!response.ok) {
-                setAlert({
-                    show: true,
-                    title: 'Error',
-                    description: '쪽지를 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.'
-                });
+                throw new Error('Failed to update messages');
             }
 
-            const data = await response.json();
         } catch (error) {
             setAlert({
                 show: true,
@@ -75,12 +78,27 @@ const MessageDetail = () => {
     };
 
     const combinedFetchAndUpdate = async () => {
-        await Promise.all([fetchMessages(), updateMessages()]);
+        if (user && target) {
+            try {
+                setIsLoading(true); // 로딩 상태 시작
+                await Promise.all([fetchMessages(), updateMessages()]);
+            } catch (error) {
+                console.error('Error in combined fetch and update', error);
+                setIsLoading(false); // 로딩 상태 종료
+            }
+        }
     };
 
     useEffect(() => {
         combinedFetchAndUpdate();
-    }, [user, target, isSubmitting]);
+    }, [user, target]);
+
+    useEffect(() => {
+        // 메시지가 업데이트될 때마다 끝으로 스크롤
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
@@ -108,9 +126,10 @@ const MessageDetail = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const data = await response.json();
+            await response.json();
             setIsSubmitting(false);
-            setNewMessage('');  // Clear the input field after sending the message
+            setNewMessage('');
+            await fetchMessages(); 
         } catch (error) {
             setIsSubmitting(false);
             setAlert({
@@ -125,30 +144,39 @@ const MessageDetail = () => {
         <Flex direction="column" h="100vh" p={5} w={'50%'} m={'auto'} justifyContent={'center'}>
             <Heading mb={5} textAlign="center">{target}과의 쪽지함</Heading>
             <Box flex="1" overflowY="auto" border={'1px solid lightgray'} p={'50px'} borderRadius={'20px'} boxShadow={'lg'}>
-                <VStack spacing={4} align="stretch">
-                    {messages.map((msg, index) => (
-                        <Grid
-                            key={index}
-                            templateColumns="1fr auto 1fr"
-                            gap={2}
-                            justifyItems={msg.sendUserCode === parseInt(user.userCode) ? 'flex-end' : 'flex-start'}
-                        >
-                            <GridItem colStart={msg.sendUserCode === parseInt(user.userCode) ? 5 : 1}>
-                                <Box
-                                    maxW="300px"
-                                    bg={msg.sendUserCode === parseInt(user.userCode) ? 'teal.100' : 'gray.100'}
-                                    borderRadius="md"
-                                    p={3}
-                                >
-                                    <Text>{msg.content}</Text>
-                                    <Text fontSize="xs" color="gray.500" textAlign="right">
-                                        {new Date(msg.sendDate).toLocaleString()}
-                                    </Text>
-                                </Box>
-                            </GridItem>
-                        </Grid>
-                    ))}
-                </VStack>
+                {isLoading ? (
+                    <VStack spacing={4} align="stretch">
+                        {Array.from({ length: 10 }).map((_, index) => (
+                            <Skeleton key={index} height="50px" />
+                        ))}
+                    </VStack>
+                ) : (
+                    <VStack spacing={4} align="stretch">
+                        {messages.map((msg, index) => (
+                            <Grid
+                                key={index}
+                                templateColumns="1fr auto 1fr"
+                                gap={2}
+                                justifyItems={msg.sendUserCode === parseInt(user.userCode) ? 'flex-end' : 'flex-start'}
+                            >
+                                <GridItem colStart={msg.sendUserCode === parseInt(user.userCode) ? 5 : 1}>
+                                    <Box
+                                        maxW="300px"
+                                        bg={msg.sendUserCode === parseInt(user.userCode) ? 'teal.100' : 'gray.100'}
+                                        borderRadius="md"
+                                        p={3}
+                                    >
+                                        <Text>{msg.content}</Text>
+                                        <Text fontSize="xs" color="gray.500" textAlign="right">
+                                            {new Date(msg.sendDate).toLocaleString()}
+                                        </Text>
+                                    </Box>
+                                </GridItem>
+                            </Grid>
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </VStack>
+                )}
             </Box>
             <form onSubmit={handleSendMessage}>
                 <Box mt={4}>
