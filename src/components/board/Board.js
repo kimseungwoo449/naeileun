@@ -27,9 +27,6 @@ const Board = () => {
     useEffect(() => {
         setSelectedBoardCode(boardCode);
     }, [boardCode]);
-
-    console.log("boardCode: " + boardCode)
-    console.log("boardList: " + boardList)
     
     const movePage = (e) => {
         const command = e.target.id;
@@ -55,8 +52,6 @@ const Board = () => {
         );
 
         const data = await response.json();
-        console.log(data);
-
         if (data.status) {
             navigate('/board');
         } else {

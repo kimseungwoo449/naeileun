@@ -18,13 +18,11 @@ const CommentList = ({ postCode, setTotalComments }) => {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (data.status) {
             alert("댓글 읽기에 실패하였습니다.");
         } else {
             const totalComments = data.result.length; // 총 댓글 수
-            console.log("totalComments: " + totalComments);
             setTotalComments(totalComments); // totalComments 값을 상위 컴포넌트로 전달
             setCommentList(data.result);
         }
@@ -48,7 +46,6 @@ const CommentList = ({ postCode, setTotalComments }) => {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (data.status) {
             setNewComment('');
@@ -74,7 +71,6 @@ const CommentList = ({ postCode, setTotalComments }) => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
 
             if (data.status) {
                 alert("댓글이 수정되었습니다.");
@@ -98,7 +94,6 @@ const CommentList = ({ postCode, setTotalComments }) => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
 
             if (data.status) {
                 alert("댓글이 삭제되었습니다.");

@@ -38,14 +38,11 @@ const CreatePost = () => {
         formData.append("content", content); // 내용 추가
         formData.append("user_id", user.id); // 사용자 ID 추가
         formData.append("board_code", selectBoardCode);
-        console.log("boardCode : " + selectBoardCode);
         // formData.append("board_code", boardCode); // 게시판 코드 추가
         if (selectedFile) {
             formData.append("file", selectedFile); // 선택된 파일이 있을 경우 파일 추가
         }
 
-        console.log("req : " + formData);
-        
         // 서버로 폼 데이터 전송
         fetch(`${process.env.REACT_APP_SERVER_URL}/board/write`, {
             method: 'POST',
@@ -56,7 +53,6 @@ const CreatePost = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
 
                 if (data.status) {
                     const resBoardCode = data.boardCode;

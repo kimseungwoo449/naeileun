@@ -13,10 +13,6 @@ const UpdatePost = () => {
     const postCode = location.state.postCode; // 전달받은 postCode
     const boardList = location.state.boardList; // 전달받은 board 리스트
     const imagePath = location.state.imagePath; // 전달받은 imagePath
-    console.log("postCode: " + postCode);
-    console.log("boardCode: " + boardCode);
-    console.log("boardList: " + boardList);
-    console.log("imagePath: " + imagePath);
 
     const TITLE_MAX_LENGTH = 50; // 제목 최대 글자수
     const CONTENT_MAX_LENGTH = 4000; // 내용 최대 글자수
@@ -44,7 +40,6 @@ const UpdatePost = () => {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (data.status) {
             navigate('/board'); // 게시글을 찾지 못한 경우 게시판 페이지로 이동
@@ -80,8 +75,6 @@ const UpdatePost = () => {
             formData.append("file", selectedFile); // 파일이 선택된 경우 파일 추가
             formData.append("image_path", imagePath === "" ? "null" : imagePath); // 기존의 이미지 경로 추가
         }
-
-        console.log("req : " + formData);
         
         // 서버로 폼 데이터 전송
         fetch(`${process.env.REACT_APP_SERVER_URL}/board/update`, {
@@ -93,8 +86,6 @@ const UpdatePost = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-
                 if (data.status) {
                     const resBoardCode = data.boardCode;
                     const resPostCode = data.postCode;

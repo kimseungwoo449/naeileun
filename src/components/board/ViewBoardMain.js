@@ -27,7 +27,6 @@ const ViewBoardMain = () => {
             }
             else if (command === 'board-detail') {
                 const postCode = e.target.getAttribute("name");
-                console.log("postCode : " + postCode);
 
                 navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } });
             }
@@ -62,7 +61,6 @@ const ViewBoardMain = () => {
     }
 
     useEffect(() => {
-        console.log('useEffect');
         fetchBoardAndPosts();
     }, [page]);
 

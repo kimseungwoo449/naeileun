@@ -17,23 +17,15 @@ const BoardAll = () => {
 
     const movePage = (e) => {
         const classLength = e.target.classList.length;
-        console.log("classLength : " + classLength);
         for(let i=0; i<classLength; i++) {
             const command = e.target.classList.item(i);
-            console.log("command : " + command);
-            
             const boardCode = e.target.id;
-            console.log("boardCode : " + boardCode);
             
-            console.log("boardList : " + boardList);
-
-
             if (command === 'board-view'){
                 navigate('/board/view', { state: { boardCode: boardCode, boardList: boardList } } );
             }
             else if(command === 'board-detail'){
                 const postCode = e.target.getAttribute("name");
-                console.log("postCode : " + postCode);
                 
                 navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } } );
             }
@@ -42,11 +34,7 @@ const BoardAll = () => {
     }
 
     const fetchBoardAndPosts = async () => {
-        console.log('fetchBoardAndPosts');
-        console.log(`${process.env.REACT_APP_SERVER_URL}:`, process.env.REACT_APP_SERVER_URL);
-        console.log('Authorization:', process.env.REACT_APP_ADMIN_KEY);
         const url = `${process.env.REACT_APP_SERVER_URL}/board`;
-        console.log('Fetching posts from:', url);
         const response = await fetch(
             url,
             {
@@ -58,7 +46,6 @@ const BoardAll = () => {
         );
 
         const data = await response.json();
-        console.log(data);
 
         if (data.status) {
             navigate('/board');
@@ -67,16 +54,12 @@ const BoardAll = () => {
             pageCount.current = Math.ceil(totalBoards / boardsPerPage);
             pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
 
-            console.log("totalBoards: " + totalBoards);
-            console.log("pageCount.current: " + pageCount.current);
-
             setBoardList(data.result[0]);
             setPostList(data.result[1]);
         }
     }
 
     useEffect(() => {
-        console.log('useEffect');
         fetchBoardAndPosts();
     }, [page]);
 
