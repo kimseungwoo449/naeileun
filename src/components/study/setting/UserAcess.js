@@ -7,9 +7,9 @@ const UserAcess = () =>{
 
     const [awaiters,setAwaiter] = useState([]);
     const [size, setSize] = useState();
+    const [load,setLoad] = useState();
 
     const groupCode = location.state.groupCode;
-    const adminCode = location.state.adminCode;
 
     const getAwaiters = async() =>{
 
@@ -37,9 +37,62 @@ const UserAcess = () =>{
         console.log(awaiters);
     }
 
+    const refuse = async (e) =>{
+        const awaiterCode = e.target.id;
+
+        const req ={
+            "group_code" : groupCode,
+            "user_code" : awaiterCode
+        }
+
+        const response = await fetch(
+            `${process.env.REACT_APP_SERVER_URL}/study/deleteStandbyMember`,{
+                method: 'DELETE',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                    "Content-Type": "application/json;charset=UTF8"
+                },
+                body:JSON.stringify(req)
+        })
+
+        const data = await response.json();
+        if(data.status === false)
+            refuse();
+
+        else
+            setLoad(1);
+
+    }
+    const addMember = async (e) =>{
+        const awaiterCode = e.target.id;
+
+        const req ={
+            "group_code" : groupCode,
+            "user_code" : awaiterCode
+        }
+
+        const response = await fetch(
+            `${process.env.REACT_APP_SERVER_URL}/study/getMemberFromStandbyMember`,{
+                method: 'POST',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                    "Content-Type": "application/json;charset=UTF8"
+                },
+                body:JSON.stringify(req)
+        })
+
+        const data = await response.json();
+        if(data.status === false)
+            refuse();
+
+        else
+            setLoad(1);
+
+    }
+
     useEffect(()=>(
         getAwaiters
-    ),[]);
+    ),[load]);
     
 
     return(
@@ -50,8 +103,8 @@ const UserAcess = () =>{
                     <HStack key={index}>
                         <Text w={'140px'}>{awaiter.userId}</Text>
                         <Text w={'220px'}>{awaiter.comment}</Text>
-                        <Button h={'35px'} fontSize={'0.9em'}>거절</Button>
-                        <Button h={'35px'} fontSize={'0.9em'} colorScheme='blue'>승인</Button>
+                        <Button id={awaiter.userCode} onClick={refuse} h={'35px'} fontSize={'0.9em'}>거절</Button>
+                        <Button id={awaiter.userCode} onClick={addMember} h={'35px'} fontSize={'0.9em'} colorScheme='blue'>승인</Button>
                     </HStack>
                 ))}
                 
