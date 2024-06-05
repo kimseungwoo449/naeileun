@@ -1,5 +1,5 @@
-import { Box, Button, Flex, Input, Text, Textarea, VStack, IconButton } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Box, Button, Flex, Input, Text, Textarea, VStack, IconButton, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
+import React, { useState, useRef } from 'react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../LoginContext';
@@ -9,6 +9,9 @@ const WriteIntroduction = () => {
     const { user } = useLogin();
     const [title, setTitle] = useState('');
     const [introductions, setIntroductions] = useState([{ head: '', body: '' }]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [alert, setAlert] = useState({ show: false, title: '', description: '' });
+    const cancelRef = useRef();
 
     const handleAddField = () => {
         setIntroductions([...introductions, { head: '', body: '' }]);
@@ -26,6 +29,9 @@ const WriteIntroduction = () => {
     };
 
     const handleSubmit = () => {
+        setIsSubmitting(true);
+        setAlert({ show: false, title: '', description: '' });
+
         const payload = {
             introductions: introductions.map(intro => ({
                 ...intro,
@@ -42,18 +48,53 @@ const WriteIntroduction = () => {
             },
             body: JSON.stringify(payload)
         })
-            .then(response => {
-                if (response.ok) {
-                    navigate('/introduction');
+            .then(response => response.json())
+            .then(data => {
+                setIsSubmitting(false);
+                if (data.status) {
+                    navigate('/user/introduction');
                 } else {
-                    console.error('Failed to submit');
+                    setAlert({
+                        show: true,
+                        title: 'Error',
+                        description: '저장에 실패했습니다. 다시 시도해주세요.'
+                    });
                 }
             })
-            .catch(error => console.error('Error submitting introduction:', error));
+            .catch(error => {
+                setIsSubmitting(false);
+                setAlert({
+                    show: true,
+                    title: 'Error',
+                    description: '저장에 실패했습니다. 다시 시도해주세요.'
+                });
+            });
     };
 
     return (
-        <Box p={5} width="60%" m={'auto'} borderRadius="lg" boxShadow="dark-lg" box>
+        <Box p={5} width="60%" m={'auto'} borderRadius="lg" boxShadow="dark-lg">
+            <AlertDialog
+                isOpen={alert.show}
+                leastDestructiveRef={cancelRef}
+                onClose={() => setAlert({ show: false, title: '', description: '' })}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent backgroundColor = '#eb7368'>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold" color={'white'}>
+                            {alert.title}
+                        </AlertDialogHeader>
+                        <AlertDialogBody color={'white'}>
+                            {alert.description}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button backgroundColor='lightgray' ref={cancelRef} onClick={() => setAlert({ show: false, title: '', description: '' })}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+
             <Flex alignItems="center" mb={4} justifyContent="center">
                 <Box>
                     <Text as="b" fontSize="3xl" mb={5} textAlign="center">자기소개서 작성</Text>
@@ -81,7 +122,7 @@ const WriteIntroduction = () => {
                             <Input
                                 value={intro.head}
                                 onChange={(e) => handleInputChange(index, 'head', e.target.value)}
-                                placeholder="문항을 입력하세요"
+                                placeholder="문항을 입력하세요 (공백 포함 500자)"
                                 size="md"
                                 height="50px"
                                 borderRadius="md"
@@ -95,7 +136,7 @@ const WriteIntroduction = () => {
                             <Textarea
                                 value={intro.body}
                                 onChange={(e) => handleInputChange(index, 'body', e.target.value)}
-                                placeholder="내용을 입력해주세요"
+                                placeholder="내용을 입력해주세요 (공백 포함 2000자)"
                                 size="md"
                                 height="150px"
                                 borderRadius="md"
@@ -123,11 +164,10 @@ const WriteIntroduction = () => {
                         colorScheme="blue"
                         aria-label="항목 추가"
                         size="sm"
-                        
                     />
                 </Flex>
                 <Box display={'flex'} justifyContent={'center'}>
-                    <Button width={'20%'} variant="outline" colorScheme="blue" size="lg" onClick={handleSubmit}>작성 완료</Button>
+                    <Button width={'20%'} variant="outline" colorScheme="blue" size="lg" onClick={handleSubmit} isLoading={isSubmitting}>작성 완료</Button>
                 </Box>
             </VStack>
         </Box>
