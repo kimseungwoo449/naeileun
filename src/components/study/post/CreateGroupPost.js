@@ -15,17 +15,9 @@ const CreatePost = () =>{
 
     const [title, setTitle] = useState(''); // 제목 상태 추가
     const [content, setContent] = useState('');
-    const [inputCount, setInputCount] = useState(0); // 입력된 글자수 상태 관리
 
 
     const createPost = async () =>{
-        const req={
-            "group_code" : groupCode,
-            "user_code" : user.userCode,
-            "title" : title,
-            "content" : content
-        }
-
         const response = await fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/createPost`, {
                 method: 'POST',
@@ -33,7 +25,12 @@ const CreatePost = () =>{
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
                 },
-                body:JSON.stringify(req)
+                body:JSON.stringify({
+                    title : title,
+                    content : content,
+                    userCode : user.userCode,
+                    groupCode : groupCode
+                })
         })
 
         const data = await response.json();
