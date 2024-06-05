@@ -46,7 +46,9 @@ const StudyPage = () => {
         if (user) {
             fetchMyStudy(user.id, user.userCode);
         } else {
+            alert("로그인 후 이용가능합니다.");
             navigate('/user/login');
+            return;
         }
     }, [user, navigate]);
 
