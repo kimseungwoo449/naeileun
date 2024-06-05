@@ -18,14 +18,14 @@ import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { useLogin } from '../LoginContext';
-import CommentList from './post-comment/CommentList'; // CommentList import
+import CommentList from './post-comment/CommentList';
 
 const BoardDetail = () => {
     const navigate = useNavigate();
     const [post, setPost] = useState([]);
     const [page, setPage] = useState(1);
     const { user } = useLogin();
-    const [totalComments, setTotalComments] = useState(0); // totalComments 상태 추가
+    const [totalComments, setTotalComments] = useState(0);
     const pageCount = useRef(1);
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
     const location = useLocation();
@@ -75,7 +75,7 @@ const BoardDetail = () => {
         .then(data => {
             if (data.status) {
                 alert("게시글 추천이 완료되었습니다.");
-                fetchPost(); // 댓글 목록을 다시 불러옵니다.
+                fetchPost();
             } else {
                 alert("게시글 추천에 실패하였습니다.");
             }
@@ -145,10 +145,10 @@ const BoardDetail = () => {
                             isRound
                             aria-label="Comment"
                         />
-                        <Text fontSize="sm">&emsp;{totalComments}</Text> {/* totalComments 사용 */}
+                        <Text fontSize="sm">&emsp;{totalComments}</Text>
                     </HStack>
                 </HStack>
-                <CommentList postCode={postCode} setTotalComments={setTotalComments} /> {/* CommentList에 setTotalComments 전달 */}
+                <CommentList postCode={postCode} setTotalComments={setTotalComments} />
             </VStack>
         </Box>
     );

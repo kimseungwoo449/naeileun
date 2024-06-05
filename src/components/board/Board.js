@@ -64,13 +64,12 @@ const Board = () => {
     }
 
     const changeSearch = e => {
-        // if(e.target.value.length >= 2)
         setSearch(e.target.value);
     }
 
     const handleBoardSelect = (boardCode) => {
         setSelectedBoardCode(boardCode);
-        setPage(1);  // 페이지를 처음으로 리셋
+        setPage(1); 
     }
 
     useEffect(() => {
@@ -105,15 +104,6 @@ const Board = () => {
                         w={"300px"}
                         onChange={changeSearch}
                     />
-                    {/* <Menu>
-                        <MenuButton as={Button} rightIcon={<TiArrowUnsorted />}>
-                            통합 검색
-                        </MenuButton>
-                        <MenuList>
-                            <MenuItem>제목 검색</MenuItem>
-                            <MenuItem>작성자 아이디</MenuItem>
-                        </MenuList>
-                    </Menu> */}
                     
                 </Box>
             </Box>
