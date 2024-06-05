@@ -28,16 +28,16 @@ const StudyBoard = () =>{
     const [isMember,setIsMember] = useState(false);
 
     const [page, setPage] = useState(1);
-    const [load, setLoad] = useState();
+    const [load, setLoad] = useState(1);
 
     const postsPerPage = 5; // 페이지당 보여줄 게시판 수
     const pageCount = useRef(1);
 
-    const fetchBoard = async(userCode) => {
+    const fetchBoard = async() => {
         const req = {
             "group_code" : groupCode,
             //user 수정 연결 후 수정 **********
-            "user_code" : userCode
+            "user_code" :user.userCode
         }
 
         console.log(req);
@@ -56,6 +56,11 @@ const StudyBoard = () =>{
         console.log(data.result[0]);
         console.log(data.result[0].isMember);
         console.log(data.meta);
+
+        if(data.status === false){
+            setLoad(load+1);
+        }
+
         setPost(data.result[0].post);
         setStudy(data.result[0].study);
         setIsMember(data.result[0].isMember.isMember);
@@ -133,7 +138,7 @@ const StudyBoard = () =>{
 
     useEffect(()=>{
         if (user) {
-            fetchBoard(user.userCode);
+            fetchBoard();
         } else {
             navigate('/user/login');
         }
