@@ -45,6 +45,7 @@ import MyMessageBox from "./components/message/MyMessageBox";
 import MessageDetail from "./components/message/MessageDetail";
 import FirstMessage from "./components/message/FirstMessage";
 import JoinStudy from "./components/study/JoinStudy";
+import SearchPost from "./components/job-posting/SearchPost";
 
 
 
@@ -277,6 +278,15 @@ const router = createBrowserRouter([
             }
         ]
 
+    }, {
+        path: "/job",
+        element: <Root />,
+        children:[
+            {
+                path:"/job/search",
+                element:<SearchPost />
+            }
+        ]
     }
 ], {
     basename: "/naeileun",
