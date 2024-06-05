@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heading, Box, HStack, Card, Image, Stack, CardBody, Text, IconButton } from '@chakra-ui/react';
+import { Heading, Box, HStack, Card, Image, Stack, CardBody, Text, IconButton,Input } from '@chakra-ui/react';
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../LoginContext';
@@ -34,6 +34,7 @@ const StudyPage = () => {
             return;
         }
 
+        console.log(studyData.result);
         setStudyList(studyData.result[0]);
         setPopularList(studyData.result[1]);
     };
@@ -48,7 +49,6 @@ const StudyPage = () => {
         } else {
             alert("로그인 후 이용가능합니다.");
             navigate('/user/login');
-            return;
         }
     }, [user, navigate]);
 
@@ -62,8 +62,7 @@ const StudyPage = () => {
 
     return (
         <Box minW="980px" margin="auto">
-            <form method="POST" action={`${process.env.REACT_SERVER_URL}/study/board`}>
-                <input type="hidden" id="group_code" name="group_code" value="boardDetail" />
+                <Input type="hidden" id="group_code" name="group_code" value="boardDetail" />
 
                 <HStack m="40px">
                     <Heading fontSize="1.3em">나의 스터디 그룹</Heading>
@@ -85,10 +84,10 @@ const StudyPage = () => {
                     {studyList.map((study, index) => (
                         <Card key={index} id={study.groupCode} boxSize="180px" mr="20px" _hover={{ cursor: "pointer" }} onClick={submit}>
                             <CardBody id={study.groupCode}>
-                                <Image id={study.groupCode} w="130px" h="100px" src="" alt="" />
                                 <Stack id={study.groupCode} mt="5px">
-                                    <Text id={study.groupCode} as="h4" fontSize="0.8em">{study.name}</Text>
-                                    <Text id={study.groupCode} as="h5" fontSize="0.7em">{study.description}</Text>
+                                    <Text id={study.groupCode} as="h4" fontSize="1.3em">{study.name}</Text>
+                                    <Text id={study.groupCode} as="h5" fontSize="0.9em">{study.decription}</Text>
+                                    <Text id={study.groupCode} as="h5" fontSize="0.9em" mt={'30px'}>관리자 : {study.adminCode}</Text>
                                 </Stack>
                             </CardBody>
                         </Card>
@@ -103,16 +102,14 @@ const StudyPage = () => {
                     {popularList.map((popular, index) => (
                         <Card id={popular.groupCode} key={index + 1000} boxSize="180px" mr="20px" _hover={{ cursor: "pointer" }} onClick={submit}>
                             <CardBody id={popular.groupCode}>
-                                <Image id={popular.groupCode} w="130px" h="100px" src="" alt="" />
                                 <Stack id={popular.groupCode} mt="5px">
-                                    <Text id={popular.groupCode} as="h4" fontSize="0.8em">{popular.name}</Text>
-                                    <Text id={popular.groupCode} as="h5" fontSize="0.7em">{popular.description}</Text>
+                                    <Text id={popular.groupCode} as="h4" fontSize="1.3em">{popular.name}</Text>
+                                    <Text id={popular.groupCode} as="h5" fontSize="0.9em" mt={'30px'}>관리자:{popular.adminCode}</Text>
                                 </Stack>
                             </CardBody>
                         </Card>
                     ))}
                 </HStack>
-            </form>
         </Box>
     );
 };
