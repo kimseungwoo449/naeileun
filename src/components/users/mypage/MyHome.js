@@ -39,7 +39,7 @@ const MyHome = () => {
             <Calendar/>
             <Box bg="gray.100" h="200px" borderRadius="md" />
           </Box>
-          <Grid templateColumns="repeat(2, 1fr)" gap={5}>
+        <Grid templateColumns="repeat(2, 1fr)" gap={5}>
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={5}>
             <Text fontWeight="bold" fontSize="xl" mb={3}>스크랩한 채용정보</Text>
             <Box bg="gray.100" h="200px" borderRadius="md" />

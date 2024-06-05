@@ -5,7 +5,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 import CalendarDay from './CalendarDay';
-import EventModal from './EventModal';
+import WritePost from '../../job-posting/WritePost';
 import { useLogin } from '../../LoginContext';
 
 const Calendar = () => {
@@ -36,7 +36,7 @@ const Calendar = () => {
     }
   };
  
-  const renderCalendar = () => {
+   const renderCalendar = () => {
     const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
     const startDayOfWeek = startOfMonth.getDay();
@@ -51,18 +51,16 @@ const Calendar = () => {
 
     while (day.getMonth() === currentDate.getMonth()) {
       const isToday = day.toDateString() === today.toDateString();
-      const filteredJobs = jobData.filter(job => {
-        const jobDate = new Date(job.applicationStart);
-        return jobDate.toDateString() === day.toDateString();
-      });
+      
 
       days.push(
         <CalendarDay
-          key={day.toDateString()}
-          day={new Date(day)}
-          isToday={isToday}
-          jobData={filteredJobs}
-        />
+        key={day.toDateString()}
+        day={new Date(day)}
+        isToday={isToday}
+        jobData={jobData}
+        fetchJobData={fetchJobData}
+      />
       );
       day.setDate(day.getDate() + 1);
     }
@@ -101,7 +99,7 @@ const Calendar = () => {
         {renderCalendar()}
       </Grid>
 
-      <EventModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} fetchJobData={fetchJobData} />
+      <WritePost isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} fetchJobData={fetchJobData} />
     </Box>
   );
 };
