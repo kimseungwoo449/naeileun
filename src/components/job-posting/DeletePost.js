@@ -45,7 +45,7 @@ const DeletePost = ({ isOpen, onClose, job, fetchJobData }) => {
         <ModalHeader>Delete Job</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text>Are you sure you want to delete this job posting?</Text>
+          <Text>정말 이 채용공고를 삭제 하시겠습니까?</Text>
           <Text fontWeight="bold">{job.jobTitle}</Text>
           <Text>{job.companyName}</Text>
         </ModalBody>
