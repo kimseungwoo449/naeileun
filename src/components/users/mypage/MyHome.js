@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Image, Text, VStack, HStack, Button, Grid } from '@chakra-ui/react';
+import { Box, Image, Text, VStack, HStack, Button, Grid, Tag } from '@chakra-ui/react';
 import Calendar from '../../module/Calendar';
 
 const MyHome = () => {
@@ -27,21 +27,21 @@ const MyHome = () => {
             </Text>
             <Text>서울대학교 기계공학부 졸업</Text>
             <HStack spacing={2} mt={2}>
-              <Button size="sm" colorScheme="teal">AutoCAD</Button>
-              <Button size="sm" colorScheme="teal">CAD</Button>
-              <Button size="sm" colorScheme="teal">CATIA</Button>
-              <Button size="sm" colorScheme="teal">노력</Button>
+              <Tag size="sm" colorScheme="teal">AutoCAD</Tag>
+              <Tag size="sm" colorScheme="teal">CAD</Tag>
+              <Tag size="sm" colorScheme="teal">CATIA</Tag>
+              <Tag size="sm" colorScheme="teal">노력</Tag>
             </HStack>
           </Box>
         </Box>
-        <Grid templateColumns="repeat(2, 1fr)" gap={5}>
-          <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={5}>
-            <Text fontWeight="bold" fontSize="xl" mb={3}>스크랩한 채용정보</Text>
-            <Box bg="gray.100" h="200px" borderRadius="md" />
-          </Box>
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={5}>
             <Text fontWeight="bold" fontSize="xl" mb={3}>취업달력</Text>
             <Calendar/>
+            <Box bg="gray.100" h="200px" borderRadius="md" />
+          </Box>
+          <Grid templateColumns="repeat(2, 1fr)" gap={5}>
+          <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={5}>
+            <Text fontWeight="bold" fontSize="xl" mb={3}>스크랩한 채용정보</Text>
             <Box bg="gray.100" h="200px" borderRadius="md" />
           </Box>
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={5}>
