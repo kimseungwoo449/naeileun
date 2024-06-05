@@ -41,7 +41,7 @@ const StudyCommentList = ({ postCode }) => {
                 Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
             },
             body: JSON.stringify({
-                user_id: user.id,
+                user_code: user.userCode,
                 post_code: postCode,
                 content: newComment
             })
@@ -66,7 +66,7 @@ const StudyCommentList = ({ postCode }) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user_id: user.id,
+                user_code: user.userCode,
                 post_code: postCode,
                 comment_code: comment.commentCode,
                 content: comment.content // 수정된 내용을 서버에 보내기 위해 comment.content 사용
