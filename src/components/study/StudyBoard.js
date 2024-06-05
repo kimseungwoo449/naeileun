@@ -30,13 +30,20 @@ const StudyBoard = () =>{
     const [page, setPage] = useState(1);
     const [load, setLoad] = useState(1);
 
-    const postsPerPage = 5; // 페이지당 보여줄 게시판 수
+
+    const [fetched,setFetched] = useState(false);
+
+    const postsPerPage = 5; 
     const pageCount = useRef(1);
 
     const fetchBoard = async() => {
+        if(fetched){
+            return;
+        }
+        setFetched(true);
+        
         const req = {
             "group_code" : groupCode,
-            //user 수정 연결 후 수정 **********
             "user_code" :user.userCode
         }
 
@@ -53,11 +60,8 @@ const StudyBoard = () =>{
         });
 
         const data  = await response.json();
-        console.log(data.result[0]);
-        console.log(data.result[0].isMember);
-        console.log(data.meta);
 
-        if(data.status === false){
+        if(!data.status){
             setLoad(load+1);
         }
 
@@ -119,9 +123,7 @@ const StudyBoard = () =>{
         });
 
         const data = await response.json();
-        console.log(data);
-        console.log("status : "+data.status);
-        if(data.status === true){
+        if(data.status){
             setLoad(1);
         }
         
@@ -179,7 +181,7 @@ const StudyBoard = () =>{
                             study.adminCode === user.userCode ?
                             <Input type='hidden'></Input> : 
                             (
-                                isMember === true ?
+                                isMember ?
                                 <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>:
                                 <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button>
                             )
