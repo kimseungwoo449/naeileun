@@ -48,6 +48,7 @@ import JoinStudy from "./components/study/JoinStudy";
 import CreateGroupPost from "./components/study/post/CreateGroupPost";
 import GroupPostDetail from "./components/study/post/GroupPostDetail";
 import UpdateGroupPost from "./components/study/post/UpdateGroupPost";
+import DeleteGroupPost from "./components/study/post/DeleteGroupPost";
 
 
 const router = createBrowserRouter([
@@ -215,6 +216,12 @@ const router = createBrowserRouter([
                 path: "/study/postUpdate",
                 element: <>
                     <UpdateGroupPost />
+                </>
+
+            },{
+                path: "/study/postDelete",
+                element: <>
+                    <DeleteGroupPost />
                 </>
 
             },{
