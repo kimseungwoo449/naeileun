@@ -11,7 +11,14 @@ const StudyPage = () => {
     const [studyList, setStudyList] = useState([]);
     const [popularList, setPopularList] = useState([]);
 
+    const [fetched,setFetched] = useState(false);
+
     const fetchMyStudy = async (userId, userCode) => {
+        if(fetched){
+            return;
+        }
+        setFetched(true);
+
         const req = {
             "user_id" : userId,
             "user_code" : userCode
@@ -30,7 +37,7 @@ const StudyPage = () => {
         );
 
         const studyData = await response.json();
-        if (studyData.status === false) {
+        if (!studyData.status) {
             return;
         }
 
