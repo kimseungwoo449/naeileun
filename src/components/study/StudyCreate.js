@@ -8,6 +8,8 @@ const StudyCreate = () =>{
 
     const [isPublic,setIsPublic] = useState(true);
     const [access, setAccess] = useState(true);
+    //const {setIsLoggedIn, setUser} = useLogin();
+    //const userId = setIsLoggedIn.id;
 
     const createStudy = async() =>{
 
@@ -18,7 +20,8 @@ const StudyCreate = () =>{
                 "group_name" : name,
                 "is_public" : isPublic,
                 "auto_member_access" : access,
-                "decription" : dec
+                "decription" : dec,
+                "user_code" : "2" // login 구현 후 수정하기
         };
 
         console.log(req);
@@ -36,7 +39,7 @@ const StudyCreate = () =>{
         const data = await response.json();
         console.log(data);
 
-        if(data.state === true)
+        if(data.status === true)
             navigate('/study');
     }
 

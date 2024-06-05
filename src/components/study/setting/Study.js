@@ -17,7 +17,7 @@ const Study= () =>{
         const response = await fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/delete`,
             {
-                method : "POST",
+                method : "DELETE",
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
@@ -28,7 +28,7 @@ const Study= () =>{
 
         const data = await response.json();
 
-        if(data.state === true){
+        if(data.status === true){
             navigate('/study');
         }else{
             alert("스터디 삭제 실패");

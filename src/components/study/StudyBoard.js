@@ -12,7 +12,6 @@ import {
     Tr,
     Th,
     Td,
-    TableCaption,
     TableContainer,
 } from '@chakra-ui/react'
 
@@ -20,6 +19,7 @@ const StudyBoard = () =>{
     const navigate = useNavigate();
     const location = useLocation(); // 2번 라인
     const groupCode = location.state.groupCode;
+    //const {setIsLoggedIn, setUser} = useLogin();
     
     console.log(groupCode);
 
@@ -28,6 +28,7 @@ const StudyBoard = () =>{
     const [isMember,setIsMember] = useState(false);
     const [page, setPage] = useState(1);
 
+    const postsPerPage = 5; // 페이지당 보여줄 게시판 수
     const pageCount = useRef(1);
 
     const fetchBoard = async() => {
@@ -59,25 +60,49 @@ const StudyBoard = () =>{
 
         const postSize = data.meta.total_count;
         console.log(postSize);
+
+        const totalPosts = data.meta.total_count; // 총 게시판 수
+        pageCount.current = Math.ceil(totalPosts / postsPerPage);
+        pageCount.current = pageCount.current > 5 ? 5 : pageCount.current;
     }
     
 
     const quit = async() =>{
-        
+        const request = { 
+            "group_code" : groupCode,
+            "user_code" : "2" //login 구현 후 수정
+        }
+
+        const response = await fetch(
+            `${process.env.REACT_APP_SERVER_URL}/study/deleteMember`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                    "Content-Type": "application/json;charset=UTF8"
+                },
+                body:JSON.stringify(request)
+        });
+
+        const data = await response.json();
+        console.log(data);
+        if(data.status === true){
+            navigate('/study');
+        }
     }
 
     const join = async () =>{
-        if(study.adminCode === "2"){
+        if(study.autoMemberAccess === "false"){
+            navigate("/study/join",{state :{groupCode : groupCode}});
             return;
         }
 
         const request = { 
-            "gorup_code" : groupCode,
-            "user_code" : "2"
+            "group_code" : groupCode,
+            "user_code" : "2"  //userId일 시 백도 수정
         }
 
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/deleteUser`, {
+            `${process.env.REACT_APP_SERVER_URL}/study/joinMember`, {
                 method: 'POST',
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
@@ -87,7 +112,11 @@ const StudyBoard = () =>{
         });
 
         const data = await response.json();
-
+        
+        if(data.status === true){
+            fetchBoard();
+        }
+        
     }
 
     const setting =(e)=>{
@@ -136,6 +165,7 @@ const StudyBoard = () =>{
                 </HStack>
                 <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}} ml={'20px'}>
                     <Text as={'b'} fontSize="1.2em" mt={'10px'}>그룹 게시판</Text>
+                    <Button ml={'auto'}>글쓰기</Button>
                     <TableContainer w={"1000px"} key={'board'}>
                             <Table >
                                 <Thead>

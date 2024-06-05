@@ -10,46 +10,37 @@ const StudyPage = () =>{
 
     const [studyList,setStudyList] = useState([]);
     const [popularList, setPopularList] = useState([]);
-    const {setIsLoggedIn, setUser} = useLogin();
-
+    //const {setIsLoggedIn, setUser} = useLogin();
     //const userId = setIsLoggedIn.id;
 
     const fetchMyStudy = async() =>{
+        const req={
+            user_id : "asfc",
+            user_code : "2" //수정
+        }
 
         const response = await fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/myGroup`,
             {
-                method : "GET",
+                method : "POST",
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
-                }
+                },
+                body : JSON.stringify(req)
             }
         )
 
         const studyData = await response.json();
+        if(studyData.status === false){
+            navigate('/study');
+        }
+
         console.log(studyData.result);
-        setStudyList(studyData.result);
+        setStudyList(studyData.result[0]);
+        setPopularList(studyData.result[1]);
     }
 
-    const fetchPopularStudy = async() =>{
-        
-        const pgResponse = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/popularGroup`,
-            {
-                method : "GET",
-                headers: {
-                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
-                    "Content-Type": "application/json;charset=UTF8"
-                }
-            }
-        )
-        
-        const popularData = await pgResponse.json();
-        console.log(popularData.result);
-        setPopularList(popularData.result);
-    }
-    
     
     const createStudy = (e) =>{
         navigate('/study/create');
@@ -57,7 +48,6 @@ const StudyPage = () =>{
 
     useEffect(() =>{
         fetchMyStudy();
-        fetchPopularStudy();
     },[]);
     
     const submit= (e) =>{
@@ -82,10 +72,10 @@ const StudyPage = () =>{
                         <Heading fontSize={'1.3em'}>나의 스터디 그룹</Heading>
                         <Heading as={'h3'} fontSize={'1em'} ml={'80px'}>스터디 그룹 생성</Heading>
                         
-                        <IconButton id={"create-study"} onClick={createStudy} icon={<FaPlus />} h={'24px'} w={'24px'} mt={'1px'} ml={'10px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} _hover={{cursor:"pointer"}}/>
+                        <IconButton id={"create-study"} onClick={createStudy} icon={<FaPlus />} size='sm' mt={'1px'} ml={'10px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} _hover={{cursor:"pointer"}}/>
                     </HStack>
 
-                    <HStack wrap={"wrap"} minH={'200px'} maxw={'980px'} gap={"10px"} m={"40px"} >
+                    <HStack wrap={"wrap"} minH={'200px'} maxW={'900px'} gap={"10px"} m={"40px"} >
                         {studyList.map((study,index) =>(
                             <Card key={index} id={study.groupCode} boxSize={'180px'} mr={'20px'} _hover={{ cursor:"pointer"}} onClick={submit} >
                                 <CardBody id={study.groupCode}>
@@ -103,7 +93,7 @@ const StudyPage = () =>{
                         <Heading fontSize={'1.3em'}>인기 스터디 그룹</Heading>
                     </HStack>
                     
-                    <HStack wrap={"wrap"} minH={'200px'} maxw={'980px'} gap={"10px"} m={"40px"} >
+                    <HStack wrap={"wrap"} minH={'200px'} maxW={'900px'} gap={"10px"} m={"40px"} >
                         {popularList.map((popular,index) =>(
                             <Card id={popular.groupCode} key={index+1000}  boxSize={'180px'} mr={'20px'} _hover={{ cursor:"pointer"}} onClick={submit} >
                                 <CardBody id={popular.groupCode}>

@@ -26,18 +26,19 @@ const StudySetting = () =>{
         else if(command === 'study')
             navigate('/study/setting/study',{state : {groupCode : groupCode , adminCode : adminCode}});
     }
-
     return(
         <>
-            <Box minH={'75vh'} ml={'50px'}>
-                <HStack mt={'50px'}>
-                    <Stack w={'150px'}>
+            <Box minH={'75vh'} maxW={'900px'} ml={'20%'} mt={'50px'}>
+                <HStack alignItems={'flex-start'}>
+                    <Stack minW={'160px'}>
                         <Text as={'b'} fontSize={'1.2em'} fontStyle={''}>스터디그룹 관리</Text>
                         <Text id='access' mt={'10px'} _hover={{cursor : "pointer"}} onClick={move}>멤버승인</Text>
                         <Text id='delete' mt={'10px'} _hover={{cursor : "pointer"}} onClick={move}>멤버관리</Text>
                         <Text id='study' mt={'10px'} _hover={{cursor : "pointer"}} onClick={move}>스터디 관리</Text>
                     </Stack>
-                    <Outlet />
+                    <Stack mt={'20px'}>
+                        <Outlet />
+                    </Stack>
                 </HStack>
             </Box>
         </>

@@ -44,6 +44,7 @@ import UpdateIntroduction from "./components/introduction/UpdateIntroduction";
 import MyMessageBox from "./components/message/MyMessageBox";
 import MessageDetail from "./components/message/MessageDetail";
 import FirstMessage from "./components/message/FirstMessage";
+import JoinStudy from "./components/study/JoinStudy";
 
 
 
@@ -188,6 +189,12 @@ const router = createBrowserRouter([
                 path: "/study/create",
                 element: <>
                     <StudyCreate />
+                </>
+
+            },{
+                path: "/study/join",
+                element: <>
+                    <JoinStudy />
                 </>
 
             },{

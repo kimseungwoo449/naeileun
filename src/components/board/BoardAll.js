@@ -147,7 +147,7 @@ const BoardAll = () => {
                                     <Text className="board-detail" id={post.boardCode} name={post.postCode}>{post.boardName}</Text>
                                     <Flex>
                                         <Text className="board-detail" id={post.boardCode} name={post.postCode}>👍 {post.recommendation}</Text>
-                                        <Text className="board-detail" id={post.boardCode} name={post.postCode}>&emsp;💬 12{post.comments}&emsp;</Text>
+                                        <Text className="board-detail" id={post.boardCode} name={post.postCode}>&emsp;💬 {post.commentCount}&emsp;</Text>
                                     </Flex>
                                 </Flex>
                             </Box>
