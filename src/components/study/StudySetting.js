@@ -1,11 +1,14 @@
 import {React, useState, useEffect} from 'react';
 import { Heading, Box, HStack,Card,Image,Stack,CardBody,Text,Icon,Button} from '@chakra-ui/react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useLogin } from '../LoginContext';
 
 const StudySetting = () =>{
     
     const navigate = useNavigate();
     const location = useLocation(); // 2번 라인
+
+    const {user} = useLogin();
 
     if(location.state === null){
         navigate('/study/board');
@@ -14,8 +17,10 @@ const StudySetting = () =>{
     const groupCode = location.state.groupCode;
     const adminCode = location.state.adminCode;
 
-    if("2" !== adminCode || groupCode === null)
-        navigate('/study/board');
+    if(user.userCode !== adminCode || groupCode === null)
+        navigate('/study');
+    else if(!user)
+        navigate('/user/login');
 
     const move = (e) =>{
         const command = e.target.id;
@@ -28,7 +33,7 @@ const StudySetting = () =>{
     }
     return(
         <>
-            <Box minH={'75vh'} maxW={'900px'} ml={'20%'} mt={'50px'}>
+            <Box minH={'75vh'} maxW={'900px'} ml={'15%'} mt={'50px'}>
                 <HStack alignItems={'flex-start'}>
                     <Stack minW={'160px'}>
                         <Text as={'b'} fontSize={'1.2em'} fontStyle={''}>스터디그룹 관리</Text>
