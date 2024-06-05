@@ -135,10 +135,10 @@ const UpdateResume = () => {
             "language": formValues.language1 + splitValue + formValues.language2 + splitValue + formValues.language3,
             "award": formValues.award1 + splitValue + formValues.award2 + splitValue + formValues.award3,
             "resume_code": resumeCode,
-            "phone" : formValues.phone,
-            "expected_salary" : formValues.es,
-            "expected_region" : formValues.er1 + splitValue + formValues.er2 + splitValue + formValues.er3,
-            "is_newbie" : formValues.isNewbie
+            "phone": formValues.phone,
+            "expected_salary": formValues.es,
+            "expected_region": formValues.er1 + splitValue + formValues.er2 + splitValue + formValues.er3,
+            "is_newbie": formValues.isNewbie
         };
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/resume`, {
@@ -173,14 +173,14 @@ const UpdateResume = () => {
     };
 
     return (
-        <Box w={{ base: '90%', md: '1100px' }} m="auto" p={5} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="gray.50">
+        <Box w={{ base: '90%', md: '1100px' }} m="auto" p={5} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="white">
             <AlertDialog
                 isOpen={alert.show}
                 leastDestructiveRef={cancelRef}
                 onClose={() => setAlert({ show: false, title: '', description: '' })}
             >
                 <AlertDialogOverlay>
-                    <AlertDialogContent backgroundColor = '#eb7368'>
+                    <AlertDialogContent backgroundColor='#eb7368'>
                         <AlertDialogHeader fontSize="lg" fontWeight="bold" color={'white'}>
                             {alert.title}
                         </AlertDialogHeader>
@@ -200,7 +200,7 @@ const UpdateResume = () => {
                 <Flex direction="column" alignItems="center">
                     <Text as='b' fontSize="3xl" textAlign="center" mb={5} color="black">이력서 수정</Text>
                     <VStack spacing={6} align="stretch" w="100%">
-                        <Box id='user_info-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
+                        <Box id='user_info-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black">
                             <Input
                                 type='text'
                                 name='title'
@@ -209,6 +209,8 @@ const UpdateResume = () => {
                                 mb={4}
                                 value={formValues.title}
                                 onChange={handleInputChange}
+                                bg="white"
+                                border="1px solid black"
                             />
                             <Input
                                 type='text'
@@ -218,6 +220,8 @@ const UpdateResume = () => {
                                 mb={4}
                                 value={resume.name}
                                 disabled
+                                bg="white"
+                                border="1px solid black"
                             />
                             <Input
                                 type='number'
@@ -226,24 +230,28 @@ const UpdateResume = () => {
                                 placeholder='나이'
                                 value={resume.user_age}
                                 disabled
+                                bg="white"
+                                border="1px solid black"
                             />
                             <Input
                                 type='text'
                                 name='phone'
                                 id='phone'
                                 placeholder='핸드폰 번호'
-                                value={resume.phone}
-                                disabled
+                                value={formValues.phone}
+                                onChange={handleInputChange}
+                                bg="white"
+                                border="1px solid black"
                             />
                         </Box>
 
-                        <Select name='careerable' placeholder='경력유무' onChange={careerChange} value={formValues.isNewbie ? "newbie" : "experienced-person"}>
+                        <Select name='careerable' placeholder='경력유무' onChange={careerChange} value={formValues.isNewbie ? "newbie" : "experienced-person"} border="1px solid black" borderRadius="md" bg="blue.100">
                             <option value='newbie' >신입</option>
                             <option value='experienced-person' >경력</option>
                         </Select>
                         {careerShow &&
 
-                            <Box id='career-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
+                            <Box id='career-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black">
                                 <Text as='b' fontSize="xl" mb={4}>경력</Text>
                                 <Input
                                     type='text'
@@ -253,6 +261,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.career1}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -262,6 +272,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.career2}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -270,10 +282,12 @@ const UpdateResume = () => {
                                     placeholder='경력3'
                                     value={formValues.career3}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                             </Box>
                         }
-                        <Box id='academic-career-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
+                        <Box id='academic-career-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black">
                             <Text as='b' fontSize="xl" mb={4}>학력</Text>
                             <Input
                                 type='text'
@@ -282,10 +296,12 @@ const UpdateResume = () => {
                                 placeholder='최종 학력'
                                 value={formValues.ac}
                                 onChange={handleInputChange}
+                                bg="white"
+                                border="1px solid black"
                             />
                         </Box>
                         <HStack spacing={4} w="100%">
-                            <Box id='certificate-container' p={4} bg="white" borderRadius="md" boxShadow="sm" w="50%">
+                            <Box id='certificate-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black" w="50%">
                                 <Text as='b' fontSize="xl" mb={4}>자격증</Text>
                                 <Input
                                     type='text'
@@ -295,6 +311,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.certificate1}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -304,6 +322,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.certificate2}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -312,9 +332,11 @@ const UpdateResume = () => {
                                     placeholder='자격증3'
                                     value={formValues.certificate3}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                             </Box>
-                            <Box id='language-container' p={4} bg="white" borderRadius="md" boxShadow="sm" w="50%">
+                            <Box id='language-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black" w="50%">
                                 <Text as='b' fontSize="xl" mb={4}>언어</Text>
                                 <Input
                                     type='text'
@@ -324,6 +346,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.language1}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -333,6 +357,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.language2}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -341,11 +367,13 @@ const UpdateResume = () => {
                                     placeholder='언어3'
                                     value={formValues.language3}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                             </Box>
                         </HStack>
                         <HStack spacing={4} w="100%">
-                            <Box id='skill-container' p={4} bg="white" borderRadius="md" boxShadow="sm" w="50%">
+                            <Box id='skill-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black" w="50%">
                                 <Text as='b' fontSize="xl" mb={4}>기술</Text>
                                 <Input
                                     type='text'
@@ -355,6 +383,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.skill1}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -364,6 +394,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.skill2}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -372,9 +404,11 @@ const UpdateResume = () => {
                                     placeholder='기술3'
                                     value={formValues.skill3}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                             </Box>
-                            <Box id='award-container' p={4} bg="white" borderRadius="md" boxShadow="sm" w="50%">
+                            <Box id='award-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black" w="50%">
                                 <Text as='b' fontSize="xl" mb={4}>수상이력</Text>
                                 <Input
                                     type='text'
@@ -384,6 +418,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.award1}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -393,6 +429,8 @@ const UpdateResume = () => {
                                     mb={4}
                                     value={formValues.award2}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                                 <Input
                                     type='text'
@@ -401,22 +439,58 @@ const UpdateResume = () => {
                                     placeholder='수상이력3'
                                     value={formValues.award3}
                                     onChange={handleInputChange}
+                                    bg="white"
+                                    border="1px solid black"
                                 />
                             </Box>
                         </HStack>
-                        <Box id='expected-salary-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
+                        <Box id='expected-salary-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black">
                             <Text as='b' fontSize="xl" mb={4}>희망연봉</Text>
-                            <Input type='text' name='es' id='expected-salary' placeholder='회사 내규에 따름' value={formValues.es}
-                                    onChange={handleInputChange} />
+                            <Input
+                                type='text'
+                                name='es'
+                                id='expected-salary'
+                                placeholder='회사 내규에 따름'
+                                value={formValues.es}
+                                onChange={handleInputChange}
+                                bg="white"
+                                border="1px solid black"
+                            />
                         </Box>
-                        <Box id='expected-region-container' p={4} bg="white" borderRadius="md" boxShadow="sm">
+                        <Box id='expected-region-container' p={4} bg="blue.100" borderRadius="md" boxShadow="sm" border="1px solid black">
                             <Text as='b' fontSize="xl" mb={4}>희망지역</Text>
-                            <Input type='text' name='er1' id='expected-region1' placeholder='희망지역1' mb={4} value={formValues.er1}
-                                    onChange={handleInputChange} />
-                            <Input type='text' name='er2' id='expected-region2' placeholder='희망지역2' mb={4} value={formValues.er2}
-                                    onChange={handleInputChange} />
-                            <Input type='text' name='er3' id='expected-region3' placeholder='희망지역3' value={formValues.er3}
-                                    onChange={handleInputChange} />
+                            <Input
+                                type='text'
+                                name='er1'
+                                id='expected-region1'
+                                placeholder='희망지역1'
+                                mb={4}
+                                value={formValues.er1}
+                                onChange={handleInputChange}
+                                bg="white"
+                                border="1px solid black"
+                            />
+                            <Input
+                                type='text'
+                                name='er2'
+                                id='expected-region2'
+                                placeholder='희망지역2'
+                                mb={4}
+                                value={formValues.er2}
+                                onChange={handleInputChange}
+                                bg="white"
+                                border="1px solid black"
+                            />
+                            <Input
+                                type='text'
+                                name='er3'
+                                id='expected-region3'
+                                placeholder='희망지역3'
+                                value={formValues.er3}
+                                onChange={handleInputChange}
+                                bg="white"
+                                border="1px solid black"
+                            />
                         </Box>
                     </VStack>
                     <HStack spacing={4} mt={6}>
@@ -429,4 +503,4 @@ const UpdateResume = () => {
     );
 };
 
-export default UpdateResume;
+export default UpdateResume

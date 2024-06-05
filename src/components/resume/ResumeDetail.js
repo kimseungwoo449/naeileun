@@ -57,7 +57,7 @@ const ResumeDetail = () => {
     };
 
     return (
-        <Box w={{ base: '90%', md: '1100px' }} m="auto" p={5} borderWidth="1px" borderRadius="md" boxShadow="dark-lg" bg="white">
+        <Box w={{ base: '90%', md: '1100px' }} m="auto" p={5} border={'1px'} borderWidth="1px" borderRadius="md" boxShadow="dark-lg" bg="white">
             <Flex direction="column" alignItems="center">
                 <Text as="b" fontSize="2xl" textAlign="center" mb={5} color="black">{resume.title}</Text>
                 <VStack spacing={6} align="stretch" w="100%">
@@ -73,11 +73,12 @@ const ResumeDetail = () => {
                             "c cr"`
                         }
                         spacing={2}
+                        gap={'10px'}
                         >
-                        <GridItem textAlign={'center'} area={'n'} p='7px 7px 7px 15px'>이름</GridItem><GridItem area={'nr'} backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' mb={'2'}>{resume.name}</GridItem>
-                        <GridItem textAlign={'center'} area={'a'} p='7px 7px 7px 15px'>나이</GridItem><GridItem area={'ar'} backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' mb={'2'}>{resume.user_age}</GridItem>
-                        <GridItem textAlign={'center'} area={'p'} p='7px 7px 7px 15px'>핸드폰</GridItem><GridItem area={'pr'} backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' mb={'2'}>{resume.phone}</GridItem>
-                        <GridItem textAlign={'center'} area={'c'} p='7px 7px 7px 15px'>경력 유무</GridItem><GridItem  area={'cr'} backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' mb={'2'} >{resume.is_newbie ? "신입" : "경력직"}</GridItem>
+                        <GridItem border={'1px'} mb={'2'} mr={'20px'} borderRadius={'10px'} backgroundColor={'#f0f0f0'} textAlign={'start'} area={'n'} p='7px 7px 7px 30px'>이름</GridItem><GridItem bg='blue.100' area={'nr'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px' mb={'2'}>{resume.name}</GridItem>
+                        <GridItem border={'1px'} mb={'2'} mr={'20px'} borderRadius={'10px'} backgroundColor={'#f0f0f0'} textAlign={'start'} area={'a'} p='7px 7px 7px 30px'>나이</GridItem><GridItem bg='blue.100' area={'ar'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px' mb={'2'}>{resume.user_age}</GridItem>
+                        <GridItem border={'1px'} mb={'2'} mr={'20px'} borderRadius={'10px'} backgroundColor={'#f0f0f0'} textAlign={'start'} area={'p'} p='7px 7px 7px 30px'>핸드폰</GridItem><GridItem bg='blue.100' area={'pr'} border={"1px solid black"}  borderRadius='10px' p='7px 7px 7px 15px' mb={'2'}>{resume.phone}</GridItem>
+                        <GridItem border={'1px'} mb={'2'} mr={'20px'} borderRadius={'10px'} backgroundColor={'#f0f0f0'} textAlign={'start'} area={'c'} p='7px 7px 7px 30px'>경력 유무</GridItem><GridItem bg='blue.100'  area={'cr'} border={"1px solid black"}  borderRadius='10px' p='7px 7px 7px 15px' mb={'2'} >{resume.is_newbie ? "신입" : "경력직"}</GridItem>
                         </Grid>
                     </Box>
                     {!careerShow && (
@@ -85,7 +86,7 @@ const ResumeDetail = () => {
                             <Text fontSize="lg" fontWeight="bold" mb={2}>경력</Text>
                             <SimpleGrid columns={1} spacing={2}>
                                 {formatData(resume.career).split(', ').map((career, index) => (
-                                    <Text backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{career}</Text>
+                                    <Text backgroundColor={'blue.100'} boxShadow={'lg'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{career}</Text>
                                 ))}
                             </SimpleGrid>
                         </Box>
@@ -93,7 +94,7 @@ const ResumeDetail = () => {
                     <Box id="academic-career-container" p={4} borderTop='1px' borderBottom='1px' borderColor='lightgray' boxShadow="sm">
                         <Text fontSize="lg" fontWeight="bold" mb={2}>학력</Text>
                         <SimpleGrid columns={1} spacing={2}>
-                            <Text backgroundColor={'white'} boxShadow={'lg'}  borderRadius='10px' p='7px 7px 7px 15px'>{resume.academic_career}</Text>
+                            <Text backgroundColor={'blue.100'} border={"1px solid black"}  borderRadius='10px' p='7px 7px 7px 15px'>{resume.academic_career}</Text>
                         </SimpleGrid>
                     </Box>
                     
@@ -102,7 +103,7 @@ const ResumeDetail = () => {
                             <Text fontSize="lg" fontWeight="bold" mb={2}>자격증</Text>
                             <SimpleGrid columns={1} spacing={2} flex="1">
                                 {formatData(resume.certificate).split(', ').map((certificate, index) => (
-                                    <Text backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{certificate}</Text>
+                                    <Text backgroundColor={'blue.100'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{certificate}</Text>
                                 ))}
                             </SimpleGrid>
                         </Box>
@@ -110,7 +111,7 @@ const ResumeDetail = () => {
                             <Text fontSize="lg" fontWeight="bold" mb={2}>언어</Text>
                             <SimpleGrid columns={1} spacing={2} flex="1">
                                 {formatData(resume.language).split(', ').map((language, index) => (
-                                    <Text backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{language}</Text>
+                                    <Text backgroundColor={'blue.100'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{language}</Text>
                                 ))}
                             </SimpleGrid>
                         </Box>
@@ -120,7 +121,7 @@ const ResumeDetail = () => {
                             <Text fontSize="lg" fontWeight="bold" mb={2}>기술</Text>
                             <SimpleGrid columns={1} spacing={2} flex="1">
                                 {formatData(resume.skill).split(', ').map((skill, index) => (
-                                    <Text backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{skill}</Text>
+                                    <Text backgroundColor={'blue.100'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{skill}</Text>
                                 ))}
                             </SimpleGrid>
                         </Box>
@@ -128,7 +129,7 @@ const ResumeDetail = () => {
                             <Text fontSize="lg" fontWeight="bold" mb={2}>수상이력</Text>
                             <SimpleGrid columns={1} spacing={2} flex="1">
                                 {formatData(resume.award).split(', ').map((award, index) => (
-                                    <Text backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{award}</Text>
+                                    <Text backgroundColor={'blue.100'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{award}</Text>
                                 ))}
                             </SimpleGrid>
                         </Box>
@@ -136,14 +137,14 @@ const ResumeDetail = () => {
                     <Box id="expected-salary-container" p={4} borderTop='1px' borderBottom='1px' borderColor='lightgray' boxShadow="sm">
                         <Text fontSize="lg" fontWeight="bold" mb={2}>희망 연봉</Text>
                         <SimpleGrid columns={1} spacing={2}>
-                            <Text backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px'>{resume.expected_salary}</Text>
+                            <Text backgroundColor={'blue.100'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px'>{resume.expected_salary}</Text>
                         </SimpleGrid>
                     </Box>
                     <Box id="expected-region-container" p={4} borderTop='1px' borderBottom='1px' borderColor='lightgray' boxShadow="sm">
                         <Text fontSize="lg" fontWeight="bold" mb={2}>희망 지역</Text>
                         <SimpleGrid columns={1} spacing={2}>
                             {formatData(resume.expected_region).split(', ').map((region, index) => (
-                                <Text backgroundColor={'white'} boxShadow={'lg'} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{region}</Text>
+                                <Text backgroundColor={'blue.100'} border={"1px solid black"} borderRadius='10px' p='7px 7px 7px 15px' key={index}>{region}</Text>
                             ))}
                         </SimpleGrid>
                     </Box>
