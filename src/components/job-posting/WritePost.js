@@ -33,7 +33,7 @@ const WritePost = ({ isOpen, onClose, fetchJobData }) => {
       });
       if (response.ok) {
         console.log('Event added successfully');
-        fetchJobData(); // 새로운 데이터를 다시 불러옵니다.
+        fetchJobData();
       } else {
         console.error('Failed to add event');
       }

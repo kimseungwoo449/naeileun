@@ -10,6 +10,7 @@ const MyStudy = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/study`,{
             method: 'POST',
             headers: {
+                "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)

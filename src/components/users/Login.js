@@ -33,15 +33,10 @@ const Login = () => {
     const submit = async e => {
         e.preventDefault();
         const formData = new FormData(e.target);
-
-
-
-
         const data = {
             id: formData.get('id'),
             password: formData.get('password'),
         };
-        console.log(data)
         if (!data.id) {
             setErrorMessage('아이디를 입력해주세요.');
             return;
@@ -52,39 +47,23 @@ const Login = () => {
             setErrorMessage('아이디를 입력해주세요.');
             return;
         }
-        console.log(data);
 
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/login`, {
                 method: 'POST',
                 headers: {
+                    "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-
             const result = await response.json();
-
-            console.log(result);
-
             if (result.status === 200) {
-                // 로그인 성공 시 메인 페이지로 이동
-                // setIsLoggedIn(true);
-                // setUser(result.user);
-
+              
                 login(result);
                 navigate('/');
                 setErrorMessage('')
-                console.log(result);
-                console.log(result.user);
-                console.log('성공:', result);
-                // console.log(result);
-                // console.log(result.user);
-                // console.log('성공:', result);
-
             } else {
-                // 로그인 실패 시 오류 메시지 출력  
-                console.error('로그인 실패:', result.message);
                 setErrorMessage('아이디와 비밀번호를 확인해주세요.');
                 return;
             }

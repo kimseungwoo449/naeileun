@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const MyInfo = () => {
     const navigate = useNavigate();
-    // const { user, setUser } = useLogin();
+  
     const {user, setUser} = useLogin();
 
    
@@ -35,19 +35,7 @@ const MyInfo = () => {
             value : value,
             id : user.id
          };
-        // const updateInfo = {
-        //     id: user.id,
-        //     [field]: value,
-        //     payload,
-        //     name: user.name,
-        //     resident_number: user.resident_number,
-        //     user_age: user.age,
-        //     phone: user.phone,
-        //     email: user.email,
-        //     address: user.address,
-        //     admin: user.admin
-        // };
-        // console.log(updateInfo);
+      
      
         if (field === 'password') {
             if (currentPassword !== user.password) {
@@ -66,7 +54,7 @@ const MyInfo = () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                // 'accept': 'application/json',
+              
                 'authorization': `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
             },
             

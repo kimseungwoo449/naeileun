@@ -41,7 +41,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            return data.GetJobInfo.row; // row 데이터 반환
+            return data.GetJobInfo.row; 
         } catch (error) {
             console.error('Error fetching data:', error);
             return [];
@@ -72,7 +72,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
              
             const filteredResults = results.flat().filter(job => job[searchType] && job[searchType].includes(input));
             setResult(filteredResults);
-            setCurrentPage(1); // 검색 후 첫 페이지로 설정
+            setCurrentPage(1);
         } catch (error) {
             console.error('Error in onSearch:', error);
         } finally {
@@ -87,7 +87,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
             if (rceptClosNm) {
                 const dateMatch = rceptClosNm.match(/\((\d{4}-\d{2}-\d{2})\)/);
                 if (dateMatch) {
-                    selectedJob.RCEPT_CLOS_NM = dateMatch[1]; // 추출한 날짜만 설정
+                    selectedJob.RCEPT_CLOS_NM = dateMatch[1];
                 }
             }
             return selectedJob;
@@ -115,7 +115,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
             });
             if (response.ok) {
                 console.log('Event added successfully');
-                fetchJobData(); // 새로운 데이터를 다시 불러옵니다.
+                fetchJobData(); 
             } else {
                 console.error('Failed to add event');
             }
@@ -125,10 +125,10 @@ const SearchPost = ({ onClose, fetchJobData }) => {
         onClose();
     };
 
-    // 페이징 처리를 위한 데이터 분할
+   
     const paginatedResults = result.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-    // 총 페이지 수 계산
+  
     const totalPages = Math.ceil(result.length / itemsPerPage);
 
     return (
