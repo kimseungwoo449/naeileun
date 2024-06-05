@@ -47,7 +47,7 @@ const FirstMessage = () => {
                 setAlert({
                     show: true,
                     title: 'Error',
-                    description: '메세지 전송에 실패했습니다. 다시 시도해주세요.'
+                    description: '메세지 전송에 실패했습니다. 대상 유저 ID가 잘못되었을 수 있습니다. 다시 시도해주세요.'
                 });
             }
 
@@ -56,7 +56,7 @@ const FirstMessage = () => {
             setAlert({
                 show: true,
                 title: 'Error',
-                description: '메세지 전송에 실패했습니다. 다시 시도해주세요.'
+                description: '메세지 전송에 실패했습니다. 대상 유저 ID가 잘못되었을 수 있습니다. 다시 시도해주세요.'
             });
         }
     };
