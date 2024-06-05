@@ -46,6 +46,8 @@ import MessageDetail from "./components/message/MessageDetail";
 import FirstMessage from "./components/message/FirstMessage";
 import JoinStudy from "./components/study/JoinStudy";
 import SearchPost from "./components/job-posting/SearchPost";
+import Main from "./components/Main";
+
 
 
 
@@ -57,7 +59,8 @@ const router = createBrowserRouter([
         children : [
             {
                 path : "/",
-                element : <BoardAll />
+                element : <Main />
+                
             }
         ]
 
