@@ -49,6 +49,8 @@ import SearchPost from "./components/job-posting/SearchPost";
 import Main from "./components/Main";
 
 
+import CreateGroupPost from "./components/study/post/CreateGroupPost";
+import GroupPostDetail from "./components/study/post/GroupPostDetail";
 
 
 const router = createBrowserRouter([
@@ -202,6 +204,18 @@ const router = createBrowserRouter([
                 </>
 
             },{
+                path: "/study/writePost",
+                element: <>
+                    <CreateGroupPost />
+                </>
+
+            },{
+                path: "/study/post",
+                element: <>
+                    <GroupPostDetail />
+                </>
+
+            },,{
                 path: "/study/setting",
                 element: <>
                     <StudySetting />

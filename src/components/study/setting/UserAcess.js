@@ -1,25 +1,28 @@
 import {React, useState, useEffect} from 'react';
 import { HStack,Stack,Text,Button} from '@chakra-ui/react';
 import {useNavigate, useLocation } from 'react-router-dom';
+import { useLogin } from '../../LoginContext';
 const UserAcess = () =>{
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [awaiters,setAwaiter] = useState([]);
+    const [standbymembers,setStandbyMembers] = useState([]);
     const [size, setSize] = useState();
-    const [load,setLoad] = useState();
+    const [load,setLoad] = useState(1);
+
+    const {user} = useLogin();
 
     const groupCode = location.state.groupCode;
 
-    const getAwaiters = async() =>{
+    const getStandbyMembers = async() =>{
 
         const req ={
             "group_code" : groupCode,
-            "user_id" : "2"  //user 수정 요함
+            "user_code" : user.userCode
         }
 
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/getAwaiter`,{
+            `${process.env.REACT_APP_SERVER_URL}/study/getStandbyMembers`,{
                 method: 'POST',
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
@@ -32,17 +35,17 @@ const UserAcess = () =>{
         const data = await response.json();
         console.log(data.result);
         console.log(data);
-        setAwaiter(data.result);
+        setStandbyMembers(data.result);
 
-        console.log(awaiters);
+        console.log(standbymembers);
     }
 
     const refuse = async (e) =>{
-        const awaiterCode = e.target.id;
+        const userCode = e.target.id;
 
         const req ={
             "group_code" : groupCode,
-            "user_code" : awaiterCode
+            "user_code" : userCode
         }
 
         const response = await fetch(
@@ -60,15 +63,15 @@ const UserAcess = () =>{
             refuse();
 
         else
-            setLoad(1);
+            setLoad(load+1);
 
     }
     const addMember = async (e) =>{
-        const awaiterCode = e.target.id;
+        const userCode = e.target.id;
 
         const req ={
             "group_code" : groupCode,
-            "user_code" : awaiterCode
+            "user_code" : userCode
         }
 
         const response = await fetch(
@@ -91,7 +94,7 @@ const UserAcess = () =>{
     }
 
     useEffect(()=>(
-        getAwaiters
+        getStandbyMembers
     ),[load]);
     
 
@@ -99,12 +102,12 @@ const UserAcess = () =>{
         <>
             <Stack ml={'45px'}>
                 <Text as={'b'} fontSize={'1.2em'} >멤버 승인</Text>
-                {awaiters.map((awaiter,index) =>(
+                {standbymembers.map((standbymember,index) =>(
                     <HStack key={index}>
-                        <Text w={'140px'}>{awaiter.userId}</Text>
-                        <Text w={'220px'}>{awaiter.comment}</Text>
-                        <Button id={awaiter.userCode} onClick={refuse} h={'35px'} fontSize={'0.9em'}>거절</Button>
-                        <Button id={awaiter.userCode} onClick={addMember} h={'35px'} fontSize={'0.9em'} colorScheme='blue'>승인</Button>
+                        <Text w={'140px'}>{standbymember.userId}</Text>
+                        <Text w={'220px'}>{standbymember.comment}</Text>
+                        <Button id={standbymember.userCode} onClick={refuse} h={'35px'} fontSize={'0.9em'}>거절</Button>
+                        <Button id={standbymember.userCode} onClick={addMember} h={'35px'} fontSize={'0.9em'} colorScheme='blue'>승인</Button>
                     </HStack>
                 ))}
                 

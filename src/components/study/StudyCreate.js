@@ -1,27 +1,28 @@
-import {React, useState} from 'react';
+import {React, useState,useEffect } from 'react';
 import { Radio, RadioGroup } from '@chakra-ui/react'
 import {Box, Stack, HStack,Input,Text,Textarea,Button} from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Form,useNavigate} from 'react-router-dom';
+import { useLogin } from '../LoginContext';
 
 const StudyCreate = () =>{
     const navigate = useNavigate();
 
     const [isPublic,setIsPublic] = useState(true);
     const [access, setAccess] = useState(true);
-    //const {setIsLoggedIn, setUser} = useLogin();
-    //const userId = setIsLoggedIn.id;
+    const {user} = useLogin();
+
+    const [name,setName] = useState('');
+    const [decription,setDecription] = useState('');
+    const NAME_MAX_LENGTH = 20;
+    const CONTENT_MAX_LENGTH = 500;
 
     const createStudy = async() =>{
-
-        const name = document.querySelector('#name').value;
-        const dec = document.querySelector('#decription').value;
-
         const req = {
                 "group_name" : name,
                 "is_public" : isPublic,
                 "auto_member_access" : access,
-                "decription" : dec,
-                "user_code" : "2" // login 구현 후 수정하기
+                "decription" : decription,
+                "user_code" : user.userCode
         };
 
         console.log(req);
@@ -50,6 +51,17 @@ const StudyCreate = () =>{
         if(command === "cancle"){
             navigate('/study');
             return;
+        }
+    }
+
+    const onInputHandler =(e) =>{
+        const content = e.target.value;
+        const command = e.target.id;
+
+        if(command === "name" && content.length <= NAME_MAX_LENGTH){
+            setName(content);
+        }else if(command === "decription" && content.length <= CONTENT_MAX_LENGTH){
+            setDecription(content);
         }
     }
 
@@ -87,27 +99,41 @@ const StudyCreate = () =>{
 
         if(isValid === false)
             return;   
-        
-        
 
         createStudy();
     }
 
+    useEffect(()=>{
+        if(!user){
+            navigate('/user/login');
+        }
+    },[])
 
     return(
         <>
         <Box h={'75vh'} w={'600px'} m={"auto"}  mt={"50px"} mb={'20px'}>
-            <form method="POST" action="/study/create" >
+            <Form method="POST" action="/study/create" >
                 <HStack>
                     <Text as="h2" fontSize={"2xl"} margin={"auto"} mb={"30px"}>스터디 생성하기</Text>
                 </HStack>
                 
-                <HStack>
-                    <Input id='name' name='name' w={"400px"} m={"auto"} placeholder="스터디 그룹명" mb={"20px"} ></Input>
-                </HStack> 
-                <HStack>
-                    <Textarea id='decription' h={"250px"} w={"400px"} m={"auto"} placeholder="스터디 그룹 설명" mb={"30px"}></Textarea>
-                </HStack>
+                <Stack>
+                    <Input id='name' onChange={onInputHandler} name='name' w={"400px"} m={"auto"} placeholder="스터디 그룹명"></Input>
+                    <Box textAlign={"end"} mr={'100px'} mb={"5px"} >
+                        <span>{name.length}</span>
+                        {/* 글자수 표시 */}
+                        <span>/{NAME_MAX_LENGTH} 자</span>
+                    </Box>
+                </Stack> 
+                
+                <Stack>
+                    <Textarea id='decription' onChange={onInputHandler} h={"250px"} w={"400px"} m={"auto"} placeholder="스터디 그룹 설명" ></Textarea>
+                    <Box textAlign={"end"} mr={'100px'} mb={"20px"}>
+                        <span>{decription.length}</span>
+                        {/* 글자수 표시 */}
+                        <span>/{CONTENT_MAX_LENGTH} 자</span>
+                    </Box>
+                </Stack>
                 <RadioGroup id='isPublic' onChange={setIsPublic} defaultValue='true'>
                     <Stack spacing={5} direction='row' ml={'100px'}>
                         <Text>그룹 형식</Text>
@@ -140,7 +166,7 @@ const StudyCreate = () =>{
                     <Button onClick={movePage} w={'60px'} id="cancle">취소</Button>
                     <Button onClick={submit} w={'60px'} colorScheme='blue' id='create-study'>생성</Button>
                 </HStack>
-            </form>
+            </Form>
         </Box>
         </>
     )

@@ -1,6 +1,6 @@
 import {React, useRef, useState } from 'react';
-import {Box, Text, Button, HStack, Image, Icon, Stack, Input} from '@chakra-ui/react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {Box, Text, Button, HStack, IconButton, Stack, Input ,Icon} from '@chakra-ui/react';
+import {useNavigate, useLocation,Form} from 'react-router-dom';
 import { IoChatbubble } from "react-icons/io5";
 import { MdSettings, MdMoreHoriz, MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import { useEffect } from 'react';
@@ -28,16 +28,16 @@ const StudyBoard = () =>{
     const [isMember,setIsMember] = useState(false);
 
     const [page, setPage] = useState(1);
-    const [load, setLoad] = useState();
+    const [load, setLoad] = useState(1);
 
     const postsPerPage = 5; // 페이지당 보여줄 게시판 수
     const pageCount = useRef(1);
 
-    const fetchBoard = async(userCode) => {
+    const fetchBoard = async() => {
         const req = {
             "group_code" : groupCode,
             //user 수정 연결 후 수정 **********
-            "user_code" : userCode
+            "user_code" :user.userCode
         }
 
         console.log(req);
@@ -56,6 +56,11 @@ const StudyBoard = () =>{
         console.log(data.result[0]);
         console.log(data.result[0].isMember);
         console.log(data.meta);
+
+        if(data.status === false){
+            setLoad(load+1);
+        }
+
         setPost(data.result[0].post);
         setStudy(data.result[0].study);
         setIsMember(data.result[0].isMember.isMember);
@@ -100,7 +105,7 @@ const StudyBoard = () =>{
 
         const request = { 
             "group_code" : groupCode,
-            "user_code" : user.userCode  //userId일 시 백도 수정
+            "user_code" : user.userCode  
         }
 
         const response = await fetch(
@@ -122,18 +127,30 @@ const StudyBoard = () =>{
         
     }
 
-    const setting =(e)=>{
-        if(study.adminCode === user.userCode){
+    const movePage =(e)=>{
+        const command = e.target.getAttribute("name");
+        console.log(command);
+
+        if(command === 'setting' && study.adminCode === user.userCode){
             navigate('/study/setting/access',{state :{groupCode : groupCode, adminCode :study.adminCode}});
             return;
+        }else if(command === 'write-post'){
+            navigate('/study/writePost',{state:{groupCode : groupCode}});
+        }else if(command === 'postDetail'){
+            const postCode = e.target.id;
+            if(isMember || study.isPublic){
+                navigate('/study/post',{state:{groupCode : groupCode, postCode : postCode }})
+            }else{
+                alert('스터디 멤버만 이용 가능합니다.');
+            }
         }
 
-        navigate('/study/board',{state:{groupCode : groupCode}});
+        setLoad(load+1);
     }
 
     useEffect(()=>{
         if (user) {
-            fetchBoard(user.userCode);
+            fetchBoard();
         } else {
             navigate('/user/login');
         }
@@ -142,12 +159,20 @@ const StudyBoard = () =>{
 
     return(
         <>
-        <Box h={'80vh'} w={"750px"} margin={'auto'}>
-            <form method="POST" action="">
+        <Box h={'80vh'} minW={"750px"} maxW={'70vw'} ml={'14%'}>
+            <Form method="POST" action="">
                 <HStack ml={'20px'}>
-                    <Text as={'b'} fontSize={'1.5em'} ml={'5px'} mr={'10px'} textAlign={'center'}>{study.name}</Text>
-                    <Text>그룹 채팅방 입장</Text>
-                    <Icon as={IoChatbubble}></Icon>
+                    <HStack w={'100%'}>
+                        <Text as={'b'} fontSize={'1.5em'} ml={'5px'} mr={'10px'} textAlign={'center'}>{study.name}</Text>
+                        {/* <Text>그룹 채팅방 입장</Text> */}
+                        {/* <Icon as={IoChatbubble}></Icon> */}
+                        {
+                            user.userCode === study.adminCode ?
+                            <Icon onClick={movePage} name='setting' as={MdSettings} boxSize={'1.6em'} _hover={{cursor:"poiner"}} ml={'auto'} /> : 
+                            <Input type='hidden'></Input>
+                        }
+                    </HStack>
+                    
                     <HStack ml={'auto'}>
                         {
                              //user //need user update
@@ -162,37 +187,34 @@ const StudyBoard = () =>{
                     </HStack>
                 </HStack>
                 <HStack mt={"20px"} mb={"20px"}  h={'100px'} ml={'20px'}>
-                    <Image src='' border={"solid 1px gray"} w={'100px'} h={'100px'}></Image>
                     <Text h={'100px'} w={"300px"} pl={"10px"}>{study.decription}</Text>
-                    <Stack  ml={'auto'} h={'100px'}>
+                </HStack>
+                <Stack>
+                    <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}} ml={'20px'}>
+                        <Text as={'b'} fontSize="1.2em" mt={'10px'}>그룹 게시판</Text>
                         {
-                            //수정 수정 수정 수정 수정 수정
-                            //user code 가져오기 //수정요함
-                            user.userCode === study.adminCode ?
-                            <Icon as={MdSettings} onClick={setting} boxSize={'1.4em'}></Icon> : 
+                            isMember === true ?
+                            <Button name='write-post' onClick={movePage} ml={'auto'}>글쓰기</Button> :
                             <Input type='hidden'></Input>
                         }
-                        
-                    </Stack>
-                </HStack>
-                <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}} ml={'20px'}>
-                    <Text as={'b'} fontSize="1.2em" mt={'10px'}>그룹 게시판</Text>
-                    <Button ml={'auto'}>글쓰기</Button>
-                    <TableContainer w={"1000px"} key={'board'}>
+                    </HStack>
+                    <TableContainer w={"100%"} key={'board'}>
                             <Table >
                                 <Thead>
                                     <Tr>
                                         <Th>순서</Th>
                                         <Th>제목</Th>
+                                        <Th>작성자</Th>
                                         <Th>게시일</Th>
                                     </Tr>
                                 </Thead>
                                 <Tbody>
                                     {post.map((post, index) => (
-                                        <Tr key={post.postCode}>
-                                            <Td>{((page-1) * 6) + index+1}</Td>
-                                            <Td w={'200px'}>{post.title}</Td>
-                                            <Td>{post.updateDate}</Td>
+                                        <Tr key={post.postCode} onClick={movePage} id={post.postCode} name='postDetail'>
+                                            <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}}>{((page-1) * 6) + index+1}</Td>
+                                            <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}} w={'200px'}>{post.title}</Td>
+                                            <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}} w={'200px'}>{post.userId}</Td>
+                                            <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}}>{post.updateDate}</Td>
                                         </Tr>
                                     ))}
                                 </Tbody>
@@ -205,9 +227,9 @@ const StudyBoard = () =>{
                             <Text fontSize={'1.1em'}  textAlign={'center'} _hover={{ cursor:"pointer"}}>{page}</Text>
                             <Icon as={MdNavigateNext} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor:"pointer"}}></Icon>
                         </HStack>
-                </HStack>
+                </Stack>
                 
-            </form>
+            </Form>
         </Box>
         </>
     )
