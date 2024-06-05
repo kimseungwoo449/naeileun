@@ -122,7 +122,7 @@ const WriteIntroduction = () => {
                             <Input
                                 value={intro.head}
                                 onChange={(e) => handleInputChange(index, 'head', e.target.value)}
-                                placeholder="문항을 입력하세요"
+                                placeholder="문항을 입력하세요 (공백 포함 500자)"
                                 size="md"
                                 height="50px"
                                 borderRadius="md"
@@ -136,7 +136,7 @@ const WriteIntroduction = () => {
                             <Textarea
                                 value={intro.body}
                                 onChange={(e) => handleInputChange(index, 'body', e.target.value)}
-                                placeholder="내용을 입력해주세요"
+                                placeholder="내용을 입력해주세요 (공백 포함 2000자)"
                                 size="md"
                                 height="150px"
                                 borderRadius="md"
