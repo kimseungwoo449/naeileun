@@ -47,6 +47,7 @@ import FirstMessage from "./components/message/FirstMessage";
 import JoinStudy from "./components/study/JoinStudy";
 import CreateGroupPost from "./components/study/post/CreateGroupPost";
 import GroupPostDetail from "./components/study/post/GroupPostDetail";
+import UpdateGroupPost from "./components/study/post/UpdateGroupPost";
 
 
 const router = createBrowserRouter([
@@ -210,7 +211,13 @@ const router = createBrowserRouter([
                     <GroupPostDetail />
                 </>
 
-            },,{
+            },{
+                path: "/study/postUpdate",
+                element: <>
+                    <UpdateGroupPost />
+                </>
+
+            },{
                 path: "/study/setting",
                 element: <>
                     <StudySetting />
