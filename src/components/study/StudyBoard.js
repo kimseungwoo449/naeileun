@@ -190,7 +190,7 @@ const StudyBoard = () => {
     return (
         <Box h={'80vh'} minW={"750px"} maxW={'70vw'} ml={'14%'}>
             <Form method="POST" action="">
-                <HStack ml={'20px'}>
+                <HStack mt={'30px'} ml={'15px'}>
                     <HStack w={'100%'}>
                         <Text as={'b'} fontSize={'1.5em'} ml={'5px'} mr={'10px'} textAlign={'center'}>{study.name}</Text>
                         {
@@ -212,8 +212,11 @@ const StudyBoard = () => {
                         }
                     </HStack>
                 </HStack>
-                <HStack mt={"20px"} h={'100px'} ml={'20px'}>
-                    <Text h={'100px'} pl={"6px"}>{study.decription}</Text>
+                <HStack >
+                    <Text mt={'30px'}>{study.decription}</Text>
+                </HStack>
+                <HStack>
+                    <Text as={'b'} ml={'20px'} textAlign={'center'}>{study.isPublic ? "public" : "private"}</Text>
                 </HStack>
                 <Stack>
                     <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor: "pointer" }} ml={'20px'}>
