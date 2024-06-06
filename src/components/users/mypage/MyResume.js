@@ -10,7 +10,7 @@ const MyResume = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { user } = useLogin();
-    const splitValue = "wLYPvSwquc"; // useRef 대신 상수로 설정
+    const splitValue = "wLYPvSwquc"; 
     const [alert, setAlert] = useState({ show: false, title: '', description: '' });
     const cancelRef = useRef();
 
@@ -18,6 +18,7 @@ const MyResume = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/resume`, {
             method: 'POST',
             headers: {
+                "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                 'Content-Type': 'application/json;charset=UTF8'
             },
             body: JSON.stringify(user)
@@ -38,7 +39,7 @@ const MyResume = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/resume/${resumeCode}`, {
             method: 'DELETE',
             headers: {
-                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                 "Content-Type": "application/json;charset=UTF8"
             }
         })
@@ -92,7 +93,7 @@ const MyResume = () => {
             </Flex>
             <VStack align="stretch" spacing={4}>
                 {loading ? (
-                    // 스켈레톤 컴포넌트 추가
+                 
                     Array(5).fill("").map((_, index) => (
                         <Box key={index} p={5} borderWidth={1} borderRadius="lg" borderColor="gray.200">
                             <Skeleton height="20px" width="70%" mb={4} />

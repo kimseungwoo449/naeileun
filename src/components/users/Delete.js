@@ -35,9 +35,6 @@ const Delete = () => {
             }),
         })
             .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            });
     }
 
     const deleteIntroductionAll = ()=>{
@@ -51,10 +48,7 @@ const Delete = () => {
                 "user_id" : user.id
             }),
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            });
+            .then(response => response.json()) 
     }
 
     const deleteMessageAll = ()=>{
@@ -70,9 +64,6 @@ const Delete = () => {
             }),
         })
             .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            });
     }
 
     const submit = async e => {
@@ -83,6 +74,7 @@ const Delete = () => {
                 const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/delete`, {
                     method: 'DELETE',
                     headers: {
+                        "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(user)
@@ -99,7 +91,7 @@ const Delete = () => {
                     });
                     navigate('/user/logout');
                 } else {
-                    // 탈퇴 실패 시 오류 메시지 출력
+                
                     toast({
                         title: "탈퇴 실패",
                         description: result.message || "회원 탈퇴에 실패했습니다.",

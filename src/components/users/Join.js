@@ -1,5 +1,5 @@
 
-// export default Join;
+
 import React, { useState } from 'react';
 import { Box, Input, Button, Checkbox, FormControl, FormLabel, VStack, Text, HStack, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -59,13 +59,14 @@ const Join = () => {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/check`, {
                 method: 'POST',
                 headers: {
+                    "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ check: formData.id })
             });
             const result = await response.json();
             if (result.isAvailable) {
-                setErrorBox1(prev => ({ ...prev, id: '' })); // 에러 메시지 제거
+                setErrorBox1(prev => ({ ...prev, id: '' }));
             } else {
                 setErrorBox1(prev => ({ ...prev, id: '사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.' }));
             }
@@ -82,7 +83,6 @@ const Join = () => {
         const data = formData;
 
     if (!data.id || !data.password || !data.name || !data.residentNumber1 || !data.residentNumber2 || !data.phone || !data.agree) {
-        console.log(data.agree);
         alert('모든 필수 항목을 입력하고 약관에 동의해야 합니다.');
         return;
     }
@@ -94,13 +94,14 @@ const Join = () => {
         name: data.name,
         resident_number: `${data.residentNumber1}-${data.residentNumber2}`,
         phone: data.phone,
-        admin: false // 이 폼에서는 'admin'이 항상 false라고 가정합니다
+        admin: false 
     };
 
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/join`, {
                 method: 'POST',
                 headers: {
+                    "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(payload)
@@ -110,7 +111,6 @@ const Join = () => {
                 throw new Error(`Server Error: ${errorText}`);
             }
             const result = await response.json();
-            console.log('성공:', result);
             navigate("/");
         } catch (error) {
             console.error('오류:', error);

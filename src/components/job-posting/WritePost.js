@@ -27,13 +27,14 @@ const WritePost = ({ isOpen, onClose, fetchJobData }) => {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/create`, {
         method: 'POST',
         headers: {
+          "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(event)
       });
       if (response.ok) {
         console.log('Event added successfully');
-        fetchJobData(); // 새로운 데이터를 다시 불러옵니다.
+        fetchJobData();
       } else {
         console.error('Failed to add event');
       }

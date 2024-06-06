@@ -10,6 +10,7 @@ const UpdatePost = ({ isOpen, onClose, job, fetchJobData }) => {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/update`, {
                 method: 'POST',
                 headers: {
+                    "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     'Content-Type': 'application/json;charset=UTF8'
                 },
                 body: JSON.stringify(updatedJob)

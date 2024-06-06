@@ -24,12 +24,12 @@ const Calendar = () => {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/read`, {
         method: 'POST',
         headers: {
+          "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
           'Content-Type': 'application/json;charset=UTF8'
         },
         body: user.userCode
       });
       const data = await response.json();
-      console.log(data);
       setJobData(data);
     } catch (error) {
       console.error('Error fetching job data:', error);
@@ -44,7 +44,7 @@ const Calendar = () => {
     const days = [];
     let day = new Date(startOfMonth);
 
-    // 첫 주의 빈 칸을 렌더링
+    
     for (let i = 0; i < startDayOfWeek; i++) {
       days.push(<GridItem key={`empty-${i}`} />);
     }

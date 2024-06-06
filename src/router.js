@@ -8,7 +8,7 @@ import StudyBoard from "./components/study/StudyBoard";
 import Join from "./components/users/Join";
 import Login from "./components/users/Login";
 
-import Update from "./components/users/Update";
+
 import Delete from "./components/users/Delete";
 
 import Board from "./components/board/Board";

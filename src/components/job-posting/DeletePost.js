@@ -9,6 +9,7 @@ const DeletePost = ({ isOpen, onClose, job, fetchJobData }) => {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/delete`, {
         method: 'POST',
         headers: {
+          "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
           'Content-Type': 'application/json;charset=UTF8'
         },
         body: JSON.stringify(job)
@@ -45,9 +46,9 @@ const DeletePost = ({ isOpen, onClose, job, fetchJobData }) => {
         <ModalHeader>Delete Job</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text>Are you sure you want to delete this job posting?</Text>
-          <Text fontWeight="bold">{job.jobTitle}</Text>
-          <Text>{job.companyName}</Text>
+          <Text>정말 이 채용공고를 삭제 하시겠습니까?</Text>
+          <Text fontWeight="bold">{job.companyName}</Text>
+          <Text>{job.jobTitle}</Text>
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="red" mr={3} onClick={handleDelete}>

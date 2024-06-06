@@ -42,7 +42,7 @@ const MyIntroduction = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/self-introduction/${documentCode}`, {
             method: 'DELETE',
             headers: {
-                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                'Authorization': `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                 'Content-Type': 'application/json;charset=UTF8'
             },
             body: JSON.stringify({

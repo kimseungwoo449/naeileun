@@ -7,7 +7,7 @@ const ViewJobMain = () => {
     const [lastIndex, setLastIndex] = useState();
 
     useEffect(() => {
-        fetch(`http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_JOB_INFO_KEY}/json/GetJobInfo/1/1/`)
+        fetch(`http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_OPEN_API_KEY}/json/GetJobInfo/1/1/`)
             .then(response => response.json())
             .then(data => {
                 if (data.GetJobInfo && data.GetJobInfo.list_total_count) {
@@ -24,7 +24,7 @@ const ViewJobMain = () => {
     useEffect(() => {
         if (lastIndex) {
             setLoading(true);
-            fetch(`http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_JOB_INFO_KEY}/json/GetJobInfo/${lastIndex - 3}/${lastIndex}/`)
+            fetch(`http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_OPEN_API_KEY}/json/GetJobInfo/${lastIndex - 3}/${lastIndex}/`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.GetJobInfo && data.GetJobInfo.row) {
