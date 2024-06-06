@@ -224,7 +224,7 @@ const StudyBoard = () => {
                                 <Input type='hidden'></Input>
                         }
                     </HStack>
-                    <TableContainer w={"100%"} key={'board'}>
+                    <TableContainer w={"100%"} h={'300px'} key={'board'}>
                         <Table >
                             <Thead>
                                 <Tr>
