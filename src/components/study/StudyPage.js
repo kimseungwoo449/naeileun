@@ -96,9 +96,9 @@ const StudyPage = () => {
                     <Card key={index} id={study.groupCode} boxSize="180px" mr="20px" _hover={{ cursor: "pointer" }} onClick={submit}>
                         <CardBody id={study.groupCode}>
                             <Stack id={study.groupCode} mt="5px">
-                                <Text id={study.groupCode} as="h4" fontSize="1.3em">{study.name}</Text>
-                                <Text id={study.groupCode} as="h5" fontSize="0.9em">{study.decription}</Text>
-                                <Text id={study.groupCode} as="h5" fontSize="0.9em" mt={'30px'}>관리자 : {study.adminId}</Text>
+                                <Text id={study.groupCode} as="h4" fontSize="1.3em" isTruncated>{study.name}</Text>
+                                <Text id={study.groupCode} as="h5" fontSize="0.9em" isTruncated>{study.decription}</Text>
+                                <Text id={study.groupCode} as="h5" fontSize="0.9em" isTruncated>관리자 : {study.adminId}</Text>
                             </Stack>
                         </CardBody>
                     </Card>
@@ -114,8 +114,9 @@ const StudyPage = () => {
                     <Card id={popular.groupCode} key={index + 1000} boxSize="180px" mr="20px" _hover={{ cursor: "pointer" }} onClick={submit}>
                         <CardBody id={popular.groupCode}>
                             <Stack id={popular.groupCode} mt="5px">
-                                <Text id={popular.groupCode} as="h4" fontSize="1.3em">{popular.name}</Text>
-                                <Text id={popular.groupCode} as="h5" fontSize="0.9em" mt={'30px'}>관리자:{popular.adminId}</Text>
+                                <Text id={popular.groupCode} as="h4" fontSize="1.3em" isTruncated>{popular.name}</Text>
+                                <Text id={study.groupCode} as="h5" fontSize="0.9em" isTruncated>{popular.decription}</Text>
+                                <Text id={popular.groupCode} as="h5" fontSize="0.9em" isTruncated>관리자:{popular.adminId}</Text>
                             </Stack>
                         </CardBody>
                     </Card>
