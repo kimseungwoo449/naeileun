@@ -5,15 +5,15 @@ import { useLogin } from '../../LoginContext';
 
 const CreatePost = () =>{
     const navigate = useNavigate();
-    const location = useLocation(); // 2번 라인
+    const location = useLocation();
     const groupCode = location.state.groupCode;
 
-    const TITLE_MAX_LENGTH = 50; // 제목 최대 글자수
-    const CONTENT_MAX_LENGTH = 4000; // 내용 최대 글자수
+    const TITLE_MAX_LENGTH = 50;
+    const CONTENT_MAX_LENGTH = 4000; 
 
     const { user } = useLogin();
 
-    const [title, setTitle] = useState(''); // 제목 상태 추가
+    const [title, setTitle] = useState(''); 
     const [content, setContent] = useState('');
 
 
@@ -72,13 +72,13 @@ const CreatePost = () =>{
         const { id, value } = e.target;
 
         if (id === 'title' && value.length > TITLE_MAX_LENGTH) {
-            e.target.value = value.slice(0, TITLE_MAX_LENGTH); // 제목 길이 제한
+            e.target.value = value.slice(0, TITLE_MAX_LENGTH);
         } else if (id === 'content' && value.length > CONTENT_MAX_LENGTH) {
-            e.target.value = value.slice(0, CONTENT_MAX_LENGTH); // 내용 길이 제한
+            e.target.value = value.slice(0, CONTENT_MAX_LENGTH);
         }
 
         if (id === 'title') {
-            setTitle(value); // 제목 상태 업데이트
+            setTitle(value);
         } else if (id === 'content') {
             setContent(value);
         }
@@ -96,23 +96,18 @@ const CreatePost = () =>{
     return(
         <>
             <Box m={"60px 0"} p={5} shadow="md" borderWidth="1px" borderRadius={"md"} w="800px" mx="auto" minHeight="50vh">
-                {/* 페이지 제목 */}
                 <Box textAlign="center" mb={5} mt={5}>
                     <Heading as="h3" size="lg">게시글 작성</Heading>
                 </Box>
-                {/* 폼 시작 */}
                 <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/board/write`} onSubmit={submit} encType='multipart/form-data'>
                     <VStack spacing={4} align="stretch">
-                        {/* 제목 입력 */}
                         <FormControl id="title">
                             <Input id='title' name='reqTitle' minHeight="5vh" type="text" placeholder="제목" onChange={onInputHandler} maxLength={TITLE_MAX_LENGTH} />
                             <Box textAlign={"end"}>
                                 <span>{title.length}</span>
-                                {/* 글자수 표시 */}
                                 <span>/{TITLE_MAX_LENGTH} 자</span>
                             </Box>
                         </FormControl>
-                        {/* 내용 입력 */}
                         <FormControl id="content">
                             <Textarea
                                 id='content'
@@ -126,7 +121,6 @@ const CreatePost = () =>{
                             />
                             <Box textAlign={"end"}>
                                 <span>{content.length}</span>
-                                {/* 글자수 표시 */}
                                 <span>/{CONTENT_MAX_LENGTH} 자</span>
                             </Box>
                         </FormControl>

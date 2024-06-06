@@ -4,7 +4,6 @@ import {useNavigate, useLocation } from 'react-router-dom';
 import { useLogin } from '../../LoginContext';
 
 const DeleteUser = () =>{
-    const navigate = useNavigate();
     const location = useLocation();
     const groupCode = location.state.groupCode;
     const adminCode = location.state.adminCode;
@@ -22,14 +21,11 @@ const DeleteUser = () =>{
         )
 
         const data = await request.json();
-        console.log(data);
         setMember(data.result);
-        console.log(members);
     }
 
     const deleteMember =(e) =>{
         const code = e.target.id;
-        console.log(e.target.id);
         if(code !== null){
             deleteByMemberCode(code);
         }

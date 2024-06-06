@@ -3,11 +3,9 @@ import { HStack,Stack,Text,Button} from '@chakra-ui/react';
 import {useNavigate, useLocation } from 'react-router-dom';
 import { useLogin } from '../../LoginContext';
 const UserAcess = () =>{
-    const navigate = useNavigate();
     const location = useLocation();
 
     const [standbymembers,setStandbyMembers] = useState([]);
-    const [size, setSize] = useState();
     const [load,setLoad] = useState(1);
 
     const {user} = useLogin();

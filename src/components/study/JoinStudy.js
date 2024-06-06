@@ -14,7 +14,6 @@ const JoinStudy = () =>{
 
     const checkComment =(e) =>{
         const data = e.target.value;
-        console.log(data);
         if(data.length <= 30)
             setComment(data);
         else

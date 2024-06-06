@@ -25,8 +25,6 @@ const StudyCreate = () =>{
                 "user_code" : user.userCode
         };
 
-        console.log(req);
-
         const response = await fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/createStudy`, {
                 method: 'POST',
@@ -38,7 +36,6 @@ const StudyCreate = () =>{
         });
 
         const data = await response.json();
-        console.log(data);
 
         if(data.status)
             navigate('/study');
@@ -47,7 +44,6 @@ const StudyCreate = () =>{
 
     const movePage = (e) =>{
         const command = e.target.id;
-        console.log(command);
         if(command === "cancle"){
             navigate('/study');
             return;
@@ -68,7 +64,6 @@ const StudyCreate = () =>{
     const submit = (e) =>{
         e.preventDefault();
         const command = e.target.id;
-        console.log(command);
         if(command !== "create-study"){
             return;
         }
@@ -77,11 +72,6 @@ const StudyCreate = () =>{
         const dec = document.querySelector('#decription').value;
 
         let isValid = true;
-
-        console.log(name);
-        console.log(dec);
-        console.log(isPublic);
-        console.log(access);
 
         if(name===""){
             const error = document.querySelector('#name-none-error');
@@ -121,7 +111,6 @@ const StudyCreate = () =>{
                     <Input id='name' onChange={onInputHandler} name='name' w={"400px"} m={"auto"} placeholder="스터디 그룹명"></Input>
                     <Box textAlign={"end"} mr={'100px'} mb={"5px"} >
                         <span>{name.length}</span>
-                        {/* 글자수 표시 */}
                         <span>/{NAME_MAX_LENGTH} 자</span>
                     </Box>
                 </Stack> 
@@ -130,7 +119,6 @@ const StudyCreate = () =>{
                     <Textarea id='decription' onChange={onInputHandler} h={"250px"} w={"400px"} m={"auto"} placeholder="스터디 그룹 설명" ></Textarea>
                     <Box textAlign={"end"} mr={'100px'} mb={"20px"}>
                         <span>{decription.length}</span>
-                        {/* 글자수 표시 */}
                         <span>/{CONTENT_MAX_LENGTH} 자</span>
                     </Box>
                 </Stack>

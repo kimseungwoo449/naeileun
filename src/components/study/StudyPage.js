@@ -38,7 +38,6 @@ const StudyPage = () => {
             setLoad(load+1);
         }
 
-        console.log(studyData.result);
         setStudyList(studyData.result[0]);
         setPopularList(studyData.result[1]);
     };
