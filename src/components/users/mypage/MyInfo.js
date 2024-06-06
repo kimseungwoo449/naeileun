@@ -33,7 +33,8 @@ const MyInfo = () => {
 
         const payload = { field : field,
             value : value,
-            id : user.id
+            id : user.id,
+            pw : user.password
          };
       
      
@@ -46,15 +47,13 @@ const MyInfo = () => {
                 alert('새 비밀번호가 일치하지 않습니다.');
                 return;
             }
-            payload.currentPassword = currentPassword;
-            payload.newPassword = newPassword;
+            setValue(newPassword);
         }
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/update`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-              
                 'authorization': `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
             },
             

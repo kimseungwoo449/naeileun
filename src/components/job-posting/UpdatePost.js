@@ -96,7 +96,6 @@ const UpdatePost = ({ isOpen, onClose, job, fetchJobData }) => {
                             onChange={(e) => setUpdatedJob({ ...updatedJob, status: e.target.value })}
                         />
                     </FormControl>
-                    {/* Add other fields as necessary */}
                 </ModalBody>
                 <ModalFooter>
                     <Button colorScheme="blue" mr={3} onClick={handleUpdate}>

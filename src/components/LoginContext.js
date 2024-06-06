@@ -9,13 +9,11 @@ export const LoginProvider = ({ children }) => {
 
         if(response && response.status == 200) {
             setUser(response.user);
-         
         }
     }
     const logout = () => {
         setUser(null);
     }
-
     return (
         <LoginContext.Provider value={{ user,setUser ,login, logout }}>
             {children}

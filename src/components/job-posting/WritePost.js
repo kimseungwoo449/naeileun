@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody,
-  ModalFooter, Button, Input, FormControl, FormLabel, Tabs, TabList, TabPanels, Tab, TabPanel
+  ModalFooter, Button, Input, FormControl, FormLabel, Tabs, TabList, TabPanels, Tab, TabPanel,
+  Box
 } from '@chakra-ui/react';
 
 
@@ -47,82 +48,163 @@ const WritePost = ({ isOpen, onClose, fetchJobData }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>일정 관리</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Tabs>
-            <TabList>
-              <Tab>내 일정 등록</Tab>
-              <Tab>채용 검색하기</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <FormControl>
-                  <FormLabel>회사 이름</FormLabel>
-                  <Input 
-                    placeholder="Company Name" 
-                    value={newEvent.companyName} 
-                    onChange={(e) => setNewEvent({ ...newEvent, companyName: e.target.value })} 
-                  />
-                </FormControl>
-                <FormControl mt={4}>
-                  <FormLabel>직책</FormLabel>
-                  <Input 
-                    placeholder="Job Title" 
-                    value={newEvent.jobTitle} 
-                    onChange={(e) => setNewEvent({ ...newEvent, jobTitle: e.target.value })} 
-                  />
-                </FormControl>
-                <FormControl mt={4}>
-                  <FormLabel>지원 시작 날짜</FormLabel>
-                  <Input 
-                    type="date" 
-                    value={newEvent.applicationStart} 
-                    onChange={(e) => setNewEvent({ ...newEvent, applicationStart: e.target.value })} 
-                  />
-                </FormControl>
-                <FormControl mt={4}>
-                  <FormLabel>지원 마감 날짜</FormLabel>
-                  <Input 
-                    type="date" 
-                    value={newEvent.applicationEnd} 
-                    onChange={(e) => setNewEvent({ ...newEvent, applicationEnd: e.target.value })} 
-                  />
-                </FormControl>
-                <FormControl mt={4}>
-                  <FormLabel>설명</FormLabel>
-                  <Input 
-                    placeholder="Job Description" 
-                    value={newEvent.jobDescription} 
-                    onChange={(e) => setNewEvent({ ...newEvent, jobDescription: e.target.value })} 
-                  />
-                </FormControl>
-                <FormControl mt={4}>
-                  <FormLabel>상태</FormLabel>
-                  <Input 
-                    placeholder="Status" 
-                    value={newEvent.status} 
-                    onChange={(e) => setNewEvent({ ...newEvent, status: e.target.value })} 
-                  />
-                </FormControl>
-                <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={handleAddEvent}>
-                    추가
-                  </Button>
-                  <Button variant="ghost" onClick={onClose}>취소</Button>
-                </ModalFooter>
-              </TabPanel>
-              <TabPanel>
+    // <Modal isOpen={isOpen} onClose={onClose} size="xl">
+    //   <ModalOverlay />
+    //   <ModalContent maxW={{ base: "90%", md: "80%", lg: "60%" } }maxH="80vh">
+    //     <ModalHeader>일정 관리</ModalHeader>
+    //     <ModalCloseButton />
+    //     <ModalBody>
+    //       <Tabs>
+    //         <TabList>
+    //           <Tab>내 일정 등록</Tab>
+    //           <Tab>채용 검색하기</Tab>
+    //         </TabList>
+    //         <TabPanels>
+    //           <TabPanel>
+    //             <FormControl>
+    //               <FormLabel>회사 이름</FormLabel>
+    //               <Input 
+    //                 placeholder="Company Name" 
+    //                 value={newEvent.companyName} 
+    //                 onChange={(e) => setNewEvent({ ...newEvent, companyName: e.target.value })} 
+    //               />
+    //             </FormControl>
+    //             <FormControl mt={4}>
+    //               <FormLabel>직책</FormLabel>
+    //               <Input 
+    //                 placeholder="Job Title" 
+    //                 value={newEvent.jobTitle} 
+    //                 onChange={(e) => setNewEvent({ ...newEvent, jobTitle: e.target.value })} 
+    //               />
+    //             </FormControl>
+    //             <FormControl mt={4}>
+    //               <FormLabel>지원 시작 날짜</FormLabel>
+    //               <Input 
+    //                 type="date" 
+    //                 value={newEvent.applicationStart} 
+    //                 onChange={(e) => setNewEvent({ ...newEvent, applicationStart: e.target.value })} 
+    //               />
+    //             </FormControl>
+    //             <FormControl mt={4}>
+    //               <FormLabel>지원 마감 날짜</FormLabel>
+    //               <Input 
+    //                 type="date" 
+    //                 value={newEvent.applicationEnd} 
+    //                 onChange={(e) => setNewEvent({ ...newEvent, applicationEnd: e.target.value })} 
+    //               />
+    //             </FormControl>
+    //             <FormControl mt={4}>
+    //               <FormLabel>설명</FormLabel>
+    //               <Input 
+    //                 placeholder="Job Description" 
+    //                 value={newEvent.jobDescription} 
+    //                 onChange={(e) => setNewEvent({ ...newEvent, jobDescription: e.target.value })} 
+    //               />
+    //             </FormControl>
+    //             <FormControl mt={4}>
+    //               <FormLabel>상태</FormLabel>
+    //               <Input 
+    //                 placeholder="Status" 
+    //                 value={newEvent.status} 
+    //                 onChange={(e) => setNewEvent({ ...newEvent, status: e.target.value })} 
+    //               />
+    //             </FormControl>
+    //             <ModalFooter>
+    //               <Button colorScheme="blue" mr={3} onClick={handleAddEvent}>
+    //                 추가
+    //               </Button>
+    //               <Button variant="ghost" onClick={onClose}>취소</Button>
+    //             </ModalFooter>
+    //           </TabPanel>
+    //           <TabPanel>
+              
+    //           <Box maxH="60vh" overflowY="auto">
+    //               <SearchPost onClose={onClose} fetchJobData={fetchJobData} />
+    //             </Box>
+    //           </TabPanel>
+    //         </TabPanels>
+    //       </Tabs>
+    //     </ModalBody>
+    //   </ModalContent>
+    // </Modal>
+    <Modal isOpen={isOpen} onClose={onClose} size = 'xl'>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>일정 관리</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <Tabs>
+          <TabList>
+            <Tab>내 일정 등록</Tab>
+            <Tab>채용 검색하기</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <FormControl>
+                <FormLabel>회사 이름</FormLabel>
+                <Input 
+                  placeholder="Company Name" 
+                  value={newEvent.companyName} 
+                  onChange={(e) => setNewEvent({ ...newEvent, companyName: e.target.value })} 
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>직책</FormLabel>
+                <Input 
+                  placeholder="Job Title" 
+                  value={newEvent.jobTitle} 
+                  onChange={(e) => setNewEvent({ ...newEvent, jobTitle: e.target.value })} 
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>지원 시작 날짜</FormLabel>
+                <Input 
+                  type="date" 
+                  value={newEvent.applicationStart} 
+                  onChange={(e) => setNewEvent({ ...newEvent, applicationStart: e.target.value })} 
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>지원 마감 날짜</FormLabel>
+                <Input 
+                  type="date" 
+                  value={newEvent.applicationEnd} 
+                  onChange={(e) => setNewEvent({ ...newEvent, applicationEnd: e.target.value })} 
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>설명</FormLabel>
+                <Input 
+                  placeholder="Job Description" 
+                  value={newEvent.jobDescription} 
+                  onChange={(e) => setNewEvent({ ...newEvent, jobDescription: e.target.value })} 
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>상태</FormLabel>
+                <Input 
+                  placeholder="Status" 
+                  value={newEvent.status} 
+                  onChange={(e) => setNewEvent({ ...newEvent, status: e.target.value })} 
+                />
+              </FormControl>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} onClick={handleAddEvent}>
+                  추가
+                </Button>
+                <Button variant="ghost" onClick={onClose}>취소</Button>
+              </ModalFooter>
+            </TabPanel>
+            <TabPanel>
+           
                 <SearchPost onClose={onClose} fetchJobData={fetchJobData} />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+           
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </ModalBody>
+    </ModalContent>
+  </Modal>
   );
 };
 

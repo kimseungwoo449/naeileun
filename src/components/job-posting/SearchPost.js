@@ -53,13 +53,11 @@ const SearchPost = ({ onClose, fetchJobData }) => {
         e.preventDefault();
         setLoading(true);
         setResult([]);
-        
         if (totalListCount === null) {
             console.error('Total list count is not fetched yet.');
             setLoading(false);
             return;
         }
-
         try {
             let promises = [];
             for (let x = 1; x <= totalListCount; x += 1000) {
@@ -67,10 +65,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                     fetchData(x, x + 999 < totalListCount ? x + 999 : totalListCount)
                 );
             }
-
-            
             const results = await Promise.all(promises);
-             
             const filteredResults = results.flat().filter(job => job[searchType] && job[searchType].includes(input));
             setResult(filteredResults);
             setSearchListCount(filteredResults.length);
@@ -81,7 +76,6 @@ const SearchPost = ({ onClose, fetchJobData }) => {
             setLoading(false);
         }
     };
-
     const handleAddEvent = async (job) => {
         const selectedJob = { ...job };
         const processJobData = (selectedJob) => {
@@ -152,36 +146,35 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                 {loading && <Spinner size="xl" />}
                 {totalListCount !== null && (
                     <Box mt={4}>
-                        검색된 리스트: {setSearchListCount}
+                        검색된 리스트: {searchListCount}
                     </Box>
                 )}
                 <Accordion allowToggle mt={4}>
                     {paginatedResults.map((job, index) => (
                         <AccordionItem key={index}>
-                            <h2>
-                                <AccordionButton>
-                                    <Box flex="1" textAlign="left">
-                                        <Text>구인제목: {job.JO_SJ}</Text>
-                                        <Text>기업이름: {job.CMPNY_NM}</Text>
-                                        <Text>모집요강: {job.DTY_CN}</Text>
-                                        
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                            </h2>
-                            <AccordionPanel pb={4}>
-                                <Text><strong>급여조건:</strong> {job.HOPE_WAGE}</Text>
-                                <Text><strong>근무시간:</strong> {job.WORK_TIME_NM}</Text>
-                                <Text><strong>근무형태:</strong> {job.HOLIDAY_NM}</Text>
-                                <Text><strong>마감일:</strong> {job.RCEPT_CLOS_NM}</Text>
-                                <Text><strong>등록일:</strong> {job.JO_REG_DT}</Text>
-                                <Text><strong>기업 주소:</strong> {job.BASS_ADRES_CN}</Text>
-                                <Text><strong>직무내용:</strong> {job.DTY_CN}</Text>
-                                <Button mt={2} colorScheme="blue" onClick={() => handleAddEvent(job)}>
-                                    일정 추가
-                                </Button>
-                            </AccordionPanel>
-                        </AccordionItem>
+                        <h2>
+                            <AccordionButton>
+                                <Box flex="1" textAlign="left" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+                                <Text><strong>구인제목:</strong> {job.JO_SJ}</Text>
+                                <Text><strong>기업이름:</strong> {job.CMPNY_NM}</Text>
+                                <Text><strong>모집요강:</strong> {job.DTY_CN}</Text>
+                                </Box>
+                                <AccordionIcon />
+                            </AccordionButton>
+                        </h2>
+                        <AccordionPanel pb={4}>
+                            <Text><strong>급여조건:</strong> {job.HOPE_WAGE}</Text>
+                            <Text><strong>근무시간:</strong> {job.WORK_TIME_NM}</Text>
+                            <Text><strong>근무형태:</strong> {job.HOLIDAY_NM}</Text>
+                            <Text><strong>마감일:</strong> {job.RCEPT_CLOS_NM}</Text>
+                            <Text><strong>등록일:</strong> {job.JO_REG_DT}</Text>
+                            <Text><strong>기업 주소:</strong> {job.BASS_ADRES_CN}</Text>
+                            <Text><strong>직무내용:</strong> {job.DTY_CN}</Text>
+                            <Button mt={2} colorScheme="blue" onClick={() => handleAddEvent(job)}>
+                                일정 추가
+                            </Button>
+                        </AccordionPanel>
+                    </AccordionItem>
                     ))}
                 </Accordion>
                 <Flex mt={4} justifyContent="center">
