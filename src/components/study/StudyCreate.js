@@ -81,7 +81,7 @@ const StudyCreate = () =>{
             const error = document.querySelector('#name-long-error');
             error.style.display = 'block';
             isValid = false;
-        }else if(dec.length > 20){
+        }else if(dec.length > 500){
             const error = document.querySelector('#dec-long-error');
             error.style.display = 'block';
             isValid = false;
