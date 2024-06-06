@@ -71,8 +71,8 @@ const GroupPostDetail = () => {
     }, [page]);
 
     return (
-        <Box p={4} w="1000px" padding="30px" mx="auto" bg="white" boxShadow="md" borderRadius="md" minHeight="90vh">
-            <VStack align="start" spacing={3} w="full">
+        <Box p={4} w="900px" padding="30px" mx="auto" bg="white" boxShadow="md" borderRadius="md" minHeight="60vh" mt={'50px'} mb={'100px'}>
+            <VStack align="start" spacing={3} w="full" mb={'30px'}>
                 <HStack justify="space-between" w="full" mb={4}>
                     <Text fontSize="xl" fontWeight="bold">
                         {post.title}
@@ -107,14 +107,7 @@ const GroupPostDetail = () => {
                     <br />
                     {post.content}
                     <br />
-                    <br />
                 </Text>
-                <Divider />
-                <HStack justify="space-between" w="full" p={"40px"}>
-                    <HStack spacing={1}>
-                        <Text fontSize="sm">&emsp;{post.recommendation}</Text>
-                    </HStack>
-                </HStack>
             </VStack>
         </Box>
     );
