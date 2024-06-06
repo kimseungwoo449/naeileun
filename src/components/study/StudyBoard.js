@@ -179,7 +179,7 @@ const StudyBoard = () => {
         } else {
             navigate('/user/login');
         }
-    }, [user, navigate,load]);
+    }, [user]);
 
     useEffect(() => {
         if (fetched) {
@@ -212,11 +212,11 @@ const StudyBoard = () => {
                         }
                     </HStack>
                 </HStack>
-                <HStack >
-                    <Text mt={'30px'}>{study.decription}</Text>
-                </HStack>
                 <HStack>
-                    <Text as={'b'} ml={'20px'} textAlign={'center'}>{study.isPublic ? "public" : "private"}</Text>
+                    <Text as={'b'} ml={'20px'} textAlign={'center'} mt={'9px'}>{study.isPublic ? "public" : "private"}</Text>
+                </HStack>
+                <HStack >
+                    <Text mt={'30px'} ml={'20px'}>{study.decription}</Text>
                 </HStack>
                 <Stack>
                     <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor: "pointer" }} ml={'20px'}>
