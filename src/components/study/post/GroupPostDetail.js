@@ -46,7 +46,7 @@ const GroupPostDetail = () => {
     }
 
     const fetchPost = async () => {
-        console.log(postCode);
+        
         const url = `${process.env.REACT_APP_SERVER_URL}/study/post?post_code=${postCode}`;
         const response = await fetch(
             url,
