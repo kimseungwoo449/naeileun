@@ -13,8 +13,6 @@ const Sidebar = () => {
         const command = e.currentTarget.id;
         if (command === 'resume')
             navigate('/user/resume');
-        else if (command === 'study')
-            navigate('/user/study');
         else if (command === 'home')
             navigate('/user/home');
         else if (command === 'info')
@@ -74,19 +72,6 @@ const Sidebar = () => {
                                 <Text color="blue.500">나의 이력서</Text>
                             </Box>
                             <Box
-                                id='study'
-                                display="flex"
-                                alignItems="center"
-                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
-                                onClick={movePage}
-                                bg={isActive('/user/study') ? 'blue.100' : 'transparent'}
-                                p={3}
-                                borderRadius="md"
-                            >
-                                <Icon as={FaBook} mr={2} color="blue.500" />
-                                <Text color="blue.500">나의 스터디</Text>
-                            </Box>
-                            <Box
                                 id='introduction'
                                 display="flex"
                                 alignItems="center"
@@ -133,7 +118,6 @@ const Sidebar = () => {
                     <VStack spacing={4}>
                         <Icon as={FaHome} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/home')} />
                         <Icon as={FaFileAlt} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/resume')} />
-                        <Icon as={FaBook} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/study')} />
                         <Icon as={RiSettings4Fill} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/info')} />
                         
                  
