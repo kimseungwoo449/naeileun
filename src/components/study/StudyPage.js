@@ -91,9 +91,9 @@ const StudyPage = () => {
                 />
             </HStack>
 
-            <HStack wrap="wrap" minH="200px" maxW="900px" gap="10px" m="40px">
+            <HStack wrap="wrap" minH="200px" minW="950px" gap="10px" m="40px">
                 {studyList.map((study, index) => (
-                    <Card key={index} id={study.groupCode} boxSize="180px" mr="20px" _hover={{ cursor: "pointer" }} onClick={submit}>
+                    <Card key={index} id={study.groupCode} boxSize="180px" w={'220px'} mr="10px" _hover={{ cursor: "pointer" }} onClick={submit}>
                         <CardBody id={study.groupCode}>
                             <Stack id={study.groupCode} mt="5px">
                                 <Text id={study.groupCode} as="h4" fontSize="1.3em" isTruncated>{study.name}</Text>
@@ -109,9 +109,9 @@ const StudyPage = () => {
                 <Heading fontSize="1.3em">인기 스터디 그룹</Heading>
             </HStack>
 
-            <HStack wrap="wrap" minH="200px" maxW="900px" gap="10px" m="40px">
+            <HStack wrap="wrap" minH="200px" minW="950px" gap="10px" m="40px">
                 {popularList.map((popular, index) => (
-                    <Card id={popular.groupCode} key={index + 1000} boxSize="180px" mr="20px" _hover={{ cursor: "pointer" }} onClick={submit}>
+                    <Card id={popular.groupCode} key={index + 1000} boxSize="180px" w={'220px'} mr="5px" _hover={{ cursor: "pointer" }} onClick={submit}>
                         <CardBody id={popular.groupCode}>
                             <Stack id={popular.groupCode} mt="5px">
                                 <Text id={popular.groupCode} as="h4" fontSize="1.3em" isTruncated>{popular.name}</Text>
