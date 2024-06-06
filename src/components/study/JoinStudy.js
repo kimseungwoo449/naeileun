@@ -40,7 +40,6 @@ const JoinStudy = () => {
         )
 
         const data = await response.json();
-        console.log(data.status);
         if (data.status) {
             setDialogMessage("이미 가입 신청했습니다.");
             setIsOpen(true);
