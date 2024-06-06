@@ -9,7 +9,7 @@ const ViewBoardMain = () => {
     const [postList, setPostList] = useState([]);
     const [page, setPage] = useState(1);
 
-    const boardsPerPage = 4; // 페이지당 보여줄 게시판 수
+    const boardsPerPage = 4;
     const pageCount = useRef(1);
 
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
@@ -27,7 +27,6 @@ const ViewBoardMain = () => {
             }
             else if (command === 'board-detail') {
                 const postCode = e.target.getAttribute("name");
-                console.log("postCode : " + postCode);
 
                 navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } });
             }
@@ -52,7 +51,7 @@ const ViewBoardMain = () => {
         if (data.status) {
             navigate('/board');
         } else {
-            const totalBoards = data.result[0].length; // 총 게시판 수
+            const totalBoards = data.result[0].length;
             pageCount.current = Math.ceil(totalBoards / boardsPerPage);
             pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
 
@@ -62,11 +61,9 @@ const ViewBoardMain = () => {
     }
 
     useEffect(() => {
-        console.log('useEffect');
         fetchBoardAndPosts();
     }, [page]);
 
-    // 현재 페이지에 표시할 게시판 데이터
     const currentBoards = boardList.slice((page - 1) * boardsPerPage, page * boardsPerPage);
 
     return (

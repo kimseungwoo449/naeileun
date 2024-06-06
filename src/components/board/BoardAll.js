@@ -10,30 +10,22 @@ const BoardAll = () => {
     const [postList, setPostList] = useState([]);
     const [page, setPage] = useState(1);
 
-    const boardsPerPage = 8; // 페이지당 보여줄 게시판 수
+    const boardsPerPage = 8;
     const pageCount = useRef(1);
 
     const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const movePage = (e) => {
         const classLength = e.target.classList.length;
-        console.log("classLength : " + classLength);
         for(let i=0; i<classLength; i++) {
             const command = e.target.classList.item(i);
-            console.log("command : " + command);
-            
             const boardCode = e.target.id;
-            console.log("boardCode : " + boardCode);
             
-            console.log("boardList : " + boardList);
-
-
             if (command === 'board-view'){
                 navigate('/board/view', { state: { boardCode: boardCode, boardList: boardList } } );
             }
             else if(command === 'board-detail'){
                 const postCode = e.target.getAttribute("name");
-                console.log("postCode : " + postCode);
                 
                 navigate('/board/detail', { state: { boardCode: boardCode, postCode: postCode, boardList: boardList } } );
             }
@@ -42,11 +34,7 @@ const BoardAll = () => {
     }
 
     const fetchBoardAndPosts = async () => {
-        console.log('fetchBoardAndPosts');
-        console.log(`${process.env.REACT_APP_SERVER_URL}:`, process.env.REACT_APP_SERVER_URL);
-        console.log('Authorization:', process.env.REACT_APP_ADMIN_KEY);
         const url = `${process.env.REACT_APP_SERVER_URL}/board`;
-        console.log('Fetching posts from:', url);
         const response = await fetch(
             url,
             {
@@ -58,17 +46,13 @@ const BoardAll = () => {
         );
 
         const data = await response.json();
-        console.log(data);
 
         if (data.status) {
             navigate('/board');
         } else {
-            const totalBoards = data.result[0].length; // 총 게시판 수
+            const totalBoards = data.result[0].length;
             pageCount.current = Math.ceil(totalBoards / boardsPerPage);
             pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
-
-            console.log("totalBoards: " + totalBoards);
-            console.log("pageCount.current: " + pageCount.current);
 
             setBoardList(data.result[0]);
             setPostList(data.result[1]);
@@ -76,11 +60,9 @@ const BoardAll = () => {
     }
 
     useEffect(() => {
-        console.log('useEffect');
         fetchBoardAndPosts();
     }, [page]);
 
-    // 현재 페이지에 표시할 게시판 데이터
     const currentBoards = boardList.slice((page - 1) * boardsPerPage, page * boardsPerPage);
 
     return (
@@ -89,9 +71,6 @@ const BoardAll = () => {
                 <form method='GET' action='{`${process.env.REACT_SERVER_URL}/boardDetail`}'>
                     <Flex m={'10px 10px'} alignItems="center">
                         <Heading fontSize='4xl' margin={"30px 0"}>&emsp;게시판</Heading>
-                        {/* <Heading as={'h3'} fontSize={'1em'} ml={'80px'}>게시판 생성</Heading>
-                        
-                        <Icon id="create-board" as={FaPlus} h={'22px'} w={'22px'} mt={'5px'} backgroundColor={'RGBA(0, 0, 0, 0.08)'} borderRadius={'3px'} onClick={movePage} /> */}
                     </Flex>
                     <Flex justifyContent={"flex-start"} wrap={"wrap"} h={'600px'} gap={"50px"} m={"40px 10px"} p={"0px 0px 0px 22px"} width={'1000px'}>
                         {currentBoards.map((board, index) => (

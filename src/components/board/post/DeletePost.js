@@ -11,9 +11,6 @@ const DeletePost = () => {
     const postCode = location.state.postCode;
     const imagePath = location.state.imagePath;
 
-    console.log("postCode: " + postCode);
-    console.log("userId: " + user.id);
-
     const [isFetched, setIsFetched] = useState(false);
     const [fetchStatus, setFetchStatus] = useState(null);
 
@@ -41,8 +38,6 @@ const DeletePost = () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            console.log("data.status:" + data.status);
 
             if (data.status) {
                 alert("게시글 삭제가 완료되었습니다.");

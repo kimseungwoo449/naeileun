@@ -27,7 +27,6 @@ const DeletePost = ({ isOpen, onClose, job, fetchJobData }) => {
         throw new Error('Failed to delete job');
       }
     } catch (error) {
-      console.error('Error deleting job:', error);
       toast({
         title: "Error deleting job.",
         description: "There was an error deleting the job.",
