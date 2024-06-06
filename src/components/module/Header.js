@@ -32,7 +32,7 @@ const Header = () => {
     }
 
     return (
-        <Box w='100%' bg='white'  borderBottom='1px solid #e2e8f0' m={'20px auto 20px auto'}>
+        <Box w='100%' bg='white'  m={'20px auto 20px auto'}>
             <Flex w='70%' mx='auto' justifyContent='space-between' alignItems='center'>
                 <Box id='logo' display='flex' alignItems='center'>
                     <Img id='logo-img' src='https://i.ibb.co/Zf814Wd/logo.png' _hover={{ cursor: 'pointer' }} onClick={movePage} />

@@ -17,9 +17,9 @@ const Sidebar = () => {
             navigate('/user/home');
         else if (command === 'info')
             navigate('/user/info');
-        else if(command ==='introduction')
+        else if (command === 'introduction')
             navigate('/user/introduction');
-        else if(command ==='search')
+        else if (command === 'search')
             navigate('/job/search');
     };
 
@@ -33,9 +33,9 @@ const Sidebar = () => {
     return (
         <Box borderWidth={1} borderTop={'none'} w={isOpen ? "250px" : "60px"} h="100vh" position="relative">
             <Box position="absolute" top="10px" left="10px">
-                <Button 
-                    onClick={toggleSidebar} 
-                    bg="gray.200" 
+                <Button
+                    onClick={toggleSidebar}
+                    bg="gray.200"
                     _hover={{ bg: 'gray.300' }}
                 >
                     {isOpen ? <FaTimes /> : <FaBars />}
@@ -110,7 +110,7 @@ const Sidebar = () => {
                                 <Icon as={RiSettings4Fill} mr={2} color="blue.500" />
                                 <Text color="blue.500">나의 정보</Text>
                             </Box>
-                          
+
                         </VStack>
                     </Box>
                 </Collapse>
@@ -119,8 +119,8 @@ const Sidebar = () => {
                         <Icon as={FaHome} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/home')} />
                         <Icon as={FaFileAlt} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/resume')} />
                         <Icon as={RiSettings4Fill} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/info')} />
-                        
-                 
+
+
                     </VStack>
                 )}
 
