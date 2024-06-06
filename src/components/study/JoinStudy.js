@@ -1,30 +1,34 @@
-import {React, useRef, useState,useEffect } from 'react';
-import {useNavigate, useLocation, Form} from 'react-router-dom';
-import {Textarea,Button,Stack,Text,Box} from '@chakra-ui/react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useLocation, Form } from 'react-router-dom';
+import { Textarea, Button, Stack, Text, Box, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
 import { useLogin } from '../LoginContext';
 
-const JoinStudy = () =>{
+const JoinStudy = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const groupCode = location.state.groupCode;
 
-    const [comment,setComment] = useState("");
+    const [comment, setComment] = useState("");
+    const { user } = useLogin();
 
-    const {user} = useLogin();
+    const [isOpen, setIsOpen] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState("");
+    const cancelRef = useRef();
 
-    const checkComment =(e) =>{
+    const onClose = () => setIsOpen(false);
+
+    const checkComment = (e) => {
         const data = e.target.value;
-        if(data.length <= 30)
+        if (data.length <= 30)
             setComment(data);
         else
             e.target.value = comment;
     }
 
-
-    const checkStandbyMember = async () =>{
-        const req ={
-            "group_code" : groupCode,
-            "user_code" : user.userCode
+    const checkStandbyMember = async () => {
+        const req = {
+            "group_code": groupCode,
+            "user_code": user.userCode
         }
 
         const response = await fetch(
@@ -34,22 +38,22 @@ const JoinStudy = () =>{
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
                 },
-                body:JSON.stringify(req)}
-        ) 
+                body: JSON.stringify(req)
+            }
+        )
 
         const data = await response.json();
-        if(data.status){
-            alert("이미 가입 신청했습니다.");
-            navigate('/study/board',{state:{groupCode : groupCode}});
+        if (data.status) {
+            setDialogMessage("이미 가입 신청했습니다.");
+            setIsOpen(true);
         }
-
     }
 
-    const addStandbyMember = async() =>{
-        const req={
-            "group_code" : groupCode,
-            "user_code" : user.userCode,
-            "comment" : comment
+    const addStandbyMember = async () => {
+        const req = {
+            "group_code": groupCode,
+            "user_code": user.userCode,
+            "comment": comment
         }
 
         const response = await fetch(
@@ -59,28 +63,26 @@ const JoinStudy = () =>{
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
                 },
-                body:JSON.stringify(req)}
+                body: JSON.stringify(req)
+            }
         )
 
         const data = await response.json();
-        if(data.status){
+        if (data.status) {
             navigate('/study');
         }
-
     }
 
-    const submit = (e) =>{
+    const submit = (e) => {
         e.preventDefault();
-        
         addStandbyMember();
     }
 
+    useEffect(() => {
+        checkStandbyMember();
+    }, []);
 
-    useEffect(()=>{
-        checkStandbyMember()
-    },[])
-
-    return(
+    return (
         <>
             <Form method="POST" onSubmit={submit}>
                 <Box h={'70vh'}>
@@ -89,12 +91,34 @@ const JoinStudy = () =>{
                     </Stack>
                     <Stack as={'b'} fontSize={'2em'} w={'600px'} m={'auto'} mt={'50px'}>
                         <Textarea id="comment" onChange={checkComment} w={'500px'} h={'300px'} m={'auto'} placeholder='30자 이내'></Textarea>
-                        <Button onClick={submit} w={'200px'} m={'auto'} mt={'30px'}>제출</Button>
+                        <Button type="submit" w={'200px'} m={'auto'} mt={'30px'}>제출</Button>
                     </Stack>
                 </Box>
             </Form>
+
+            <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent backgroundColor='#eb7368'>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold" color={'white'}>
+                            알림
+                        </AlertDialogHeader>
+                        <AlertDialogBody color={'white'}>
+                            {dialogMessage}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                                확인
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
         </>
-    )
+    );
 }
 
 export default JoinStudy;
