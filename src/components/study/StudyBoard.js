@@ -130,7 +130,7 @@ const StudyBoard = () => {
 
         const data = await response.json();
         if (data.status) {
-            setLoad(1);
+            setLoad(load+1);
         }
     }
 
@@ -179,7 +179,7 @@ const StudyBoard = () => {
         } else {
             navigate('/user/login');
         }
-    }, [user, navigate]);
+    }, [user, navigate,load]);
 
     useEffect(() => {
         if (fetched) {
