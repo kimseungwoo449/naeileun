@@ -17,7 +17,6 @@ import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { useLogin } from '../../LoginContext';
-import StudyCommentList from '../comments/StudyCommentList';
 // import CommentList from '././post-comment/CommentList'; // CommentList import
 
 const GroupPostDetail = () => {
@@ -116,7 +115,6 @@ const GroupPostDetail = () => {
                         <Text fontSize="sm">&emsp;{post.recommendation}</Text>
                     </HStack>
                 </HStack>
-                <StudyCommentList postCode={postCode} /> {/* CommentList 추가 */}
             </VStack>
         </Box>
     );
