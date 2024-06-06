@@ -13,15 +13,13 @@ const Sidebar = () => {
         const command = e.currentTarget.id;
         if (command === 'resume')
             navigate('/user/resume');
-        else if (command === 'study')
-            navigate('/user/study');
         else if (command === 'home')
             navigate('/user/home');
         else if (command === 'info')
             navigate('/user/info');
-        else if(command ==='introduction')
+        else if (command === 'introduction')
             navigate('/user/introduction');
-        else if(command ==='search')
+        else if (command === 'search')
             navigate('/job/search');
     };
 
@@ -35,9 +33,9 @@ const Sidebar = () => {
     return (
         <Box borderWidth={1} borderTop={'none'} w={isOpen ? "250px" : "60px"} h="100vh" position="relative">
             <Box position="absolute" top="10px" left="10px">
-                <Button 
-                    onClick={toggleSidebar} 
-                    bg="gray.200" 
+                <Button
+                    onClick={toggleSidebar}
+                    bg="gray.200"
                     _hover={{ bg: 'gray.300' }}
                 >
                     {isOpen ? <FaTimes /> : <FaBars />}
@@ -72,19 +70,6 @@ const Sidebar = () => {
                             >
                                 <Icon as={FaFileAlt} mr={2} color="blue.500" />
                                 <Text color="blue.500">나의 이력서</Text>
-                            </Box>
-                            <Box
-                                id='study'
-                                display="flex"
-                                alignItems="center"
-                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
-                                onClick={movePage}
-                                bg={isActive('/user/study') ? 'blue.100' : 'transparent'}
-                                p={3}
-                                borderRadius="md"
-                            >
-                                <Icon as={FaBook} mr={2} color="blue.500" />
-                                <Text color="blue.500">나의 스터디</Text>
                             </Box>
                             <Box
                                 id='introduction'
@@ -125,7 +110,7 @@ const Sidebar = () => {
                                 <Icon as={RiSettings4Fill} mr={2} color="blue.500" />
                                 <Text color="blue.500">나의 정보</Text>
                             </Box>
-                          
+
                         </VStack>
                     </Box>
                 </Collapse>
@@ -133,10 +118,9 @@ const Sidebar = () => {
                     <VStack spacing={4}>
                         <Icon as={FaHome} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/home')} />
                         <Icon as={FaFileAlt} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/resume')} />
-                        <Icon as={FaBook} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/study')} />
                         <Icon as={RiSettings4Fill} boxSize={6} _hover={{ cursor: 'pointer', color: 'blue.500' }} onClick={() => navigate('/user/info')} />
-                        
-                 
+
+
                     </VStack>
                 )}
 

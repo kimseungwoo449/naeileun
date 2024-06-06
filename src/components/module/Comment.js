@@ -34,11 +34,7 @@ const Comment = ({ comment, onUpdateComment, onDeleteComment }) => {
                     ) : ( 
                         <Text ml={3} mt={3} mb={3} whiteSpace="pre-line">{comment.content}</Text>
                     )}
-                    <HStack justify="space-between" w="full">
-                        <HStack spacing={4} ml={3} mb={2}>
-                            <IconButton icon={<FaThumbsUp />} aria-label="Like" size="sm" />
-                            <IconButton icon={<FaReply />} aria-label="Reply" size="sm" />
-                        </HStack>
+                    <HStack justify="end" w="full" pr={5}>
                         <HStack spacing={4} ml={3} mb={2}>
                             {isEditing ? (
                                 <Button size="sm" colorScheme="blue" onClick={handleSave}>저장</Button>

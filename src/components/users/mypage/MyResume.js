@@ -15,13 +15,12 @@ const MyResume = () => {
     const cancelRef = useRef();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/user/resume`, {
-            method: 'POST',
+        fetch(`${process.env.REACT_APP_SERVER_URL}/resume?user_id=${user.id}`, {
+            method: 'GET',
             headers: {
                 "Authorization": `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                 'Content-Type': 'application/json;charset=UTF8'
             },
-            body: JSON.stringify(user)
         })
             .then(response => response.json())
             .then(data => {
