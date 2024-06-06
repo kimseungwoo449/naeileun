@@ -40,7 +40,7 @@ const StudyCreate = () =>{
         const data = await response.json();
         console.log(data);
 
-        if(data.status === true)
+        if(data.status)
             navigate('/study');
     }
 
@@ -97,7 +97,7 @@ const StudyCreate = () =>{
             isValid = false;
         }
 
-        if(isValid === false)
+        if(!isValid)
             return;   
 
         createStudy();

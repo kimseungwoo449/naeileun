@@ -1,9 +1,8 @@
-import {React, useRef, useState } from 'react';
-import {Box, Text, Button, HStack, IconButton, Stack, Input ,Icon} from '@chakra-ui/react';
-import {useNavigate, useLocation,Form} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Box, Text, Button, HStack, Stack, Input, Icon } from '@chakra-ui/react';
+import { useNavigate, useLocation,Form } from 'react-router-dom';
 import { IoChatbubble } from "react-icons/io5";
-import { MdSettings, MdMoreHoriz, MdNavigateNext, MdNavigateBefore } from "react-icons/md";
-import { useEffect } from 'react';
+import { MdSettings, MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import {
     Table,
     Thead,
@@ -16,68 +15,79 @@ import {
 } from '@chakra-ui/react'
 import { useLogin } from '../LoginContext';
 
-const StudyBoard = () =>{
+const StudyBoard = () => {
     const navigate = useNavigate();
-    const location = useLocation(); // 2번 라인
+    const location = useLocation();
     const groupCode = location.state.groupCode;
 
     const { user } = useLogin();
 
     const [post, setPost] = useState([]);
     const [study, setStudy] = useState([]);
-    const [isMember,setIsMember] = useState(false);
-
-    const [page, setPage] = useState(1);
+    const [isMember, setIsMember] = useState(false);
     const [load, setLoad] = useState(1);
+    const [fetched, setFetched] = useState(false);
+    const [page, setPage] = useState(1);
+    const [startPage, setStartPage] = useState(1);
+    const [maxPage, setMaxPage] = useState(0);
+    const postsPerPage = 5;
 
-    const postsPerPage = 5; // 페이지당 보여줄 게시판 수
-    const pageCount = useRef(1);
-
-    const fetchBoard = async() => {
-        const req = {
-            "group_code" : groupCode,
-            //user 수정 연결 후 수정 **********
-            "user_code" :user.userCode
-        }
-
-        console.log(req);
+    const fetchBoard = async () => {
+        if (fetched) return;
 
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/board`, {
-                method: 'POST',
+            `${process.env.REACT_APP_SERVER_URL}/study/board?group_code=${groupCode}&user_code=${user.userCode}`, {
+                method: 'GET',
                 headers: {
-                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
-                    "Content-Type": "application/json;charset=UTF8"
-                },
-                body:JSON.stringify(req)
-        });
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                }
+            }
+        );
 
-        const data  = await response.json();
-        console.log(data.result[0]);
-        console.log(data.result[0].isMember);
-        console.log(data.meta);
+        const data = await response.json();
 
-        if(data.status === false){
-            setLoad(load+1);
+        if (!data.status) {
+            setLoad(load + 1);
+            return;
         }
 
         setPost(data.result[0].post);
         setStudy(data.result[0].study);
         setIsMember(data.result[0].isMember.isMember);
 
+        setFetched(true);
         const postSize = data.meta.total_count;
-        console.log(postSize);
-
-        const totalPosts = data.meta.total_count; // 총 게시판 수
-        pageCount.current = Math.ceil(totalPosts / postsPerPage);
-        pageCount.current = pageCount.current > 5 ? 5 : pageCount.current;
+        const totalPage = Math.ceil(postSize / postsPerPage);
+        setMaxPage(totalPage);
     }
-    
 
-    const quit = async() =>{
-        const request = { 
-            "group_code" : groupCode,
-            "user_code" : user.userCode //login 구현 후 수정
+    const getGroupPosts = async () => {
+        const offset = (page - 1) * postsPerPage;
+        const start = Math.ceil(page / 5);
+        if(startPage !== start)
+            setStartPage(start);
+        const response = await fetch(
+            `${process.env.REACT_APP_SERVER_URL}/study/groupPosts?group_code=${groupCode}&offset=${offset}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.status) {
+            getGroupPosts();
+            return;
+        }
+        setPost(data.result[0]);
+    }
+
+    const quit = async () => {
+        const request = {
+            "group_code": groupCode,
+            "user_code": user.userCode
         }
 
         const response = await fetch(
@@ -87,25 +97,25 @@ const StudyBoard = () =>{
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
                 },
-                body:JSON.stringify(request)
-        });
+                body: JSON.stringify(request)
+            }
+        );
 
         const data = await response.json();
-        console.log(data);
-        if(data.status === true){
+        if (data.status === true) {
             navigate('/study');
         }
     }
 
-    const join = async () =>{
-        if(study.autoMemberAccess === "false"){
-            navigate("/study/join",{state :{groupCode : groupCode}});
+    const join = async () => {
+        if (study.autoMemberAccess === "false") {
+            navigate("/study/join", { state: { groupCode: groupCode } });
             return;
         }
 
-        const request = { 
-            "group_code" : groupCode,
-            "user_code" : user.userCode  
+        const request = {
+            "group_code": groupCode,
+            "user_code": user.userCode
         }
 
         const response = await fetch(
@@ -115,47 +125,66 @@ const StudyBoard = () =>{
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
                 },
-                body:JSON.stringify(request)
-        });
+                body: JSON.stringify(request)
+            }
+        );
 
         const data = await response.json();
-        console.log(data);
-        console.log("status : "+data.status);
-        if(data.status === true){
+        if (data.status) {
             setLoad(1);
         }
-        
     }
 
-    const movePage =(e)=>{
+    const movePage = (e) => {
         const command = e.target.getAttribute("name");
-        console.log(command);
 
-        if(command === 'setting' && study.adminCode === user.userCode){
-            navigate('/study/setting/access',{state :{groupCode : groupCode, adminCode :study.adminCode}});
+        if (command === 'setting' && study.adminCode === user.userCode) {
+            navigate('/study/setting/access', { state: { groupCode: groupCode, adminCode: study.adminCode } });
             return;
-        }else if(command === 'write-post'){
-            navigate('/study/writePost',{state:{groupCode : groupCode}});
-        }else if(command === 'postDetail'){
+        } else if (command === 'write-post') {
+            navigate('/study/writePost', { state: { groupCode: groupCode } });
+        } else if (command === 'postDetail') {
             const postCode = e.target.id;
-            if(isMember || study.isPublic){
-                navigate('/study/post',{state:{groupCode : groupCode, postCode : postCode }})
-            }else{
+            if (isMember || study.isPublic) {
+                navigate('/study/post', { state: { groupCode: groupCode, postCode: postCode } })
+            } else {
                 alert('스터디 멤버만 이용 가능합니다.');
             }
         }
 
-        setLoad(load+1);
+        setLoad(load + 1);
     }
 
-    useEffect(()=>{
+    const checkPage = (e) => {
+        const command = e.target.id;
+
+        if (command === 'previous-page') {
+            if (page > 1) {
+                setPage(page - 1);
+            }
+        } else if (command === 'next-page') {
+            if (page < maxPage) {
+                setPage(page + 1);
+            }
+        } else {
+            const pageNum = parseInt(command);
+            if (pageNum !== page) {
+                setPage(pageNum);
+            }
+        }
+    }
+
+    useEffect(() => {
         if (user) {
             fetchBoard();
         } else {
             navigate('/user/login');
         }
-    },[load,page,user,navigate]);
-    
+    }, [load, user, navigate]);
+
+    useEffect(() => {
+        getGroupPosts();
+    }, [page])
 
     return(
         <>
@@ -179,19 +208,19 @@ const StudyBoard = () =>{
                             study.adminCode === user.userCode ?
                             <Input type='hidden'></Input> : 
                             (
-                                isMember === true ?
+                                isMember ?
                                 <Button onClick={quit} w={'60px'} id="cancle">탈퇴</Button>:
                                 <Button onClick={join} w={'60px'} colorScheme='blue'>가입신청</Button>
                             )
                         }
                     </HStack>
                 </HStack>
-                <HStack mt={"20px"} mb={"20px"}  h={'100px'} ml={'20px'}>
-                    <Text h={'100px'} w={"300px"} pl={"10px"}>{study.decription}</Text>
+                <HStack mt={"20px"} h={'100px'} ml={'20px'}>
+                    <Text h={'100px'} pl={"6px"}>{study.decription}</Text>
                 </HStack>
                 <Stack>
                     <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor:"pointer"}} ml={'20px'}>
-                        <Text as={'b'} fontSize="1.2em" mt={'10px'}>그룹 게시판</Text>
+                        <Text as={'b'} fontSize="1.2em">그룹 게시판</Text>
                         {
                             isMember === true ?
                             <Button name='write-post' onClick={movePage} ml={'auto'}>글쓰기</Button> :
@@ -211,7 +240,7 @@ const StudyBoard = () =>{
                                 <Tbody>
                                     {post.map((post, index) => (
                                         <Tr key={post.postCode} onClick={movePage} id={post.postCode} name='postDetail'>
-                                            <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}}>{((page-1) * 6) + index+1}</Td>
+                                            <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}}>{((page-1) * 5) + index+1}</Td>
                                             <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}} w={'200px'}>{post.title}</Td>
                                             <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}} w={'200px'}>{post.userId}</Td>
                                             <Td id={post.postCode} name='postDetail' _hover={{ cursor:"pointer"}}>{post.updateDate}</Td>
@@ -223,9 +252,21 @@ const StudyBoard = () =>{
                             </Table>
                         </TableContainer>
                         <HStack m={'auto'}>
-                            <Icon as={MdNavigateBefore} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor:"pointer"}}></Icon>
-                            <Text fontSize={'1.1em'}  textAlign={'center'} _hover={{ cursor:"pointer"}}>{page}</Text>
-                            <Icon as={MdNavigateNext} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor:"pointer"}}></Icon>
+                            <Icon id='previous-page' onClick={checkPage} as={MdNavigateBefore} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor:"pointer"}}></Icon>
+                            {Array.from({ length: postsPerPage > maxPage-startPage+1 ? maxPage-startPage+1:postsPerPage }, (_, index) => (
+                                <Text
+                                    id={startPage+index}
+                                    key={index}
+                                    color={page === startPage+index ? "blue" : "black"}
+                                    onClick={checkPage}
+                                    fontSize={'1.3em'}
+                                    mt={'3px'}
+                                    _hover={{ cursor:"pointer"}}
+                                >
+                                    {startPage + index}
+                                </Text>
+                            ))}
+                            <Icon id='next-page' onClick={checkPage} as={MdNavigateNext} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor:"pointer"}}></Icon>
                         </HStack>
                 </Stack>
                 

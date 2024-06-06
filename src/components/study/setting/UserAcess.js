@@ -16,28 +16,17 @@ const UserAcess = () =>{
 
     const getStandbyMembers = async() =>{
 
-        const req ={
-            "group_code" : groupCode,
-            "user_code" : user.userCode
-        }
-
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/getStandbyMembers`,{
-                method: 'POST',
+            `${process.env.REACT_APP_SERVER_URL}/study/getStandbyMembers?user_code=${user.userCode}&group_code=${groupCode}`,{
+                method: 'GET',
                 headers: {
-                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
-                    "Content-Type": "application/json;charset=UTF8"
-                },
-                body:JSON.stringify(req)
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                }
             }
         )
 
         const data = await response.json();
-        console.log(data.result);
-        console.log(data);
         setStandbyMembers(data.result);
-
-        console.log(standbymembers);
     }
 
     const refuse = async (e) =>{

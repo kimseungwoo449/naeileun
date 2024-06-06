@@ -12,19 +12,12 @@ const DeleteUser = () =>{
     const {user} = useLogin();
 
     const getMembers = async() =>{
-
-        const req ={
-            "group_code" : groupCode
-        }
-
         const request = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/getMember`,{
-                method: 'POST',
+            `${process.env.REACT_APP_SERVER_URL}/study/getMember?group_code=${groupCode}`,{
+                method: 'GET',
                 headers: {
-                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
-                    "Content-Type": "application/json;charset=UTF8"
-                },
-                body:JSON.stringify(req)
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                }
             }
         )
 
