@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text, Button, HStack, Stack, Input, Icon } from '@chakra-ui/react';
 import { useNavigate, useLocation,Form } from 'react-router-dom';
-import { IoChatbubble } from "react-icons/io5";
 import { MdSettings, MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import {
     Table,
@@ -193,8 +192,6 @@ const StudyBoard = () => {
                 <HStack ml={'20px'}>
                     <HStack w={'100%'}>
                         <Text as={'b'} fontSize={'1.5em'} ml={'5px'} mr={'10px'} textAlign={'center'}>{study.name}</Text>
-                        {/* <Text>그룹 채팅방 입장</Text> */}
-                        {/* <Icon as={IoChatbubble}></Icon> */}
                         {
                             user.userCode === study.adminCode ?
                             <Icon onClick={movePage} name='setting' as={MdSettings} boxSize={'1.6em'} _hover={{cursor:"poiner"}} ml={'auto'} /> : 
@@ -204,7 +201,6 @@ const StudyBoard = () => {
                     
                     <HStack ml={'auto'}>
                         {
-                             //user //need user update
                             study.adminCode === user.userCode ?
                             <Input type='hidden'></Input> : 
                             (

@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const DeleteGroupPost = () => {
     const navigate = useNavigate();
-    const { user } = useLogin();
     const location = useLocation();
     const postCode = location.state.postCode;
     const groupCode = location.state.groupCode;
@@ -33,9 +32,6 @@ const DeleteGroupPost = () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            console.log("data.status:" + data.status);
-
             if (data.status && !isFetched) {
                 alert("게시글 삭제가 완료되었습니다.");
                 setIsFetched(true);

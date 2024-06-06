@@ -18,7 +18,6 @@ const UpdateGroupPost = () =>{
     const [post, setPost] = useState({}); 
     const [title, setTitle] = useState(''); 
     const [content, setContent] = useState('');
-    const [fetched,setFetched] = useState(false);
 
     const fetchPost = async () => {
         const url = `${process.env.REACT_APP_SERVER_URL}/study/post?post_code=${postCode}`;
@@ -34,7 +33,6 @@ const UpdateGroupPost = () =>{
         );
 
         const data = await response.json();
-        console.log(data)
 
         if(data.status){
             setPost(data.result);
@@ -87,18 +85,17 @@ const UpdateGroupPost = () =>{
         updatePost();
     }
 
-    // 입력 핸들러
     const onInputHandler = (e) => {
         const { id, value } = e.target;
 
         if (id === 'title' && value.length > TITLE_MAX_LENGTH) {
-            e.target.value = value.slice(0, TITLE_MAX_LENGTH); // 제목 길이 제한
+            e.target.value = value.slice(0, TITLE_MAX_LENGTH); 
         } else if (id === 'content' && value.length > CONTENT_MAX_LENGTH) {
-            e.target.value = value.slice(0, CONTENT_MAX_LENGTH); // 내용 길이 제한
+            e.target.value = value.slice(0, CONTENT_MAX_LENGTH);
         }
 
         if (id === 'title') {
-            setTitle(value); // 제목 상태 업데이트
+            setTitle(value);
         } else if (id === 'content') {
             setContent(value);
         }
@@ -139,23 +136,18 @@ const UpdateGroupPost = () =>{
     return(
         <>
             <Box m={"60px 0"} p={5} shadow="md" borderWidth="1px" borderRadius={"md"} w="800px" mx="auto" minHeight="50vh">
-                {/* 페이지 제목 */}
                 <Box textAlign="center" mb={5} mt={5}>
                     <Heading as="h3" size="lg">게시글 수정</Heading>
                 </Box>
-                {/* 폼 시작 */}
                 <Form method='POST' action={`${process.env.REACT_APP_SERVER_URL}/study/updatePost`} onSubmit={submit}>
                     <VStack spacing={4} align="stretch">
-                        {/* 제목 입력 */}
                         <FormControl id="title">
                             <Input id='title' className='title' name='reqTitle' minHeight="5vh" type="text" placeholder="제목" value={title} onChange={onInputHandler} maxLength={TITLE_MAX_LENGTH} />
                             <Box textAlign={"end"}>
                                 <span>{title.length}</span>
-                                {/* 글자수 표시 */}
                                 <span>/{TITLE_MAX_LENGTH} 자</span>
                             </Box>
                         </FormControl>
-                        {/* 내용 입력 */}
                         <FormControl id="content">
                             <Textarea
                                 id='content'
@@ -169,7 +161,6 @@ const UpdateGroupPost = () =>{
                             />
                             <Box textAlign={"end"}>
                                 <span>{content.length}</span>
-                                {/* 글자수 표시 */}
                                 <span>/{CONTENT_MAX_LENGTH} 자</span>
                             </Box>
                         </FormControl>

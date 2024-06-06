@@ -8,7 +8,6 @@ const Study= () =>{
     const adminCode = location.state.adminCode;
 
     const fetchDelete = async() =>{
-        console.log(groupCode);
 
         const req ={
             "group_code" : groupCode
