@@ -23,7 +23,6 @@ import StudyCreate from "./components/study/StudyCreate";
 import ResumeDetail from "./components/resume/ResumeDetail";
 
 import Logout from "./components/users/Logout";
-import MyStudy from "./components/users/mypage/MyStudy";
 import MyResume from "./components/users/mypage/MyResume";
 
 import MyPage from "./components/MyPage";
@@ -107,11 +106,6 @@ const router = createBrowserRouter([
                 element: <MyInfo />,
 
             }, 
-            {
-                path: "/user/study",
-                element: <MyStudy />,
-
-            },
             {
                 path: "/user/resume",
                 element: <MyResume />,
