@@ -144,7 +144,7 @@ const StudyBoard = () => {
             navigate('/study/writePost', { state: { groupCode: groupCode } });
         } else if (command === 'postDetail') {
             const postCode = e.target.id;
-            if (isMember || study.isPublic) {
+            if (isMember || study.isPublic === "true") {
                 navigate('/study/post', { state: { groupCode: groupCode, postCode: postCode } })
             } else {
                 alert('스터디 멤버만 이용 가능합니다.');
@@ -195,7 +195,7 @@ const StudyBoard = () => {
                         <Text as={'b'} fontSize={'1.5em'} ml={'5px'} mr={'10px'} textAlign={'center'}>{study.name}</Text>
                         {
                             user.userCode === study.adminCode ?
-                                <Icon onClick={movePage} name='setting' as={MdSettings} boxSize={'1.6em'} _hover={{ cursor: "pointer" }} ml={'auto'} /> :
+                                <Icon onClick={movePage} name='setting' as={MdSettings} boxSize={'1.8em'} _hover={{ cursor: "pointer" }} ml={'auto'} /> :
                                 <Input type='hidden'></Input>
                         }
                     </HStack>
@@ -213,13 +213,13 @@ const StudyBoard = () => {
                     </HStack>
                 </HStack>
                 <HStack>
-                    <Text as={'b'} ml={'20px'} textAlign={'center'} mt={'9px'}>{study.isPublic ? "public" : "private"}</Text>
+                    <Text as={'b'} ml={'20px'} textAlign={'center'} mt={'9px'}>{study.isPublic === "true"? "public" : "private"}</Text>
                 </HStack>
                 <HStack >
                     <Text mt={'30px'} ml={'20px'}>{study.decription}</Text>
                 </HStack>
                 <Stack>
-                    <HStack wrap={"wrap"} h={'200px'} gap={"10px"} _hover={{ cursor: "pointer" }} ml={'20px'}>
+                    <HStack wrap={"wrap"} h={'100px'} gap={"10px"} _hover={{ cursor: "pointer" }} ml={'20px'}>
                         <Text as={'b'} fontSize="1.2em">그룹 게시판</Text>
                         {
                             isMember === true ?
