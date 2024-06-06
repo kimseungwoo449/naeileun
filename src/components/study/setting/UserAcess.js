@@ -76,7 +76,7 @@ const UserAcess = () =>{
             refuse();
 
         else
-            setLoad(1);
+            setLoad(load+1);
 
     }
 
