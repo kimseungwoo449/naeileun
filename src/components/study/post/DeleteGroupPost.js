@@ -39,6 +39,7 @@ const DeleteGroupPost = () => {
             if (data.status && !isFetched) {
                 alert("게시글 삭제가 완료되었습니다.");
                 setIsFetched(true);
+                setSuccess(true);
             }
         });
     };
