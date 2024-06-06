@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Box, Grid, GridItem, Text, HStack, IconButton, Button 
+  Box, Grid, GridItem, Text, HStack, IconButton, Button, 
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
@@ -14,6 +15,7 @@ const Calendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const today = new Date();
   const { user } = useLogin();
+  const gridTemplateColumns = useBreakpointValue({ base: 'repeat(7, 1fr)', md: 'repeat(7, 1fr)' });
 
   useEffect(() => {
     fetchJobData();
@@ -81,26 +83,26 @@ const Calendar = () => {
   };
 
   return (
-    <Box p={5}>
-      <Button onClick={openAddEventModal}>일정추가</Button>
-      <HStack justifyContent="space-between" mb={5}>
-        <IconButton icon={<ChevronLeftIcon />} onClick={prevMonth} />
-        <Text fontSize="2xl">{currentDate.getFullYear()}.{String(currentDate.getMonth() + 1).padStart(2, '0')}</Text>
-        <IconButton icon={<ChevronRightIcon />} onClick={nextMonth} />
-      </HStack>
-      <Grid templateColumns="repeat(7, 1fr)" gap={2}>
-        <GridItem fontWeight="bold" textAlign="center">일</GridItem>
-        <GridItem fontWeight="bold" textAlign="center">월</GridItem>
-        <GridItem fontWeight="bold" textAlign="center">화</GridItem>
-        <GridItem fontWeight="bold" textAlign="center">수</GridItem>
-        <GridItem fontWeight="bold" textAlign="center">목</GridItem>
-        <GridItem fontWeight="bold" textAlign="center">금</GridItem>
-        <GridItem fontWeight="bold" textAlign="center">토</GridItem>
-        {renderCalendar()}
-      </Grid>
+    <Box p={5} maxW="container.lg" mx="auto">
+    <Button onClick={openAddEventModal} mb={5} colorScheme="teal">일정 추가</Button>
+    <HStack justifyContent="space-between" mb={5}>
+      <IconButton icon={<ChevronLeftIcon />} onClick={prevMonth} />
+      <Text fontSize="2xl">{currentDate.getFullYear()}.{String(currentDate.getMonth() + 1).padStart(2, '0')}</Text>
+      <IconButton icon={<ChevronRightIcon />} onClick={nextMonth} />
+    </HStack>
+    <Grid templateColumns={gridTemplateColumns} gap={2} bg="gray.50" p={2} borderRadius="lg" height="full" minHeight="400px">
+      <GridItem fontWeight="bold" textAlign="center">일</GridItem>
+      <GridItem fontWeight="bold" textAlign="center">월</GridItem>
+      <GridItem fontWeight="bold" textAlign="center">화</GridItem>
+      <GridItem fontWeight="bold" textAlign="center">수</GridItem>
+      <GridItem fontWeight="bold" textAlign="center">목</GridItem>
+      <GridItem fontWeight="bold" textAlign="center">금</GridItem>
+      <GridItem fontWeight="bold" textAlign="center">토</GridItem>
+      {renderCalendar()}
+    </Grid>
 
-      <WritePost isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} fetchJobData={fetchJobData} />
-    </Box>
+    <WritePost isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} fetchJobData={fetchJobData} />
+  </Box>
   );
 };
 

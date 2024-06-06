@@ -4,8 +4,7 @@ import { useLogin } from '../../LoginContext';
 
 const MyStudy = () => {
     const [study, setStudy] = useState([]);
-    const user = sessionStorage.getItem('user');
-    
+    const {user} = useLogin();
         useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/study`,{
             method: 'POST',
@@ -24,7 +23,7 @@ const MyStudy = () => {
                 }
             })
             .catch(error => console.error('Error fetching resume data:', error));
-    }, []);
+    }, [user]);
 
     return (
         <div>
