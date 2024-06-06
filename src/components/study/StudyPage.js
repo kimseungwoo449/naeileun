@@ -98,7 +98,7 @@ const StudyPage = () => {
                             <Stack id={study.groupCode} mt="5px">
                                 <Text id={study.groupCode} as="h4" fontSize="1.3em">{study.name}</Text>
                                 <Text id={study.groupCode} as="h5" fontSize="0.9em">{study.decription}</Text>
-                                <Text id={study.groupCode} as="h5" fontSize="0.9em" mt={'30px'}>관리자 : {study.adminCode}</Text>
+                                <Text id={study.groupCode} as="h5" fontSize="0.9em" mt={'30px'}>관리자 : {study.adminId}</Text>
                             </Stack>
                         </CardBody>
                     </Card>
