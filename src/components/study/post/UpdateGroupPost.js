@@ -39,30 +39,6 @@ const UpdateGroupPost = () =>{
         }
     }
 
-    const updatePost = async () =>{
-        const req ={
-            title : title,
-            content : content,
-            postCode : postCode
-        }
-
-        fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/updatePost`, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
-                    "Content-Type": "application/json;charset=UTF8"
-                },
-                body:JSON.stringify(req)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status) {
-                navigate('/study/post',{state:{groupCode : groupCode,postCode : postCode}});
-            }
-        });
-    }
-
     const submit = (e) =>{
         e.preventDefault();
 
@@ -82,7 +58,27 @@ const UpdateGroupPost = () =>{
             return;
         }
         
-        updatePost();
+        const req ={
+            title : title,
+            content : content,
+            postCode : postCode
+        }
+
+        fetch(
+            `${process.env.REACT_APP_SERVER_URL}/study/updatePost`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                    "Content-Type": "application/json;charset=UTF8"
+                },
+                body:JSON.stringify(req)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status) {
+                navigate('/study/post',{state:{groupCode : groupCode,postCode : postCode}});
+            }
+        });
     }
 
     const onInputHandler = (e) => {
@@ -123,7 +119,7 @@ const UpdateGroupPost = () =>{
         }else{
             fetchPost();
         }
-    },[])
+    },[]);
 
     useEffect(() => {
         if (post.title) {
@@ -131,7 +127,6 @@ const UpdateGroupPost = () =>{
             setContent(post.content); 
         }
     }, [post]); 
-
 
     return(
         <>
@@ -154,6 +149,7 @@ const UpdateGroupPost = () =>{
                                 name='reqContent'
                                 minHeight="50vh"
                                 placeholder="내용"
+                                whiteSpace="pre-line"
                                 value={content}
                                 onChange={onInputHandler}
                                 maxLength={CONTENT_MAX_LENGTH}
@@ -170,7 +166,7 @@ const UpdateGroupPost = () =>{
                         </Stack>
                         <HStack ml={'auto'}>
                             <Button onClick={movePage} name='back' colorScheme="red" size="md" >취소</Button>
-                            <Button type='submit' colorScheme="gray" size="md" >수정</Button>
+                            <Button onClick={submit} type='submit' colorScheme="gray" size="md" >수정</Button>
                         </HStack>
                     </VStack>
                 </Form>
