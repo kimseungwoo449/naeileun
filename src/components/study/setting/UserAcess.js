@@ -92,7 +92,7 @@ const UserAcess = () =>{
                 {standbymembers.map((standbymember,index) =>(
                     <HStack key={index}>
                         <Text w={'140px'}>{standbymember.userId}</Text>
-                        <Text w={'220px'}>{standbymember.comment}</Text>
+                        <Text maxW={'400px'}>{standbymember.comment}</Text>
                         <Button id={standbymember.userCode} onClick={refuse} h={'35px'} fontSize={'0.9em'}>거절</Button>
                         <Button id={standbymember.userCode} onClick={addMember} h={'35px'} fontSize={'0.9em'} colorScheme='blue'>승인</Button>
                     </HStack>
