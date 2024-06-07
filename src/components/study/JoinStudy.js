@@ -15,7 +15,10 @@ const JoinStudy = () => {
     const [dialogMessage, setDialogMessage] = useState("");
     const cancelRef = useRef();
 
-    const onClose = () => setIsOpen(false);
+    const onClose = () =>{
+        setIsOpen(false)
+        navigate('/study/board',{state : {groupCode : groupCode}});
+    };
 
     const checkComment = (e) => {
         const data = e.target.value;
@@ -26,19 +29,13 @@ const JoinStudy = () => {
     }
 
     const checkStandbyMember = async () => {
-        const req = {
-            "group_code": groupCode,
-            "user_code": user.userCode
-        }
 
         const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/study/checkStandbyMember`, {
-                method: 'POST',
+            `${process.env.REACT_APP_SERVER_URL}/study/checkStandbyMember?group_code=${groupCode}&user_code=${user.userCode}`, {
+                method: 'GET',
                 headers: {
-                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
-                    "Content-Type": "application/json;charset=UTF8"
-                },
-                body: JSON.stringify(req)
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                }
             }
         )
 
