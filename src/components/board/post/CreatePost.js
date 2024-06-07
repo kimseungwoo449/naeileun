@@ -83,14 +83,11 @@ const CreatePost = () => {
         const file = e.target.files[0];
         if (file) {
             if (file.size > FILE_SIZE_MAX_LIMIT) {
-                <Alert status='error'>
-                    <AlertIcon />
-                    파일 크기는 5MB를 초과할 수 없습니다.
-                </Alert> 
                 setFileError(true);
                 setSelectedFile(null); 
                 setPreview(null);
-            } else {
+            } 
+            else {
                 setFileError(false);
                 setSelectedFile(file);
                 const reader = new FileReader();
