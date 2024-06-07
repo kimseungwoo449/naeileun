@@ -54,7 +54,8 @@ const StudyBoard = () => {
 
     const getGroupPosts = async () => {
         const offset = (page - 1) * postsPerPage;
-        const start = Math.ceil(page / 5);
+        const start = Math.ceil(page / 5) * 5 - 4;
+
         if (startPage !== start) {
             setStartPage(start);
         }
@@ -144,7 +145,7 @@ const StudyBoard = () => {
             }
         }
     }
-
+    
     const checkPage = (e) => {
         const command = e.target.id;
 
@@ -158,7 +159,7 @@ const StudyBoard = () => {
             }
         } else {
             const pageNum = parseInt(command);
-            if (pageNum !== page) {
+            if (pageNum !== page && !isNaN(pageNum)) {
                 setPage(pageNum);
             }
         }
@@ -218,7 +219,7 @@ const StudyBoard = () => {
                                 <Input type='hidden'></Input>
                         }
                     </HStack>
-                    <TableContainer w={"100%"} h={'300px'} key={'board'}>
+                    <TableContainer w={"100%"} h={'300px'} mb={'20px'} key={'board'}>
                         <Table >
                             <Thead>
                                 <Tr>
@@ -241,7 +242,7 @@ const StudyBoard = () => {
                         </Table>
                     </TableContainer>
                     <HStack m={'auto'}>
-                        <Icon id='previous-page' onClick={checkPage} as={MdNavigateBefore} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor: "pointer" }}></Icon>
+                        <Icon id='previous-page' onClick={checkPage} as={MdNavigateBefore} boxSize={'2em'} mr={'13px'} mt={'3px'} _hover={{ cursor: "pointer" }}></Icon>
                         {Array.from({ length: postsPerPage > maxPage - startPage + 1 ? maxPage - startPage + 1 : postsPerPage }, (_, index) => (
                             <Text
                                 id={startPage + index}
@@ -250,12 +251,13 @@ const StudyBoard = () => {
                                 onClick={checkPage}
                                 fontSize={'1.3em'}
                                 mt={'3px'}
+                                mr={'8px'}
                                 _hover={{ cursor: "pointer" }}
                             >
                                 {startPage + index}
                             </Text>
                         ))}
-                        <Icon id='next-page' onClick={checkPage} as={MdNavigateNext} boxSize={'1.4em'} mt={'3px'} _hover={{ cursor: "pointer" }}></Icon>
+                        <Icon id='next-page' onClick={checkPage} as={MdNavigateNext} boxSize={'2em'} mt={'3px'} ml={'5px'} _hover={{ cursor: "pointer" }}></Icon>
                     </HStack>
                 </Stack>
 
