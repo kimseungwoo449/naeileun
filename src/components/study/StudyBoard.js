@@ -23,9 +23,9 @@ const StudyBoard = () => {
     const [post, setPost] = useState([]);
     const [study, setStudy] = useState([]);
     const [isMember, setIsMember] = useState(false);
-    const [load, setLoad] = useState(1);
     const [fetched, setFetched] = useState(false);
     const [page, setPage] = useState(1);
+    const [load, setLoad] = useState(0);
     const [startPage, setStartPage] = useState(1);
     const [maxPage, setMaxPage] = useState(0);
     const postsPerPage = 5;
@@ -44,15 +44,9 @@ const StudyBoard = () => {
 
         const data = await response.json();
 
-        if (!data.status) {
-            setLoad(load + 1);
-            return;
-        }
-
         setPost(data.result[0].post);
         setStudy(data.result[0].study);
         setIsMember(data.result[0].isMember.isMember);
-
         setFetched(true);
         const postSize = data.meta.total_count;
         const totalPage = Math.ceil(postSize / postsPerPage);
@@ -130,6 +124,7 @@ const StudyBoard = () => {
 
         const data = await response.json();
         if (data.status) {
+            setFetched(false);
             setLoad(load+1);
         }
     }
@@ -150,8 +145,6 @@ const StudyBoard = () => {
                 alert('스터디 멤버만 이용 가능합니다.');
             }
         }
-
-        setLoad(load + 1);
     }
 
     const checkPage = (e) => {
@@ -179,7 +172,7 @@ const StudyBoard = () => {
         } else {
             navigate('/user/login');
         }
-    }, [user]);
+    }, [user,load]);
 
     useEffect(() => {
         if (fetched) {
