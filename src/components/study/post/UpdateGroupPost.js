@@ -66,7 +66,7 @@ const UpdateGroupPost = () =>{
 
         fetch(
             `${process.env.REACT_APP_SERVER_URL}/study/updatePost`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
                     "Content-Type": "application/json;charset=UTF8"
