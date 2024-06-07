@@ -141,7 +141,7 @@ const StudyCreate = () =>{
                         자동승인
                         </Radio>
                         <Radio name='access' colorScheme='red' value='false'>
-                        승인 확인
+                        수동승인
                         </Radio>
                     </Stack>
                 </RadioGroup>

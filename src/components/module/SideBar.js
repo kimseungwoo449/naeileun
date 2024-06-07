@@ -19,8 +19,6 @@ const Sidebar = () => {
             navigate('/user/info');
         else if (command === 'introduction')
             navigate('/user/introduction');
-        else if (command === 'search')
-            navigate('/job/search');
     };
 
 
@@ -83,19 +81,6 @@ const Sidebar = () => {
                             >
                                 <Icon as={FaBook} mr={2} color="blue.500" />
                                 <Text color="blue.500">나의 자기소개서</Text>
-                            </Box>
-                            <Box
-                                id='search'
-                                display="flex"
-                                alignItems="center"
-                                _hover={{ cursor: 'pointer', bg: 'blue.50' }}
-                                onClick={movePage}
-                                bg={isActive('/job/search') ? 'blue.100' : 'transparent'}
-                                p={3}
-                                borderRadius="md"
-                            >
-                                <Icon as={RiSettings4Fill} mr={2} color="blue.500" />
-                                <Text color="blue.500">채용정보검색</Text>
                             </Box>
                             <Box
                                 id='info'
