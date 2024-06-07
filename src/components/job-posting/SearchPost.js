@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, Button, Input, Select, Text, Spinner, Flex, Accordion, AccordionItem, 
-  AccordionButton, AccordionPanel, AccordionIcon 
+import {
+    Box, Button, Input, Select, Text, Spinner, Flex, Accordion, AccordionItem,
+    AccordionButton, AccordionPanel, AccordionIcon
 } from '@chakra-ui/react';
 import { useLogin } from '../LoginContext';
 
@@ -13,27 +13,27 @@ const SearchPost = ({ onClose, fetchJobData }) => {
     const [result, setResult] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-   
+
     const itemsPerPage = 10;
     const apiURL = `http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_OPEN_API_KEY}/json/GetJobInfo/`;
     const { user } = useLogin();
 
     useEffect(() => {
-        const fetchTotalListCount = async () => {
-            try {
-                const response = await fetch(`${apiURL}1/1/`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setTotalListCount(data.GetJobInfo.list_total_count);
-            } catch (error) {
-                console.error('Error fetching total list count:', error);
-            }
-        };
-
         fetchTotalListCount();
     }, [apiURL]);
+    
+    const fetchTotalListCount = async () => {
+        try {
+            const response = await fetch(`${apiURL}1/1/`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setTotalListCount(data.GetJobInfo.list_total_count);
+        } catch (error) {
+            console.error('Error fetching total list count:', error);
+        }
+    };
 
     const fetchData = async (START_INDEX, END_INDEX) => {
         try {
@@ -42,7 +42,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            return data.GetJobInfo.row; 
+            return data.GetJobInfo.row;
         } catch (error) {
             console.error('Error fetching data:', error);
             return [];
@@ -100,7 +100,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
             jobDescription: processedJob.DTY_CN,
             status: 'Open'
         };
-    
+
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/create`, {
                 method: 'POST',
@@ -112,7 +112,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
             });
             if (response.ok) {
                 console.log('Event added successfully');
-                fetchJobData(); 
+                fetchJobData();
             } else {
                 console.error('Failed to add event');
             }
@@ -122,10 +122,10 @@ const SearchPost = ({ onClose, fetchJobData }) => {
         onClose();
     };
 
-   
+
     const paginatedResults = result.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  
+
     const totalPages = Math.ceil(result.length / itemsPerPage);
 
     return (
@@ -136,7 +136,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                     <option value="CMPNY_NM">기업이름</option>
                     <option value="WORK_PARAR_BASS_ADRES_CN">근무예정지 주소</option>
                 </Select>
-                <Input 
+                <Input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="검색어 입력"
@@ -152,29 +152,29 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                 <Accordion allowToggle mt={4}>
                     {paginatedResults.map((job, index) => (
                         <AccordionItem key={index}>
-                        <h2>
-                            <AccordionButton>
-                                <Box flex="1" textAlign="left" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
-                                <Text><strong>구인제목:</strong> {job.JO_SJ}</Text>
-                                <Text><strong>기업이름:</strong> {job.CMPNY_NM}</Text>
-                                <Text><strong>모집요강:</strong> {job.DTY_CN}</Text>
-                                </Box>
-                                <AccordionIcon />
-                            </AccordionButton>
-                        </h2>
-                        <AccordionPanel pb={4}>
-                            <Text><strong>급여조건:</strong> {job.HOPE_WAGE}</Text>
-                            <Text><strong>근무시간:</strong> {job.WORK_TIME_NM}</Text>
-                            <Text><strong>근무형태:</strong> {job.HOLIDAY_NM}</Text>
-                            <Text><strong>마감일:</strong> {job.RCEPT_CLOS_NM}</Text>
-                            <Text><strong>등록일:</strong> {job.JO_REG_DT}</Text>
-                            <Text><strong>기업 주소:</strong> {job.BASS_ADRES_CN}</Text>
-                            <Text><strong>직무내용:</strong> {job.DTY_CN}</Text>
-                            <Button mt={2} colorScheme="blue" onClick={() => handleAddEvent(job)}>
-                                일정 추가
-                            </Button>
-                        </AccordionPanel>
-                    </AccordionItem>
+                            <h2>
+                                <AccordionButton>
+                                    <Box flex="1" textAlign="left" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+                                        <Text><strong>구인제목:</strong> {job.JO_SJ}</Text>
+                                        <Text><strong>기업이름:</strong> {job.CMPNY_NM}</Text>
+                                        <Text><strong>모집요강:</strong> {job.DTY_CN}</Text>
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4}>
+                                <Text><strong>급여조건:</strong> {job.HOPE_WAGE}</Text>
+                                <Text><strong>근무시간:</strong> {job.WORK_TIME_NM}</Text>
+                                <Text><strong>근무형태:</strong> {job.HOLIDAY_NM}</Text>
+                                <Text><strong>마감일:</strong> {job.RCEPT_CLOS_NM}</Text>
+                                <Text><strong>등록일:</strong> {job.JO_REG_DT}</Text>
+                                <Text><strong>기업 주소:</strong> {job.BASS_ADRES_CN}</Text>
+                                <Text><strong>직무내용:</strong> {job.DTY_CN}</Text>
+                                <Button mt={2} colorScheme="blue" onClick={() => handleAddEvent(job)}>
+                                    일정 추가
+                                </Button>
+                            </AccordionPanel>
+                        </AccordionItem>
                     ))}
                 </Accordion>
                 <Flex mt={4} justifyContent="center">
