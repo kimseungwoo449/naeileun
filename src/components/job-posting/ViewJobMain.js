@@ -7,7 +7,20 @@ const ViewJobMain = () => {
     const [lastIndex, setLastIndex] = useState();
 
     useEffect(() => {
-        fetch(`http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_OPEN_API_KEY}/json/GetJobInfo/1/1/`)
+        const url = `http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_OPEN_API_KEY}/json/GetJobInfo/1/1/`;
+        const mt = 'GET';
+        
+        fetch(`${process.env.REACT_APP_SERVER_URL}/job/getJobData`, {
+            method: 'POST',
+            headers: {
+                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                "Content-Type": "application/json;charset=UTF8"
+            },
+            body: JSON.stringify({
+                "url" : url,
+                "method" : mt
+            }),
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.GetJobInfo && data.GetJobInfo.list_total_count) {
@@ -24,20 +37,33 @@ const ViewJobMain = () => {
     useEffect(() => {
         if (lastIndex) {
             setLoading(true);
-            fetch(`http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_OPEN_API_KEY}/json/GetJobInfo/${lastIndex - 3}/${lastIndex}/`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.GetJobInfo && data.GetJobInfo.row) {
-                        setJobData(data.GetJobInfo.row);
-                    } else {
-                        console.error('No job data found');
-                    }
-                    setLoading(false);
-                })
-                .catch(error => {
-                    console.error('Error fetching job data:', error);
-                    setLoading(false);
-                });
+            const url = `http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_OPEN_API_KEY}/json/GetJobInfo/${lastIndex - 3}/${lastIndex}/`;
+            const method = "GET";
+
+            fetch(`${process.env.REACT_APP_SERVER_URL}/job/getJobData`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                    "Content-Type": "application/json;charset=UTF8"
+                },
+                body: JSON.stringify({
+                    "url" : url,
+                    "method" : method
+                }),
+            }).then(response => response.json())
+            .then(data => {
+                if (data.GetJobInfo && data.GetJobInfo.row) {
+                    setJobData(data.GetJobInfo.row);
+                } else {
+                    console.error('No job data found');
+                }
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching job data:', error);
+                setLoading(false);
+            });
+
         }
     }, [lastIndex]);
 

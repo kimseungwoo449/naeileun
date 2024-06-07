@@ -21,28 +21,48 @@ const SearchPost = ({ onClose, fetchJobData }) => {
     useEffect(() => {
         fetchTotalListCount();
     }, [apiURL]);
-    
+
     const fetchTotalListCount = async () => {
-        try {
-            const response = await fetch(`${apiURL}1/1/`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            setTotalListCount(data.GetJobInfo.list_total_count);
-        } catch (error) {
-            console.error('Error fetching total list count:', error);
-        }
+        const reqUrl = apiURL + "1/1/";
+        const method = "GET";
+
+        fetch(`${process.env.REACT_APP_SERVER_URL}/job/getJobData`, {
+            method: 'POST',
+            headers: {
+                Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                "Content-Type": "application/json;charset=UTF8"
+            },
+            body: JSON.stringify({
+                "url": reqUrl,
+                "method": method
+            }),
+        }).then(response => response.json())
+            .then(data => {
+                setTotalListCount(data.GetJobInfo.list_total_count);
+            }).catch(error => {
+                console.error('Error fetching job data:', error);
+            });
+
     };
 
     const fetchData = async (START_INDEX, END_INDEX) => {
+        const reqUrl = `${apiURL}${START_INDEX}/${END_INDEX}/`;
+        const method = "GET";
+
         try {
-            const response = await fetch(`${apiURL}${START_INDEX}/${END_INDEX}/`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/job/getJobData`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`,
+                    "Content-Type": "application/json;charset=UTF8"
+                },
+                body: JSON.stringify({
+                    "url": reqUrl,
+                    "method": method
+                }),
+            });
             const data = await response.json();
-            return data.GetJobInfo.row;
+            return data.GetJobInfo?.row || []; // Null-safe navigation 연산자와 기본값
         } catch (error) {
             console.error('Error fetching data:', error);
             return [];
@@ -66,7 +86,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
                 );
             }
             const results = await Promise.all(promises);
-            const filteredResults = results.flat().filter(job => job[searchType] && job[searchType].includes(input));
+            const filteredResults = results.flat().filter(job => job && job[searchType] && job[searchType].includes(input));
             setResult(filteredResults);
             setSearchListCount(filteredResults.length);
             setCurrentPage(1);
@@ -76,6 +96,7 @@ const SearchPost = ({ onClose, fetchJobData }) => {
             setLoading(false);
         }
     };
+
     const handleAddEvent = async (job) => {
         const selectedJob = { ...job };
         const processJobData = (selectedJob) => {
@@ -124,7 +145,6 @@ const SearchPost = ({ onClose, fetchJobData }) => {
 
 
     const paginatedResults = result.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
 
     const totalPages = Math.ceil(result.length / itemsPerPage);
 
