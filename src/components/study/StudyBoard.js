@@ -132,7 +132,7 @@ const StudyBoard = () => {
     const movePage = (e) => {
         const command = e.target.getAttribute("name");
 
-        if (command === 'setting' && study.adminCode === user.userCode) {
+        if (command === 'setting' && study.adminCode == user.userCode) {
             navigate('/study/setting/access', { state: { groupCode: groupCode, adminCode: study.adminCode } });
             return;
         } else if (command === 'write-post') {
@@ -187,7 +187,7 @@ const StudyBoard = () => {
                     <HStack w={'100%'}>
                         <Text as={'b'} fontSize={'1.5em'} ml={'5px'} mr={'10px'} textAlign={'center'}>{study.name}</Text>
                         {
-                            user.userCode === study.adminCode ?
+                            user.userCode == study.adminCode ?
                                 <Icon onClick={movePage} name='setting' as={MdSettings} boxSize={'1.8em'} _hover={{ cursor: "pointer" }} ml={'auto'} /> :
                                 <Input type='hidden'></Input>
                         }
@@ -195,7 +195,7 @@ const StudyBoard = () => {
 
                     <HStack ml={'auto'}>
                         {
-                            study.adminCode === user.userCode ?
+                            study.adminCode == user.userCode ?
                                 <Input type='hidden'></Input> :
                                 (
                                     isMember ?

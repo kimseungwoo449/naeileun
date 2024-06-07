@@ -20,7 +20,7 @@ const ViewJobMain = () => {
                 setLoading(false);
             });
     }, []);
-
+    
     useEffect(() => {
         if (lastIndex) {
             setLoading(true);

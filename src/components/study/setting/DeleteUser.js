@@ -63,7 +63,7 @@ const DeleteUser = () =>{
             <Stack ml={'45px'} >
                 <Text as={'b'} fontSize={'1.2em'} >멤버 관리</Text>
                 {members.map((member,index) => (
-                    member.userCode=== adminCode ?
+                    member.userCode == adminCode ?
                     <Input type='hidden' key={index}></Input> :
                     (<HStack key={index}>
                         <Text   id={member.memberCode} w={'140px'}>{member.userId}</Text>

@@ -17,7 +17,7 @@ const StudySetting = () =>{
     const groupCode = location.state.groupCode;
     const adminCode = location.state.adminCode;
 
-    if(user.userCode !== adminCode || groupCode === null)
+    if(""+user.userCode !== adminCode || groupCode === null)
         navigate('/study');
     else if(!user)
         navigate('/user/login');
