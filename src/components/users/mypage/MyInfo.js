@@ -51,10 +51,10 @@ const MyInfo = () => {
         }
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/user/update`, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
+                'Authorization': `ADMIN ${process.env.REACT_APP_ADMIN_KEY}`
             },
             
             body: JSON.stringify(payload), 
