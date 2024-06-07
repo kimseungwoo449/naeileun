@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Text,
@@ -6,29 +6,21 @@ import {
     HStack,
     Divider,
     IconButton,
-    useColorModeValue,
     Menu,
     MenuButton,
     MenuList,
     MenuItem,
     MenuDivider,
 } from '@chakra-ui/react';
-import { FaThumbsUp, FaCommentDots } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { useLogin } from '../../LoginContext';
-// import CommentList from '././post-comment/CommentList'; // CommentList import
 
 const GroupPostDetail = () => {
     const navigate = useNavigate();
 
     const [post, setPost] = useState([]);
-    const [page, setPage] = useState(1);
     const { user } = useLogin();
-
-    const pageCount = useRef(1);
-
-    const buttonScheme = useColorModeValue("blackAlpha", "whiteAlpha");
 
     const location = useLocation();
     const groupCode = location.state.groupCode;
@@ -68,7 +60,7 @@ const GroupPostDetail = () => {
 
     useEffect(() => {
         fetchPost();
-    }, [page]);
+    }, []);
 
     return (
         <Box p={4} w="900px" padding="30px" mx="auto" bg="white" boxShadow="md" borderRadius="md" minHeight="60vh" mt={'50px'} mb={'100px'}>

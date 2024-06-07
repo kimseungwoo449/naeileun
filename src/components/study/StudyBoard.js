@@ -25,7 +25,6 @@ const StudyBoard = () => {
     const [isMember, setIsMember] = useState(false);
     const [fetched, setFetched] = useState(false);
     const [page, setPage] = useState(1);
-    const [load, setLoad] = useState(0);
     const [startPage, setStartPage] = useState(1);
     const [maxPage, setMaxPage] = useState(0);
     const postsPerPage = 5;
@@ -124,8 +123,7 @@ const StudyBoard = () => {
 
         const data = await response.json();
         if (data.status) {
-            setFetched(false);
-            setLoad(load+1);
+            setIsMember(true);
         }
     }
 
@@ -172,7 +170,7 @@ const StudyBoard = () => {
         } else {
             navigate('/user/login');
         }
-    }, [user,load]);
+    }, [user]);
 
     useEffect(() => {
         if (fetched) {
@@ -209,7 +207,7 @@ const StudyBoard = () => {
                     <Text as={'b'} ml={'20px'} textAlign={'center'} mt={'9px'}>{study.isPublic === "true"? "public" : "private"}</Text>
                 </HStack>
                 <HStack >
-                    <Text mt={'30px'} ml={'20px'}>{study.decription}</Text>
+                    <Text mt={'30px'} ml={'20px'} whiteSpace="pre-line">{study.decription}</Text>
                 </HStack>
                 <Stack>
                     <HStack wrap={"wrap"} h={'100px'} gap={"10px"} _hover={{ cursor: "pointer" }} ml={'20px'}>
