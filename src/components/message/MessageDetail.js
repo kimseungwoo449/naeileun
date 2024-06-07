@@ -32,13 +32,7 @@ const MessageDetail = () => {
 
             if (data && data[target]) {
                 setMessages(data[target]);
-            } else {
-                setAlert({
-                    show: true,
-                    title: 'Error',
-                    description: '쪽지를 가져오는 중 오류가 발생했습니다. 다시 시도해주세요.'
-                });
-            }
+            } 
         } catch (error) {
             setAlert({
                 show: true,
