@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Text, Button, HStack, Stack, Input, Icon } from '@chakra-ui/react';
 import { useNavigate, useLocation, Form } from 'react-router-dom';
 import { MdSettings, MdNavigateNext, MdNavigateBefore } from "react-icons/md";
@@ -10,6 +10,12 @@ import {
     Th,
     Td,
     TableContainer,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
 } from '@chakra-ui/react'
 import { useLogin } from '../LoginContext';
 
@@ -28,6 +34,14 @@ const StudyBoard = () => {
     const [startPage, setStartPage] = useState(1);
     const [maxPage, setMaxPage] = useState(0);
     const postsPerPage = 5;
+
+    const [isOpen, setIsOpen] = useState(false);
+    const cancelRef = useRef();
+
+    const onClose = () => {
+        setIsOpen(false);
+        navigate('/user/login');
+    }
 
     const fetchBoard = async () => {
         if (fetched) return;
@@ -145,7 +159,7 @@ const StudyBoard = () => {
             }
         }
     }
-    
+
     const checkPage = (e) => {
         const command = e.target.id;
 
@@ -169,7 +183,7 @@ const StudyBoard = () => {
         if (user) {
             fetchBoard();
         } else {
-            navigate('/user/login');
+            setIsOpen(true);
         }
     }, [user]);
 
@@ -178,6 +192,35 @@ const StudyBoard = () => {
             getGroupPosts();
         }
     }, [page]);
+
+    // user가 null일 때 아무것도 렌더링하지 않도록 조건 추가
+    if (!user) {
+        return (
+            <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent backgroundColor='#eb7368'>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold" color={'white'}>
+                            로그인 필요
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody color={'white'}>
+                        로그인 후 이용 가능합니다.
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                                확인
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+        );
+    }
 
     return (
         <Box h={'80vh'} minW={"750px"} maxW={'70vw'} ml={'14%'}>
@@ -205,7 +248,7 @@ const StudyBoard = () => {
                     </HStack>
                 </HStack>
                 <HStack>
-                    <Text as={'b'} ml={'20px'} textAlign={'center'} mt={'9px'}>{study.isPublic === "true"? "public" : "private"}</Text>
+                    <Text as={'b'} ml={'20px'} textAlign={'center'} mt={'9px'}>{study.isPublic === "true" ? "public" : "private"}</Text>
                 </HStack>
                 <HStack >
                     <Text mt={'30px'} ml={'20px'} whiteSpace="pre-line">{study.decription}</Text>
@@ -260,7 +303,6 @@ const StudyBoard = () => {
                         <Icon id='next-page' onClick={checkPage} as={MdNavigateNext} boxSize={'2em'} mt={'3px'} ml={'5px'} _hover={{ cursor: "pointer" }}></Icon>
                     </HStack>
                 </Stack>
-
             </Form>
         </Box>
     );
